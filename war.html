@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Peer Evaluation</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-300">
+
+    <div class="flex">
+
+        <!-- Side Navigation Menu -->
+        <nav class="bg-white rounded-lg w-64 flex flex-col justify-between p-5 mt-11">
+            <div class="flex items-center mb-8">
+                <img src="images/peIcon.png" alt="Logo" class="h-10 w-10 mr-2">
+                <div class="flex flex-col items-left">
+                    <h1 class="text-xl font-bold text-purple-500">PeerEval</h1>
+                    <p class="text-xs font-medium text-gray-500">TCU Senior Design</p>
+                </div>
+                
+            </div>
+            <ul class="text-black">
+                <li>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-purple-100 focus:outline-none focus:bg-gray-200">Weekly Activity Report</a>
+                </li>
+                <li>
+                    <a href="#" class="block py-2.5 px-4 rounded hover:bg-purple-100 focus:outline-none focus:bg-gray-200">Peer Evaluation</a>
+                </li>
+            </ul>
+            <div class="text-center mt-auto">
+                <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Log Out</a>
+            </div>
+        </nav>
+
+        <div class="flex-1 p-4">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <!-- Logo and title -->
+                <div class="flex items-center">
+                    <h1 class="text-xl text-blue-900">Weekly Activity Report</h1>
+                </div>
+    
+                <!-- Search bar -->
+                <div class="flex items-center">
+                    <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-full text-sm focus:outline-none w-150"
+                           type="search" name="search" placeholder="Search">
+                </div>
+    
+                <!-- Profile picture -->
+                <div class="flex items-center">
+                    <img class="h-10 w-10 rounded-full" src="images/pfp4.jpg" alt="Profile">
+                    <div class="flex flex-col items-left">
+                        <p class="ml-3 text-sm font-medium text-gray-700">Tim Smith</p>
+                        <p class="ml-3 text-sm font-medium text-gray-700">t.smith@tcu.edu</p>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- WAR Table -->
+            <div class="bg-white p-6 rounded-lg shadow-md mx-auto my-8">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-bold text-gray-700 flex-grow">September 19 - September 26, 2022</h2>
+                    <div class="flex">
+                        <button class="bg-purple-500 hover:bg-purple-700 text-purple-100 font-bold py-2 px-4 rounded-full mr-2">
+                            New Task
+                        </button>
+                        <button class="bg-purple-500 hover:bg-purple-700 text-purple-100 font-bold py-2 px-4 rounded-full">
+                            Download
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <table class="min-w-full bg-white">
+                        <thead class="text-black">
+                            <tr>
+                                <th class="w-1/6 py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300 text-center">ID</th>
+                                <th class="w-1/6 py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300 text-center">Category</th>
+                                <th class="w-1/3 py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300 text-center">Task</th>
+                                <th class="w-1/3 py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300 text-center">Description</th>
+                                <th class="w-1/6 py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300 text-center">Planned Hrs</th>
+                                <th class="w-1/6 py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300 text-center">Actual Hrs</th>
+                                <th class="w-1/6 py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <!-- Table rows -->
+                            <tr class="border-b border-gray-300">
+                                <td class="py-3 px-4 text-center">1</td>
+                                <td class="py-3 px-4 text-center">
+                                    <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-category" name="category">
+                                      <option value="research">Research</option>
+                                      <option value="design">Design</option>
+                                      <option value="development">Development</option>
+                                      <option value="doc">Doc</option>
+                                      <option value="bug">Bug</option>
+                                      <option value="feature">Feature</option>
+                                    </select>
+                                  </td>
+                                <td class="py-3 px-4 text-center">Update Use Cases</td>
+                                <td class="py-3 px-4 text-center">Rewrite the update vocab use cases</td>
+                                <td class="py-3 px-4 text-center">1</td>
+                                <td class="py-3 px-4 text-center">1.5</td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">Done</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-300">
+                                <td class="py-3 px-4 text-center">2</td>
+                                <td class="py-3 px-4 text-center">
+                                    <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-category" name="category">
+                                      <option value="research">Research</option>
+                                      <option value="design">Design</option>
+                                      <option value="development">Development</option>
+                                      <option value="doc">Doc</option>
+                                      <option value="bug">Bug</option>
+                                      <option value="feature">Feature</option>
+                                    </select>
+                                  </td>
+                                <td class="py-3 px-4 text-center">Review Vue.js</td>
+                                <td class="py-3 px-4 text-center">Review old projects using Vue.js to understand data-binding and Vue template</td>
+                                <td class="py-3 px-4 text-center">2</td>
+                                <td class="py-3 px-4 text-center">2</td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">Done</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-300">
+                                <td class="py-3 px-4 text-center">3</td>
+                                <td class="py-3 px-4 text-center">
+                                    <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-category" name="category">
+                                      <option value="research">Research</option>
+                                      <option value="design">Design</option>
+                                      <option value="development">Development</option>
+                                      <option value="doc">Doc</option>
+                                      <option value="bug">Bug</option>
+                                      <option value="feature">Feature</option>
+                                    </select>
+                                  </td>
+                                <td class="py-3 px-4 text-center">Resolve CORS</td>
+                                <td class="py-3 px-4 text-center">Resolve CORS error & test api calls in front-end</td>
+                                <td class="py-3 px-4 text-center">3</td>
+                                <td class="py-3 px-4 text-center">N/A</td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs">Ongoing</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-300">
+                                <td class="py-3 px-4 text-center">4</td>
+                                <td class="py-3 px-4 text-center">
+                                    <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-category" name="category">
+                                      <option value="research">Research</option>
+                                      <option value="design">Design</option>
+                                      <option value="development">Development</option>
+                                      <option value="doc">Doc</option>
+                                      <option value="bug">Bug</option>
+                                      <option value="feature">Feature</option>
+                                    </select>
+                                  </td>
+                                <td class="py-3 px-4 text-center">Update Vocab</td>
+                                <td class="py-3 px-4 text-center">Implement update vocabs api</td>
+                                <td class="py-3 px-4 text-center">3</td>
+                                <td class="py-3 px-4 text-center">5</td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">Done</span>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

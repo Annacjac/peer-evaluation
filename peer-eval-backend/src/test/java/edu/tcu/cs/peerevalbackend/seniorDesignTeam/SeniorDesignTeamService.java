@@ -1,4 +1,5 @@
 @Service
+@Transactional
 public class SeniorDesignTeamService{
     public SeniorDesignTeam findByName{}
     public SeniorDesignTeam findAllTeams{}

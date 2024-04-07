@@ -5,8 +5,12 @@ public class SeniorDesignTeamController{
     @GetMapping
     public Result findAllTeams{}
     
-    @GetMapping
-    public Result findByTeamName{}
+    @GetMapping("/{teamName}")
+    public Result findByTeamName(@PathVariable String teamName){
+        return this.SeniorDesignTeamRepository.findByTeamName(teamName)
+                .orElseThrow(()->new ArtifactNotFoundException());
+    }
+    }
     
     @GetMapping
     public Result findByStudent{}

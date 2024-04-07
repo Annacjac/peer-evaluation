@@ -62,4 +62,12 @@ public class Student implements Serializable{
         this.password = password;
     }
 
+    // public Group getGroup(){
+    //     return team;
+    // }
+
+    // public void setGroup(Group team){
+    //     this.team = team;
+    // }
+
 }

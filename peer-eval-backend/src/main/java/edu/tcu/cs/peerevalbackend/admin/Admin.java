@@ -1,4 +1,4 @@
-package admin;
+package edu.tcu.cs.peerevalbackend.admin;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

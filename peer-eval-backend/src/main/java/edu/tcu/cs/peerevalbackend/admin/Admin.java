@@ -34,7 +34,7 @@ public class Admin implements Serializable {
         this.sections = sections;
     }
 
-    // Add a method to help easily add sections to an admin
+    // A method to help easily add sections to an admin
     public void addSection(Section section) {
         this.sections.add(section);
         section.setAdmin(this);

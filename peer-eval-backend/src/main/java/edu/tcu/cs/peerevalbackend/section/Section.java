@@ -2,6 +2,7 @@ package edu.tcu.cs.peerevalbackend.section;
 
 import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.rubric.Rubric;
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import jakarta.persistence.*;
 
 
@@ -49,8 +50,8 @@ public class Section implements Serializable {
         this.admin = admin;
     }
 
-    //public void addTeam(Team team) {
-    //    teams.add(team);
+    //public void addTeam(SeniorDesignTeam team) {
+    //    SeniorDesignTeam.add(team);
     //    team.setSection(this);
     //}
 

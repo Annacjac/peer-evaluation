@@ -8,12 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mail.javamail.JavaMailSender;
-
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AdminServiceTest {
+public class AdminServiceTest {
 
     @InjectMocks
     private AdminService adminService;
@@ -21,22 +19,32 @@ class AdminServiceTest {
     @Mock
     private EmailService emailService;
 
+    private AdminDto adminDto;
+
     @BeforeEach
     void setUp() {
-        // This can be used to set up any necessary data or state before each test
+        // Initialize your AdminDto here with test data
+        adminDto = new AdminDto();
+        adminDto.setAdminName("Allen Admin");
+        adminDto.setEmails("example@example.com;");
+        adminDto.setAdminEmail("allentcu@gmail.com");
+        adminDto.setMessage("Test message");
     }
 
     @Test
-    void testSendInvitations() {
-        // Given
-        String emails = "john.doe@example.com;jane.doe@example.com";
-        String message = "Welcome to the peer evaluation tool.";
-        AdminDto adminDto = new AdminDto(emails, message);
+    void testSendInvitations() throws Exception {
+        // Simulate the behavior of sendEmailToRecipient to ensure it's called correctly
+        doNothing().when(emailService).sendEmailToRecipient(anyString(), anyString(), anyString());
 
-        // When
+        // Call the method to test
         adminService.sendInvitations(adminDto);
 
-        // Then
-        verify(emailService, times(2)).sendEmail(anyString(), eq(message));
+        // Verify that sendEmailToRecipient was called the correct number of times and with correct parameters
+        verify(emailService, times(1)).sendEmailToRecipient(
+                eq("example@example.com"),
+                eq("Welcome to The Peer Evaluation Tool - Complete Your Registration"),
+                anyString());
+
+        // You can add more checks here to validate the behavior further
     }
 }

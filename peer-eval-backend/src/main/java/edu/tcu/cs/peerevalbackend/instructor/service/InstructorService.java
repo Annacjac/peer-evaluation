@@ -6,22 +6,14 @@ import edu.tcu.cs.peerevalbackend.instructor.dto.InstructorDto;
 import edu.tcu.cs.peerevalbackend.instructor.dto.InstructorSearchDto;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.dto.SeniorDesignTeamDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeamRepository;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public interface InstructorService {
 
-    @Autowired
-    private InstructorRepository instructorRepository;
-
-    @Autowired
-    private SeniorDesignTeamRepository seniordesignteamRepository;
     Instructor findById(Long id);
     void save(Instructor instructor);
 

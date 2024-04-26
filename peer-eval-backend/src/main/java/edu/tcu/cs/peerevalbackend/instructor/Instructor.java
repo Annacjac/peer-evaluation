@@ -1,6 +1,10 @@
 package edu.tcu.cs.peerevalbackend.instructor;
 
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Instructor {
@@ -13,8 +17,8 @@ public class Instructor {
     private String email;
     private boolean isActive;
 
-    //@OneToMany(mappedBy = "instructor")
-    //private Set<SeniorDesignTeam> teams = new HashSet<>();
+    @OneToMany(mappedBy = "instructor")
+    private Set<SeniorDesignTeam> teams = new HashSet<>();
 
     public Instructor() {}
 

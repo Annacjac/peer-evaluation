@@ -33,22 +33,31 @@ import java.util.List;
         public void setName(String name){
             this.name = name;
         }
+        public void setSection(Section section){
+            this.section = section;
+        }
+        public Section getSection(){
+            return section;
+        }
+        public void setInstructors(List<Instructor> instructors) {
+                this.instructors = instructors;
+        }
+        public List<Instructor> getInstructors() {
+                return instructors;
+        }
+        public void removeAllStudents(){
+                this.students.stream().forEach(student -> student.setTeam(null));
+                this.students = new ArrayList<>();
+        }
+        public void addStudent(Student student){
+            student.setTeam(this);
+            this.students.add(student);
+        }
+        public List<Student> getStudents(){
+            return students;
+        }
+        public void setStudents(List<Student> students){
+            this.students = students;
+        }
 
-
-    public void setInstructors(List<Instructor> instructors) {
-            this.instructors = instructors;
-    }
-
-    public List<Instructor> getInstructors() {
-            return instructors;
-    }
-
-
-    public void setId(
-            Long teamId) {
-    }
-    public void removeAllStudents(){
-            this.students.stream().forEach(student -> student.setTeam(null));
-            this.students = new ArrayList<>();
-    }
 }

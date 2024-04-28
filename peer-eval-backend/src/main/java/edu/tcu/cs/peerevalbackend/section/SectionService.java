@@ -1,7 +1,7 @@
 package edu.tcu.cs.peerevalbackend.section;
 
 import edu.tcu.cs.peerevalbackend.section.Section;
-//import edu.tcu.cs.peerevalbackend.repository.SectionRepository;
+import edu.tcu.cs.peerevalbackend.section.SectionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

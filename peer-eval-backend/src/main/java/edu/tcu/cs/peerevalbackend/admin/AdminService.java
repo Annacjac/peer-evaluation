@@ -1,2 +1,4 @@
-package edu.tcu.cs.peerevalbackend.admin;public class AdminService {
+package edu.tcu.cs.peerevalbackend.admin;
+
+public class AdminService {
 }

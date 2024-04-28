@@ -16,7 +16,7 @@ public class Instructor {
     private String lastName;
     private String email;
 
-    @OneToMany(mappedBy = "instructor")
+    //@OneToMany(mappedBy = "instructor")
     //private Set<SeniorDesignTeam> teams = new HashSet<>();
 
     public Instructor() {}

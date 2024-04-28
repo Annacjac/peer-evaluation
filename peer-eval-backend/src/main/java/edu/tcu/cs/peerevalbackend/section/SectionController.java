@@ -1,7 +1,7 @@
 package edu.tcu.cs.peerevalbackend.section;
 
 import edu.tcu.cs.peerevalbackend.section.Section;
-//import edu.tcu.cs.peerevalbackend.service.SectionService;
+import edu.tcu.cs.peerevalbackend.section.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +17,7 @@ public class SectionController {
     private SectionService service;
 
     // Section Search
+
     @GetMapping("/sections/search")
     public ResponseEntity<List<Section>> searchSections(@RequestParam(required = false) String sectionName,
                                                         @RequestParam(required = false) String academicYear) {

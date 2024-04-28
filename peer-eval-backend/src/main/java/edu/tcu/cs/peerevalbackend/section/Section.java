@@ -16,10 +16,12 @@ public class Section implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
-    //private List<SeniorDesignTeam> team = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
+    private List<SeniorDesignTeam> team = new ArrayList<>();
 
     private String academicYear;
+
+    
     @ManyToOne
     private Admin admin;
 

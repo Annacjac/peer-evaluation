@@ -6,6 +6,7 @@ import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.Student;
 import jakarta.persistence.*;
 
+import javax.print.attribute.IntegerSyntax;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,8 @@ import java.util.List;
         @OneToMany(mappedBy="name", cascade={CascadeType.PERSIST, CascadeType.MERGE})
         private List<Student> students = new ArrayList<>();
 
-        @OneToOne
-        private Instructor instructor;
+        @OneToMany(mappedBy = "instructor")
+        private List<Instructor> instructors = new ArrayList<>();
 
         @ManyToOne
         private Section section;
@@ -34,15 +35,20 @@ import java.util.List;
         }
 
 
-    public void setInstructor(Instructor instructor) {
+    public void setInstructors(List<Instructor> instructors) {
+            this.instructors = instructors;
     }
 
-    public Instructor getInstructor() {
-            return instructor;
+    public List<Instructor> getInstructors() {
+            return instructors;
     }
 
 
     public void setId(
             Long teamId) {
+    }
+    public void removeAllStudents(){
+            this.students.stream().forEach(student -> student.setTeam(null));
+            this.students = new ArrayList<>();
     }
 }

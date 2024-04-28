@@ -8,18 +8,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping()
 public class SeniorDesignTeamController {
     private final SeniorDesignTeamRepository seniorDesignTeamRepository;
+    private final SeniorDesignTeamService seniorDesignTeamService;
 
 @GetMapping
 public Result findAllTeams{}
 
-public SeniorDesignTeamController(SeniorDesignTeamRepository seniorDesignTeamRepository) {
+public SeniorDesignTeamController(SeniorDesignTeamRepository seniorDesignTeamRepository, SeniorDesignTeamService seniorDesignTeamService) {
     this.seniorDesignTeamRepository = seniorDesignTeamRepository;
+    this.seniorDesignTeamService = seniorDesignTeamService;
 }
 
 @GetMapping("/{teamName}")
 public Result findByTeamName(@PathVariable String teamName){
     return this.seniorDesignTeamRepository.findByTeamName(teamName)
-            .orElseThrow(()->new ObjectNotFoundException());
+            .orElseThrow(()->new ObjectNotFoundException("Team name", teamName));
 }
 
 @GetMapping
@@ -31,8 +33,10 @@ public Result findByInstructor{}
 @PostMapping
 public Result addTeam{}
 
-@DeleteMapping
-public Result deleteTeam{}
+@DeleteMapping("/{seniorDesignTeamName}")
+public Result deleteTeam(@PathVariable String seniorDesignTeamName){
+        this.seniorDesignTeamService.delete(seniorDesignTeamName);
+    }
 
 @DeleteMapping("/{studentId}")
 public Result removeStudent (@PathVariable Integer studentId){

@@ -19,7 +19,7 @@ import java.util.List;
         private List<Student> students = new ArrayList<>();
 
         @OneToOne
-        private Instructor instructor;
+        private Instructor teamInstructor;
 
         @ManyToOne
         private Section section;
@@ -32,6 +32,19 @@ import java.util.List;
         public void setName(String name){
             this.name = name;
         }
-        
-
+        public void removeAllStudents(){
+            this.students.stream().forEach(student -> student.setAssignedTeam(null));
+            this.students = new ArrayList<>();
+        }
+        public void removeStudent(Student studentToBeRemoved){
+            studentToBeRemoved.setAssignedTeam(null);
+            this.students.remove(studentToBeRemoved);
+        }
+        public Instructor getInstructor(){
+            return teamInstructor;
+        }
+        public void setInstructor(Instructor teamInstructor){
+            this.teamInstructor = teamInstructor;
+        }
     }
+

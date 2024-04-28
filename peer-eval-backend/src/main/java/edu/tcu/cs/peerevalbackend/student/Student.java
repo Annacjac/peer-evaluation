@@ -2,8 +2,10 @@ package edu.tcu.cs.peerevalbackend.student;
 
 import java.io.Serializable;
 
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 //import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -15,11 +17,13 @@ public class Student implements Serializable{
     private String lastName;
     private String password;
 
+    @ManyToOne
+    private SeniorDesignTeam assignedTeam;
+
     //@ManyToOne
     //private Group team;
 
     public Student(){
-
     }
 
     public String getId(){
@@ -69,5 +73,10 @@ public class Student implements Serializable{
     // public void setGroup(Group team){
     //     this.team = team;
     // }
-
+    public void setAssignedTeam(SeniorDesignTeam assignedTeam){
+        this.assignedTeam = assignedTeam;
+    }
+    public SeniorDesignTeam getAssignedTeam(){
+        return assignedTeam;
+    }
 }

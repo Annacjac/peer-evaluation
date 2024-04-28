@@ -9,7 +9,7 @@ import java.util.List;
 
 public record SeniorDesignTeamDto(String name,
                                   List<Student> students,
-                                  Instructor instructor,
+                                  List<Instructor> instructors,
                                   Section section){
 
     private static List<Assignment> assignments;

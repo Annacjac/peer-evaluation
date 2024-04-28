@@ -32,6 +32,17 @@ import java.util.List;
         public void setName(String name){
             this.name = name;
         }
-        
 
+
+    public void setInstructor(Instructor instructor) {
     }
+
+    public Instructor getInstructor() {
+            return instructor;
+    }
+
+
+    public void setId(
+            Long teamId) {
+    }
+}

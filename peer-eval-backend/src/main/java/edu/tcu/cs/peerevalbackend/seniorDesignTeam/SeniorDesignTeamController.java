@@ -1,6 +1,7 @@
 package edu.tcu.cs.peerevalbackend.seniorDesignTeam;
 
 import edu.tcu.cs.peerevalbackend.system.Result;
+import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,11 +10,14 @@ import org.springframework.web.bind.annotation.*;
 public class SeniorDesignTeamController {
     private final SeniorDesignTeamRepository seniorDesignTeamRepository;
 
+    private final SeniorDesignTeamService seniorDesignTeamService;
+
 @GetMapping
 public Result findAllTeams{}
 
-public SeniorDesignTeamController(SeniorDesignTeamRepository seniorDesignTeamRepository) {
+public SeniorDesignTeamController(SeniorDesignTeamRepository seniorDesignTeamRepository, SeniorDesignTeamService seniorDesignTeamService) {
     this.seniorDesignTeamRepository = seniorDesignTeamRepository;
+    this.seniorDesignTeamService = seniorDesignTeamService;
 }
 
 @GetMapping("/{teamName}")
@@ -32,7 +36,10 @@ public Result findByInstructor{}
 public Result addTeam{}
 
 @DeleteMapping
-public Result deleteTeam{}
+public Result deleteTeam(@PathVariable String teamName){
+    this.seniorDesignTeamService.delete(teamName);
+    return new Result(true, StatusCode.SUCCESS, "Delete Success");
+}
 
 @DeleteMapping("/{studentId}")
 public Result removeStudent (@PathVariable Integer studentId){
@@ -44,6 +51,7 @@ public Result addStudent{}
 
 @GetMapping
 public Result findBySection{}
+
 }
 
 

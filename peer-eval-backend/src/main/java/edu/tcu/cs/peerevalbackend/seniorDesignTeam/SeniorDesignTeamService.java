@@ -1,6 +1,7 @@
 package edu.tcu.cs.peerevalbackend.seniorDesignTeam;
 
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
+import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,15 @@ public class SeniorDesignTeamService{
     public SeniorDesignTeam save;
     public SeniorDesignTeam update;
 
-    public void delete() {
+    private final SeniorDesignTeamRepository seniorDesignTeamRepository;
 
+    public SeniorDesignTeamService(SeniorDesignTeamRepository seniorDesignTeamRepository) {
+        this.seniorDesignTeamRepository = seniorDesignTeamRepository;
+    }
+
+    public void delete(String teamName) {
+    SeniorDesignTeam teamToBeDeleted = this.seniorDesignTeamRepository.findById(teamName)
+            .orElseThrow(() -> new ObjectNotFoundException("Team", teamName));
+    teamToBeDeleted.removeAllStudents
     }
 }

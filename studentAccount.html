@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Peer Evaluation</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
+        <h2 class="text-2xl font-bold mb-6 text-center">Create Student Account</h2>
+        <form id="createAccountForm" class="space-y-4">
+            <div>
+                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                <input type="text" id="firstName" name="firstName" required class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+                <label for="middleInitial" class="block text-sm font-medium text-gray-700">Middle Initial</label>
+                <input type="text" id="middleInitial" name="middleInitial" maxlength="1" class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="password" name="password" required class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <button type="button" onclick="confirmAccount()" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Create Account</button>
+        </form>
+        <div id="confirmation" class="mt-6 hidden">
+            <h3 class="text-lg font-semibold">Confirm Information</h3>
+            <p id="userInfo"></p>
+            <button type="button" onclick="editInfo()" class="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600">Edit Information</button>
+            <button type="button" onclick="confirm()" class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600">Confirm</button>
+        </div>
+    </div>
+
+    <script>
+        function confirmAccount() {
+            var firstName = document.getElementById("firstName").value;
+            var middleInitial = document.getElementById("middleInitial").value;
+            var lastName = document.getElementById("lastName").value;
+            var userInfo = `First Name: ${firstName}<br>Middle Initial: ${middleInitial}<br>Last Name: ${lastName}`;
+            
+            document.getElementById("userInfo").innerHTML = userInfo;
+            document.getElementById("createAccountForm").classList.add("hidden");
+            document.getElementById("confirmation").classList.remove("hidden");
+        }
+
+        function editInfo() {
+            document.getElementById("createAccountForm").classList.remove("hidden");
+            document.getElementById("confirmation").classList.add("hidden");
+        }
+
+        function confirm() {
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>

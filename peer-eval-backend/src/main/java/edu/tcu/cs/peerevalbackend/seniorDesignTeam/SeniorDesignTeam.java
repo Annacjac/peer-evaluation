@@ -5,11 +5,12 @@ import edu.tcu.cs.peerevalbackend.instructor.Instructor;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.Student;
 import jakarta.persistence.*;
-
 import javax.print.attribute.IntegerSyntax;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
     public class SeniorDesignTeam implements Serializable {
@@ -33,6 +34,7 @@ import java.util.List;
         public void setName(String name){
             this.name = name;
         }
+
         public void setSection(Section section){
             this.section = section;
         }
@@ -60,4 +62,3 @@ import java.util.List;
             this.students = students;
         }
 
-}

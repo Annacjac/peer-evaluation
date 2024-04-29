@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Student implements Serializable{
     @Id
-    private String id;
+    private String email;
     private String firstName;
     private char middleInit;
     private String lastName;
@@ -24,12 +24,12 @@ public class Student implements Serializable{
 
     }
 
-    public String getId(){
-        return id;
+    public String getEmail(){
+        return email;
     }
 
-    public void setId(String id){
-        this.id = id;
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public String getFirstName(){

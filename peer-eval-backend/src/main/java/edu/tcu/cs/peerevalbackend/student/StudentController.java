@@ -9,9 +9,8 @@ import edu.tcu.cs.peerevalbackend.system.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-//import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
-//import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
+import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
+import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 
 
 @RestController

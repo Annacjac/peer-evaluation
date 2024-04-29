@@ -25,13 +25,14 @@ import java.util.List;
      private StudentDtoToStudentConverter toStudentConverter;
 
      public StudentDto registerStudent(StudentDto studentDto) throws AlreadyExistsException, ValidationException {
-         validateStudentData(studentDto);
+         /*validateStudentData(studentDto);
          if (studentRepository.findByEmail(studentDto.getEmail())) {
              throw new AlreadyExistsException("Account already exists for this email.");
          }
          Student student = toStudentConverter.convert(studentDto);
          Student savedStudent = studentRepository.save(student);
-         return toDtoConverter.convert(savedStudent);
+         return toDtoConverter.convert(savedStudent);*/
+         return null;
      }
 
      public Student save(Student newStudent){

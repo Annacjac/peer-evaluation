@@ -1,7 +1,9 @@
 package edu.tcu.cs.peerevalbackend.student;
 
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
+import edu.tcu.cs.peerevalbackend.system.Result;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
+import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.peerevalbackend.system.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,17 @@ import java.util.List;
          if (!errors.isEmpty()) {
              throw new ValidationException(errors);
          }
+     }
+     public void deleteStudent(String studentId){
+         Student studentToBeDeleted = this.studentRepository.findById(studentId)
+                 .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
+     }
+     public Student findById(String studentId){
+         return this.studentRepository.findById(studentId)
+                 .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
+     }
+     public Student findByLastName(String studentLastName){
+         return null;
      }
 
  }

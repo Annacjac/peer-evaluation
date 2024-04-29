@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
+import edu.tcu.cs.peerevalbackend.system.exception.ValidationException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,18 +27,19 @@ import org.springframework.util.MultiValueMap;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 class StudentControllerTest {
 
-    /*@Autowired
+    @Autowired
     MockMvc mockMvc;
 
     @MockBean
@@ -114,10 +116,9 @@ class StudentControllerTest {
     }
 
     @Test
-    void testRegisterStudentFailed() throws Exception {
+    void testRegisterStudentFailed() throws Exception, ValidationException {
         // Given
-        StudentDto studentDto = new StudentDto();
-        studentDto.setEmail("exists@example.com");
+        StudentDto studentDto = new StudentDto("student3@gmail.com", "Random", ' ', "Name", "password5", null);
 
         when(studentService.registerStudent(any(StudentDto.class))).thenThrow(new AlreadyExistsException("Account already exists"));
 
@@ -128,5 +129,5 @@ class StudentControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof AlreadyExistsException))
                 .andExpect(jsonPath("$.message").value("Account already exists"));
-    }*/
+    }
 }

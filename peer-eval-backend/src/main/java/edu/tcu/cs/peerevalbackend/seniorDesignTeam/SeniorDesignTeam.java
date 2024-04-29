@@ -5,21 +5,23 @@ import edu.tcu.cs.peerevalbackend.instructor.Instructor;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.Student;
 import jakarta.persistence.*;
+import javax.print.attribute.IntegerSyntax;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-    @Entity
+
+@Entity
     public class SeniorDesignTeam implements Serializable {
         @Id
         private String name;
 
-        @OneToMany(mappedBy="name", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+        @OneToMany(mappedBy="name", cascade={CascadeType.PERSIST, CascadeType.MERGE})
         private List<Student> students = new ArrayList<>();
 
-        @OneToOne
-        private Instructor instructor;
+        @OneToMany(mappedBy = "instructor")
+        private List<Instructor> instructors = new ArrayList<>();
 
         @ManyToOne
         private Section section;
@@ -33,28 +35,30 @@ import java.util.List;
             this.name = name;
         }
 
-        public List<Student> getStudents() {
+        public void setSection(Section section){
+            this.section = section;
+        }
+        public Section getSection(){
+            return section;
+        }
+        public void setInstructors(List<Instructor> instructors) {
+                this.instructors = instructors;
+        }
+        public List<Instructor> getInstructors() {
+                return instructors;
+        }
+        public void removeAllStudents(){
+                this.students.stream().forEach(student -> student.setTeam(null));
+                this.students = new ArrayList<>();
+        }
+        public void addStudent(Student student){
+            student.setTeam(this);
+            this.students.add(student);
+        }
+        public List<Student> getStudents(){
             return students;
         }
-
-        public void setStudents(List<Student> students) {
+        public void setStudents(List<Student> students){
             this.students = students;
         }
 
-        public Instructor getInstructor() {
-            return instructor;
-        }
-
-        public void setInstructor(Instructor instructor) {
-            this.instructor = instructor;
-        }
-
-        public Section getSection() {
-            return section;
-        }
-
-        public void setSection(Section section) {
-            this.section = section;
-        }
-
-    }

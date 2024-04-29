@@ -1,10 +1,12 @@
 package edu.tcu.cs.peerevalbackend.student;
 
 import java.io.Serializable;
+
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
+//import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Student implements Serializable{

@@ -1,8 +1,14 @@
 package edu.tcu.cs.peerevalbackend.instructor;
 
-import edu.tcu.cs.peerevalbackend.instructor.Instructor;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InstructorRepository extends JpaRepository<Instructor, Long> {
+import java.util.List;
+
+public interface InstructorRepository extends JpaRepository<Instructor, String> {
     // Method to find an Instructor by email, if needed
+    List<Instructor> findByFirstNameContainingIgnoreCase(String firstName);
+    List<Instructor> findByLastNameContainingIgnoreCase(String lastName);
+    List<Instructor> findByEmailContainingIgnoreCase(String email);
+    List<Instructor> findByIdcontainingIgnoreCase(String id);
 }

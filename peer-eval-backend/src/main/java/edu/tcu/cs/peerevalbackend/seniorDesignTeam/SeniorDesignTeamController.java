@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping()
+
 public class SeniorDesignTeamController {
     private final SeniorDesignTeamRepository seniorDesignTeamRepository;
     private final SeniorDesignTeamService seniorDesignTeamService;
@@ -60,7 +61,7 @@ public class SeniorDesignTeamController {
     }
 
     @DeleteMapping("/{studentId}")
-    public Result removeStudent(@PathVariable Integer studentId) {
+    public void removeStudent(@PathVariable String studentId) {
 
     }
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Student implements Serializable{
     @Id
+    private int id;
     private String email;
     private String firstName;
     private char middleInit;
@@ -24,6 +25,10 @@ public class Student implements Serializable{
     public Student(){
 
     }
+
+    public int getId(){return id;}
+
+    public void setId(int id){this.id = id;}
 
     public String getEmail(){
         return email;

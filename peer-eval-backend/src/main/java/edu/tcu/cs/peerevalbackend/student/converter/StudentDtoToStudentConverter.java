@@ -12,6 +12,7 @@ public class StudentDtoToStudentConverter implements Converter<StudentDto, Stude
     @Override
     public Student convert(StudentDto source){
         Student student = new Student();
+        student.setId(source.id());
         student.setEmail(source.email());
         student.setFirstName(source.firstName());
         student.setLastName(source.lastName());

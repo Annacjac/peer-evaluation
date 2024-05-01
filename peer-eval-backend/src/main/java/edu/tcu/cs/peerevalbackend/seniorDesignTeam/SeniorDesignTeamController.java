@@ -4,6 +4,8 @@ package edu.tcu.cs.peerevalbackend.seniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.converter.SeniorDesignTeamDtoToSeniorDesignTeamConverter;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.converter.SeniorDesignTeamtoSeniorDesignTeamDtoConverter;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.dto.SeniorDesignTeamDto;
+import edu.tcu.cs.peerevalbackend.student.StudentRepository;
+import edu.tcu.cs.peerevalbackend.student.StudentService;
 import edu.tcu.cs.peerevalbackend.system.Result;
 import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
@@ -21,6 +23,9 @@ public class SeniorDesignTeamController {
     private final SeniorDesignTeamService seniorDesignTeamService;
     private final SeniorDesignTeamtoSeniorDesignTeamDtoConverter seniorDesignTeamtoSeniorDesignTeamDtoConverter;
     private final SeniorDesignTeamDtoToSeniorDesignTeamConverter seniorDesignTeamDtoToSeniorDesignTeamConverter;
+    private final StudentService studentService;
+
+    private final StudentRepository studentRepository;
 
     @GetMapping("/{teamName}")
     public Result findAllTeams() {
@@ -32,11 +37,13 @@ public class SeniorDesignTeamController {
         return new Result(true, StatusCode.SUCCESS, "Find All Success", teamDtos);
     }
 
-    public SeniorDesignTeamController(SeniorDesignTeamRepository seniorDesignTeamRepository, SeniorDesignTeamService seniorDesignTeamService, SeniorDesignTeamtoSeniorDesignTeamDtoConverter seniorDesignTeamtoSeniorDesignTeamDtoConverter, SeniorDesignTeamDtoToSeniorDesignTeamConverter seniorDesignTeamDtoToSeniorDesignTeamConverter) {
+    public SeniorDesignTeamController(SeniorDesignTeamRepository seniorDesignTeamRepository, SeniorDesignTeamService seniorDesignTeamService, SeniorDesignTeamtoSeniorDesignTeamDtoConverter seniorDesignTeamtoSeniorDesignTeamDtoConverter, SeniorDesignTeamDtoToSeniorDesignTeamConverter seniorDesignTeamDtoToSeniorDesignTeamConverter, StudentService studentService, StudentRepository studentRepository) {
         this.seniorDesignTeamRepository = seniorDesignTeamRepository;
         this.seniorDesignTeamService = seniorDesignTeamService;
         this.seniorDesignTeamtoSeniorDesignTeamDtoConverter = seniorDesignTeamtoSeniorDesignTeamDtoConverter;
         this.seniorDesignTeamDtoToSeniorDesignTeamConverter = seniorDesignTeamDtoToSeniorDesignTeamConverter;
+        this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/{teamName}")
@@ -56,13 +63,18 @@ public class SeniorDesignTeamController {
 
     @DeleteMapping
     public Result deleteTeam(@PathVariable String teamName) {
-        this.seniorDesignTeamService.delete(teamName);
+        this.seniorDesignTeamService.deleteTeam(teamName);
         return new Result(true, StatusCode.SUCCESS, "Delete Success");
     }
 
-    @DeleteMapping("/{studentId}")
-    public Result removeStudent(@PathVariable Integer studentId) {
-
-        return null;
+    @DeleteMapping("/{studentEmail}")
+    public Result removeStudent(@PathVariable String studentEmail) {
+        this.seniorDesignTeamService.removeStudent(studentEmail);
+        return new Result(true, StatusCode.SUCCESS, "Removal Success");
+    }
+    @PutMapping("/{teamName}/students/{studentEmail}")
+    public Result assignStudent(@PathVariable String teamName, @PathVariable String studentEmail){
+        this.seniorDesignTeamService.assignStudent(teamName, studentEmail);
+        return new Result (true, StatusCode.SUCCESS, "Student Assignment Success");
     }
 }

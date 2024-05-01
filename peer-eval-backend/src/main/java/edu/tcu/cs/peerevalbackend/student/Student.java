@@ -72,4 +72,7 @@ public class Student implements Serializable{
          this.team = team;
      }
 
+    public int compareTo(Student evaluatee) {
+        return this.getFirstName().compareTo(evaluatee.getFirstName());
+    }
 }

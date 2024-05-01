@@ -3,7 +3,7 @@ package edu.tcu.cs.peerevalbackend.instructor.dto;
 import jakarta.validation.constraints.NotEmpty;
 
 public record InstructorDto(
-        Long id,
+        Integer id,
         @NotEmpty(message = "First name is required.") String firstName,
         @NotEmpty(message = "Last name is required.") String lastName,
         @NotEmpty(message = "Email is required.") String email
@@ -18,5 +18,9 @@ public record InstructorDto(
 
     public String getEmail() {
         return email;
+    }
+
+    public String getId() {
+        return null;
     }
 }

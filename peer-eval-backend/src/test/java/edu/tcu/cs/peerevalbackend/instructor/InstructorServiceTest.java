@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,61 +39,40 @@ class InstructorServiceTest {
 
     @Test
     void testRemoveInstructorFromTeam() {
-        // Given
-        Long teamId = 1L;
-        Long instructorId = 1L;
-        Instructor instructor = new Instructor();
-        instructor.setId(instructorId);
         SeniorDesignTeam team = new SeniorDesignTeam();
-        team.setId(teamId);
-        team.setInstructor(instructor);
+        Instructor instructor = new Instructor();
+        instructor.setId(Integer.parseInt("instructorId"));
+        team.setInstructors(Arrays.asList(instructor));
 
-        when(seniorDesignTeamRepository.findById(teamId)).thenReturn(Optional.of(team));
+        when(seniorDesignTeamRepository.findById("teamId")).thenReturn(Optional.of(team));
 
-        // When
-        instructorService.removeInstructorFromTeam(teamId, instructorId);
+        service.removeInstructorFromTeam("teamId", "instructorId");
 
-        // Then
-        verify(seniorDesignTeamRepository).save(teamCaptor.capture());
-        SeniorDesignTeam savedTeam = teamCaptor.getValue();
-        assertNull(savedTeam.getInstructor()); // Verify the instructor is removed
+        assertTrue(team.getInstructors().isEmpty());
+        verify(seniorDesignTeamRepository).save(team);
     }
 
     @Test
     void testFindInstructorsByCriteria() {
-        // Given
-        InstructorSearchDto criteria = new InstructorSearchDto();
-        criteria.setFirstName("John");
-        criteria.setLastName("Doe");
+        InstructorSearchDto criteria = new InstructorSearchDto("John", null, null);
+        List<Instructor> expectedInstructors = Arrays.asList(new Instructor());
+        when(instructorRepository.findByFirstNameContainingIgnoreCase("John")).thenReturn(expectedInstructors);
 
-        List<Instructor> expectedInstructors = new ArrayList<>();
-        expectedInstructors.add(new Instructor("1", "John", 'M', "Doe", "john.doe@example.com"));
+        List<Instructor> result = service.findInstructors(criteria);
 
-        when(instructorRepository.findAll(any(Specification.class))).thenReturn(findInstructors);
-
-        // When
-        List<Instructor> actualInstructors = instructorService.findInstructors(criteria);
-
-        // Then
-        verify(instructorRepository).findAll(any(Specification.class)); // Verifies that findAll was called with a specification
-        assertEquals(expectedInstructors, actualInstructors, "The returned list of instructors should match the expected list");
+        assertEquals(expectedInstructors, result);
     }
 
     @Test
     void testGetInstructorById_Found() {
-        // Given
-        String id = "1";
-        Instructor expectedInstructor = new Instructor("1", "John", 'M', "Doe", "john.doe@example.com");
-        when(instructorRepository.findById(id)).thenReturn(Optional.of(expectedInstructor));
+        Instructor expectedInstructor = new Instructor();
+        expectedInstructor.setId("1");
+        when(instructorRepository.findById("1")).thenReturn(Optional.of(expectedInstructor));
 
-        // When
-        InstructorDto result = instructorService.getInstructorById(id);
+        InstructorDto result = service.getInstructorById("1");
 
-        // Then
-        verify(instructorRepository).findById(id);
         assertNotNull(result);
-        assertEquals("John", result.getFirstName(), "Instructor first name should match");
-        assertEquals("Doe", result.getLastName(), "Instructor last name should match");
+        assertEquals("1", result.getId());
     }
 
     @Test

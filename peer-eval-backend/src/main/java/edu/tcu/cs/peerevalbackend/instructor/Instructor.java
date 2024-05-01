@@ -47,6 +47,7 @@ public class Instructor implements Serializable {
     public String getEmail() {
         return email;
     }
+    public boolean isActive;
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -96,5 +97,13 @@ public class Instructor implements Serializable {
     public void addTeam(SeniorDesignTeam seniorDesignTeam) {
         seniorDesignTeam.getInstructors().add(this);
         this.teams.add(seniorDesignTeam);
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

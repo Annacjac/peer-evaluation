@@ -19,7 +19,7 @@ public record SeniorDesignTeamDto(String name,
         private Long instructorId;
         private Long teamId;
 
-        public Long getInstructorId() {
+        public String getInstructorId() {
             return instructorId;
         }
 
@@ -27,7 +27,7 @@ public record SeniorDesignTeamDto(String name,
             this.instructorId = instructorId;
         }
 
-        public Long getTeamId() {
+        public String getTeamId() {
             return teamId;
         }
 

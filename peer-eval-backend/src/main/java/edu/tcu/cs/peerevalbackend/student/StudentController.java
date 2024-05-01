@@ -57,9 +57,11 @@ public class StudentController {
     }
     @GetMapping("/students")
     public Result findByLastName(@PathVariable String studentLastName){
-        Student foundStudent = this.studentService.findByLastName(studentLastName);
-        StudentDto studentDto = this.studentToStudentDtoConverter.convert(foundStudent);
-        return new Result(true, StatusCode.SUCCESS, "Find One Success", studentDto);
+        List<Student> foundStudents = this.studentService.findByLastName(studentLastName);
+        List<StudentDto> studentDtos = foundStudents.stream()
+                .map(this.studentToStudentDtoConverter::convert)
+                .collect(Collectors.toList());
+        return new Result(true, StatusCode.SUCCESS, "Find All Success", studentDtos);
     }
     @GetMapping("/students")
     public Result findByAcademicYear(@PathVariable String academicYear){

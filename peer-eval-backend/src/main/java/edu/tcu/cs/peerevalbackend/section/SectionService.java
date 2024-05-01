@@ -1,21 +1,31 @@
 package edu.tcu.cs.peerevalbackend.section;
 
-import edu.tcu.cs.peerevalbackend.section.Section;
-//import edu.tcu.cs.peerevalbackend.repository.SectionRepository;
-import org.springframework.stereotype.Service;
+import edu.tcu.cs.peerevalbackend.section.dto.SectionDetailDto;
+import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SectionService {
 
     @Autowired
-    private SectionRepository repository;
+    private SectionRepository sectionRepository;
 
-    public List<Section> findSections(String sectionName, String academicYear) {
-        Sort sort = Sort.by(Sort.Order.desc("academicYear"), Sort.Order.asc("sectionName"));
-        return repository.findBySectionNameAndAcademicYear(sectionName, academicYear, sort);
+    public SectionDetailDto getSectionDetails(Integer sectionId) {
+        Section section = sectionRepository.findById(sectionId)
+                .orElseThrow(() -> new ObjectNotFoundException("Section", sectionId));
+
+        return convertToDetailDto(section);
     }
+
+    private SectionDetailDto convertToDetailDto(Section section) {
+        SectionDetailDto dto = new SectionDetailDto();
+        dto.setSectionName(section.getSectionName());
+        dto.setAcademicYear(section.getAcademicYear());
+
+        return dto;
+    }
+
+
+    // TODO: add student, teams and instructor to details
 }

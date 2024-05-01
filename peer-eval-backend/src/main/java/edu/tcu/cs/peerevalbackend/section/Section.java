@@ -20,11 +20,16 @@ public class Section implements Serializable {
     //private List<SeniorDesignTeam> team = new ArrayList<>();
 
     private String academicYear;
+
+    private String sectionName;
+
+
     @ManyToOne
     private Admin admin;
 
     @ManyToOne
     private Rubric rubric;
+
 
     // Getters and Setters
     public Integer getId() {
@@ -33,6 +38,14 @@ public class Section implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getSectionName() {
+        return sectionName;
+    }
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
     }
 
     public void setAcademicYear(String academicYear) {

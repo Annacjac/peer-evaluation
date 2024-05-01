@@ -13,7 +13,7 @@ public class Instructor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) //automatically generate Id starting from default 1
-    private Integer id;
+    private Long id;
 
     private String firstName;
     private String lastName;

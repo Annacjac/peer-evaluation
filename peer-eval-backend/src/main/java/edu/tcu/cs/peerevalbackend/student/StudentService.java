@@ -69,5 +69,6 @@ import java.util.List;
      public Student findByLastName(String studentLastName){
          return null;
      }
+     public List<Student> findBySection()
 
  }

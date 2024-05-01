@@ -90,7 +90,7 @@ class SeniorDesignTeamControllerTest {
         section1.setAdmin(admin1);
 
         Instructor instructor1 = new Instructor();
-        instructor1.setId(120805018L);
+        instructor1.setId(1);
         instructor1.setActive(true);
 
 

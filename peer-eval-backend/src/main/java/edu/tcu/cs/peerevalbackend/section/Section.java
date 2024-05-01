@@ -3,6 +3,7 @@ package edu.tcu.cs.peerevalbackend.section;
 import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.rubric.Rubric;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
+import edu.tcu.cs.peerevalbackend.student.Student;
 import jakarta.persistence.*;
 
 
@@ -29,6 +30,7 @@ public class Section implements Serializable {
 
     @ManyToOne
     private Rubric rubric;
+
 
 
     // Getters and Setters

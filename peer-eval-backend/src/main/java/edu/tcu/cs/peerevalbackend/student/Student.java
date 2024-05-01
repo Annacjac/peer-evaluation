@@ -18,6 +18,7 @@ public class Student implements Serializable{
     private char middleInit;
     private String lastName;
     private String password;
+    private String academicYear;
 
     @ManyToOne
     private SeniorDesignTeam team;
@@ -81,4 +82,11 @@ public class Student implements Serializable{
     public int compareTo(Student evaluatee) {
         return this.getFirstName().compareTo(evaluatee.getFirstName());
     }
+    public String getAcademicYear(){
+        return academicYear;
+    }
+    public void setAcademicYear(String academicYear){
+        this.academicYear = academicYear;
+    }
 }
+

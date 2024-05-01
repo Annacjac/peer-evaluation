@@ -1,5 +1,6 @@
 package edu.tcu.cs.peerevalbackend.student;
 
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.dto.SeniorDesignTeamDto;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
@@ -13,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -51,7 +55,27 @@ public class StudentController {
         StudentDto updatedStudentDto = this.studentToStudentDtoConverter.convert(updatedStudent);
         return new Result(true, StatusCode.SUCCESS, "Update Success", updatedStudentDto);
     }
-
-
+    @GetMapping("/students")
+    public Result findByLastName(@PathVariable String studentLastName){
+        Student foundStudent = this.studentService.findByLastName(studentLastName);
+        StudentDto studentDto = this.studentToStudentDtoConverter.convert(foundStudent);
+        return new Result(true, StatusCode.SUCCESS, "Find One Success", studentDto);
+    }
+    @GetMapping("/students")
+    public Result findByAcademicYear(@PathVariable String academicYear){
+        List<Student> foundStudents = this.studentService.findByAcademicYear(academicYear);
+        List<StudentDto> studentDtos = foundStudents.stream()
+                .map(this.studentToStudentDtoConverter::convert)
+                .collect(Collectors.toList());
+        return new Result(true, StatusCode.SUCCESS, "Find All Success", studentDtos);
+    }
+    @GetMapping("/students")
+    public Result findByTeamName(@PathVariable String teamName){
+        List<Student> foundStudents = this.studentService.findByTeamName(teamName);
+        List<StudentDto> studentDtos = foundStudents.stream()
+                .map(this.studentToStudentDtoConverter::convert)
+                .collect(Collectors.toList());
+        return new Result(true, StatusCode.SUCCESS, "Find All Success", studentDtos);
+    }
 
 }

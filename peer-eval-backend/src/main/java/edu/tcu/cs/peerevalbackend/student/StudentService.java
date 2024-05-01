@@ -1,5 +1,7 @@
 package edu.tcu.cs.peerevalbackend.student;
 
+import edu.tcu.cs.peerevalbackend.section.Section;
+import edu.tcu.cs.peerevalbackend.section.SectionRepository;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.Result;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
@@ -26,6 +28,8 @@ import java.util.List;
 
      @Autowired
      private StudentDtoToStudentConverter toStudentConverter;
+
+     private SectionRepository sectionRepository;
 
     public Student findById(int studentId){
         return this.studentRepository.findById("" + studentId)
@@ -75,13 +79,23 @@ import java.util.List;
          Student studentToBeDeleted = this.studentRepository.findById(studentId)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
      }
-     public Student findById(String studentId){
-         return this.studentRepository.findById(studentId)
-                 .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
-     }
      public Student findByLastName(String studentLastName){
-         return null;
+         return this.studentRepository.findStudentByLastName(studentLastName)
+                 .orElseThrow(() -> new ObjectNotFoundException("student", studentLastName));
      }
-     public List<Student> findBySection()
+     /*public List<Student> findBySection(Integer sectionId){
+         Section section = this.sectionRepository.findById(sectionId)
+                 .orElseThrow(() -> new ObjectNotFoundException("section", sectionId));
+     }
+      */
+    public List<Student> findByAcademicYear(String academicYear){
+        return this.studentRepository.findByAcademicYear(academicYear)
+                .orElseThrow(() -> new ObjectNotFoundException("academic year", academicYear));
+    }
+    public List<Student> findByTeamName(String teamName){
+        return this.studentRepository.findByTeamName(teamName)
+                .orElseThrow(() -> new ObjectNotFoundException("team", teamName));
+    }
+
 
  }

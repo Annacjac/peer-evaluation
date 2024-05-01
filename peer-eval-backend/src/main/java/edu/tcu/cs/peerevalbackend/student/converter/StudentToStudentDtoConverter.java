@@ -21,7 +21,7 @@ package edu.tcu.cs.peerevalbackend.student.converter;
 
      @Override
      public StudentDto convert(Student source) {
-         StudentDto studentDto = new StudentDto(source.getEmail(), source.getFirstName(), source.getMidInit(), source.getLastName(), source.getPassword(), source.getTeam() != null ? this.teamToTeamDtoConverter.convert(source.getTeam()) : null);
+         StudentDto studentDto = new StudentDto(source.getId(), source.getEmail(), source.getFirstName(), source.getMidInit(), source.getLastName(), source.getPassword(), source.getTeam() != null ? this.teamToTeamDtoConverter.convert(source.getTeam()) : null);
          return studentDto;
      }
     

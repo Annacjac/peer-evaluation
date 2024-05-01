@@ -26,9 +26,9 @@ import java.util.List;
      @Autowired
      private StudentDtoToStudentConverter toStudentConverter;
 
-    public Student findByEmail(String email){
-        return this.studentRepository.findById(email)
-                .orElseThrow(() -> new ObjectNotFoundException("student", email));
+    public Student findById(int studentId){
+        return this.studentRepository.findById("" + studentId)
+                .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
     }
 
      public Student save(Student newStudent){

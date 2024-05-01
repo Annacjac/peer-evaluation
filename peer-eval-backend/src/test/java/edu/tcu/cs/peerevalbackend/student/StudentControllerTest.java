@@ -59,6 +59,7 @@ class StudentControllerTest {
         this.students = new ArrayList<>();
 
         Student s1 = new Student();
+        s1.setId(1);
         s1.setEmail("student1@gmail.com");
         s1.setFirstName("John");
         s1.setLastName("Doe");
@@ -66,6 +67,7 @@ class StudentControllerTest {
         this.students.add(s1);
 
         Student s2 = new Student();
+        s2.setId(2);
         s2.setEmail("student2@gmail.com");
         s2.setFirstName("Jane");
         s2.setLastName("Dou");
@@ -73,6 +75,7 @@ class StudentControllerTest {
         this.students.add(s2);
 
         Student s3 = new Student();
+        s3.setId(3);
         s3.setEmail("student3@gmail.com");
         s3.setFirstName("Brian");
         s3.setLastName("Smith");
@@ -88,38 +91,35 @@ class StudentControllerTest {
     @Test
     void testRegisterStudentSuccess() throws Exception {
         //Given
-        StudentDto studentDto = new StudentDto("student4@gmail.com",
-                "Greg",
-                ' ',
-                "Universe",
-                "password4",
-                null);
+        Student student = new Student();
+        student.setId(4);
+        student.setEmail("student4@gmail.com");
+        student.setFirstName("Greg");
+        student.setLastName("Universe");
+        student.setPassword("password 4");
 
-        String json = this.objectMapper.writeValueAsString(studentDto);
+        String json = this.objectMapper.writeValueAsString(student);
 
-        Student savedStudent = new Student();
-        savedStudent.setEmail("student4@gmail.com");
-        savedStudent.setFirstName("Greg");
-        savedStudent.setLastName("Universe");
-        savedStudent.setPassword("password 4");
+        student.setId(4);
 
-        given(this.studentService.save(Mockito.any(Student.class))).willReturn(savedStudent);
+        given(this.studentService.save(Mockito.any(Student.class))).willReturn(student);
 
         //When and then
         this.mockMvc.perform(post(this.baseUrl + "/students").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Add Success"))
-                .andExpect(jsonPath("$.data.email").isNotEmpty())
-                .andExpect(jsonPath("$.data.firstName").value(savedStudent.getFirstName()))
-                .andExpect(jsonPath("$.data.lastName").value(savedStudent.getLastName()))
-                .andExpect(jsonPath("$.data.password").value(savedStudent.getPassword()));
+                .andExpect(jsonPath("$.data.id").isNotEmpty())
+                .andExpect(jsonPath("$.data.email").value("student4@gmail.com"))
+                .andExpect(jsonPath("$.data.firstName").value(student.getFirstName()))
+                .andExpect(jsonPath("$.data.lastName").value(student.getLastName()))
+                .andExpect(jsonPath("$.data.password").value(student.getPassword()));
     }
 
     @Test
     void testRegisterStudentEmailAlreadyExists() throws Exception {
         // Given
-        StudentDto studentDto = new StudentDto("student1@gmail.com", "John", 'D', "Doe", "password1", null);
+        StudentDto studentDto = new StudentDto(4, "student1@gmail.com", "John", 'D', "Doe", "password1", null);
         String json = this.objectMapper.writeValueAsString(studentDto);
 
         // Mock the behavior to simulate email already exists scenario
@@ -138,10 +138,10 @@ class StudentControllerTest {
     @Test
     void testFindStudentByEmailSuccess() throws Exception {
         //Given
-        given(this.studentService.findByEmail("student1@gmail.com")).willReturn(this.students.get(0));
+        given(this.studentService.findById(1)).willReturn(this.students.get(0));
 
         //When and then
-        this.mockMvc.perform(get(this.baseUrl + "/students/student1@gmail.com").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/students/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find Success"))
@@ -151,12 +151,12 @@ class StudentControllerTest {
     }
 
     @Test
-    void testFindStudentByEmailNotFound() throws Exception {
+    void testFindStudentByIdNotFound() throws Exception {
         //Given
-        given(this.studentService.findByEmail("example@test.com")).willThrow(new ObjectNotFoundException("student", "example@test.com"));
+        given(this.studentService.findById(5)).willThrow(new ObjectNotFoundException("student", 5));
 
         //When and then
-        this.mockMvc.perform(get(this.baseUrl + "/students/example@test.com").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/students/5").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find student"))

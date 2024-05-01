@@ -2,8 +2,15 @@ package edu.tcu.cs.peerevalbackend.admin;
 
 import edu.tcu.cs.peerevalbackend.admin.Email.EmailService;
 import edu.tcu.cs.peerevalbackend.admin.dto.AdminDto;
+import edu.tcu.cs.peerevalbackend.admin.dto.SearchCriteriaDto;
+import edu.tcu.cs.peerevalbackend.section.Section;
+import edu.tcu.cs.peerevalbackend.section.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,5 +52,12 @@ public class AdminService {
                 "If you have any questions or need assistance, feel free to contact [Admin’s email] or our team directly.\n\n" +
                 "Please note: This email is not monitored, so do not reply directly to this message.\n\nBest regards,\n" +
                 "Peer Evaluation Tool Team";
+    }
+
+    @Autowired
+    private SectionRepository sectionRepository;
+
+    public Page<Section> findSections(SearchCriteriaDto criteria, Pageable pageable) throws Exception {
+        return sectionRepository.findByCriteria(criteria.getSectionName(), criteria.getAcademicYear(), pageable);
     }
 }

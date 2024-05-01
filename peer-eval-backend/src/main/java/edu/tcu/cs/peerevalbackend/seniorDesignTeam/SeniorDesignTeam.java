@@ -57,6 +57,10 @@ import java.util.List;
         this.students.stream().forEach(student -> student.setTeam(null));
         this.students = new ArrayList<>();
     }
+    public void removeStudent(Student studentToBeAssigned){
+        studentToBeAssigned.setTeam(null);
+        this.students.remove(studentToBeAssigned);
+    }
 
     public void addStudent(Student student) {
         student.setTeam(this);

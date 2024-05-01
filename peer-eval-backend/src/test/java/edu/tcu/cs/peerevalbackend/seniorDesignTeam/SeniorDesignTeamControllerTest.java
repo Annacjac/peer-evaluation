@@ -130,7 +130,7 @@ class SeniorDesignTeamControllerTest {
     @Test
     void testDeleteTeamSuccess() throws Exception{
         //Given
-        doNothing().when(this.seniorDesignTeamService).delete("Team-1");
+        doNothing().when(this.seniorDesignTeamService).deleteTeam("Team-1");
         //When and Then
         this.mockMvc.perform(delete("/api/v1/teams/Team-1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))

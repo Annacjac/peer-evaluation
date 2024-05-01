@@ -63,5 +63,6 @@ public class SeniorDesignTeamController {
     @DeleteMapping("/{studentId}")
     public Result removeStudent(@PathVariable Integer studentId) {
 
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
+import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.peerevalbackend.system.exception.ValidationException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -116,18 +117,49 @@ class StudentControllerTest {
     }
 
     @Test
-    void testRegisterStudentFailed() throws Exception, ValidationException {
+    void testRegisterStudentEmailAlreadyExists() throws Exception {
         // Given
-        StudentDto studentDto = new StudentDto("student3@gmail.com", "Random", ' ', "Name", "password5", null);
+        StudentDto studentDto = new StudentDto("student1@gmail.com", "John", 'D', "Doe", "password1", null);
+        String json = this.objectMapper.writeValueAsString(studentDto);
 
-        when(studentService.registerStudent(any(StudentDto.class))).thenThrow(new AlreadyExistsException("Account already exists"));
+        // Mock the behavior to simulate email already exists scenario
+        given(this.studentService.save(any(Student.class))).willThrow(new AlreadyExistsException("Email already exists"));
 
-        // When & Then
-        mockMvc.perform(post("/students/register")
+        // When and then
+        this.mockMvc.perform(post(this.baseUrl + "/students")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(studentDto)))
-                .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof AlreadyExistsException))
-                .andExpect(jsonPath("$.message").value("Account already exists"));
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isBadRequest())
+                        .andExpect(jsonPath("$.flag").value(false))
+                        .andExpect(jsonPath("$.message").value("Email already exists"));
+    }
+
+    @Test
+    void testFindStudentByEmailSuccess() throws Exception {
+        //Given
+        given(this.studentService.findByEmail("student1@gmail.com")).willReturn(this.students.get(0));
+
+        //When and then
+        this.mockMvc.perform(get(this.baseUrl + "/students/student1@gmail.com").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"));
+    }
+
+    @Test
+    void testFindStudentByEmailNotFound() throws Exception {
+        //Given
+        given(this.studentService.findByEmail("example@test.com")).willThrow(new ObjectNotFoundException("student", "example@test.com"));
+
+        //When and then
+        this.mockMvc.perform(get(this.baseUrl + "/students/example@test.com").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(false))
+                .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
+                .andExpect(jsonPath("$.message").value("Could not find student"))
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 }

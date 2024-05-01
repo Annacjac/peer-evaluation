@@ -2,7 +2,9 @@ package edu.tcu.cs.peerevalbackend.student;
 
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
+import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.peerevalbackend.system.exception.ValidationException;
+import io.micrometer.observation.annotation.Observed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,19 +26,31 @@ import java.util.List;
      @Autowired
      private StudentDtoToStudentConverter toStudentConverter;
 
-     public StudentDto registerStudent(StudentDto studentDto) throws AlreadyExistsException, ValidationException {
-         validateStudentData(studentDto);
-         if (studentRepository.findByEmail(studentDto.email())) {
-             throw new AlreadyExistsException("Account already exists for this email.");
-         }
-         Student student = toStudentConverter.convert(studentDto);
-         Student savedStudent = studentRepository.save(student);
-         return toDtoConverter.convert(savedStudent);
-     }
+    public Student findByEmail(String email){
+        return this.studentRepository.findById(email)
+                .orElseThrow(() -> new ObjectNotFoundException("student", email));
+    }
 
      public Student save(Student newStudent){
          return this.studentRepository.save(newStudent);
      }
+
+    public Student update(String studentEmail, Student update) {
+        return this.studentRepository.findById(studentEmail)
+                .map(oldStudent -> {
+                    oldStudent.setFirstName(update.getFirstName());
+                    oldStudent.setMidInit(update.getMidInit());
+                    oldStudent.setLastName(update.getLastName());
+                    return this.studentRepository.save(oldStudent);
+                })
+                .orElseThrow(() -> new ObjectNotFoundException("student", studentEmail));
+    }
+
+    public void delete(String studentEmail) {
+        this.studentRepository.findById(studentEmail)
+                .orElseThrow(() -> new ObjectNotFoundException("student", studentEmail));
+        this.studentRepository.deleteById(studentEmail);
+    }
 
      private void validateStudentData(StudentDto studentDto) throws ValidationException {
          List<String> errors = new ArrayList<>();

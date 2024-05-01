@@ -10,7 +10,7 @@ public class TeamDtoToTeamConverter implements Converter<SeniorDesignTeamDto, Se
         SeniorDesignTeam seniorDesignTeam = new SeniorDesignTeam();
         seniorDesignTeam.setName(source.name());
         seniorDesignTeam.setStudents(source.students());
-        seniorDesignTeam.setInstructor(source.instructor());
+        seniorDesignTeam.setInstructors(source.instructors());
         seniorDesignTeam.setSection(source.section());
         return seniorDesignTeam;
     }

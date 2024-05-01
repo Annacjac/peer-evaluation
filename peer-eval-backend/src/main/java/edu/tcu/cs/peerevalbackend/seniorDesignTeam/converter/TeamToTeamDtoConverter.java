@@ -9,7 +9,7 @@ public class TeamToTeamDtoConverter implements Converter<SeniorDesignTeam, Senio
     public SeniorDesignTeamDto convert(SeniorDesignTeam source) {
         SeniorDesignTeamDto seniorDesignTeamDto = new SeniorDesignTeamDto(source.getName(),
                 source.getStudents(),
-                source.getInstructor(),
+                source.getInstructors(),
                 source.getSection());
         return seniorDesignTeamDto;
     }

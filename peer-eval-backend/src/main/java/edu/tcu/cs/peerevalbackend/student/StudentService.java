@@ -79,15 +79,19 @@ import java.util.List;
          Student studentToBeDeleted = this.studentRepository.findById(studentId)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
      }
+     public List<Student> findByFirstName(String studentFirstName){
+        return this.studentRepository.findStudentByFirstName(studentFirstName)
+                .orElseThrow(() -> new ObjectNotFoundException("student", studentFirstName));
+     }
      public List<Student> findByLastName(String studentLastName){
          return this.studentRepository.findStudentsByLastName(studentLastName)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentLastName));
      }
-     /*public List<Student> findBySection(Integer sectionId){
-         Section section = this.sectionRepository.findById(sectionId)
-                 .orElseThrow(() -> new ObjectNotFoundException("section", sectionId));
+     public List<Student> findBySectionName(String sectionName){
+         return this.studentRepository.findBySectionName(sectionName)
+                 .orElseThrow(() -> new ObjectNotFoundException("section", sectionName));
      }
-      */
+
     public List<Student> findByAcademicYear(String academicYear){
         return this.studentRepository.findByAcademicYear(academicYear)
                 .orElseThrow(() -> new ObjectNotFoundException("academic year", academicYear));

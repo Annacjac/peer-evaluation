@@ -16,18 +16,18 @@ public record SeniorDesignTeamDto(String name,
     private static List<Assignment> assignments;
 
     public static class Assignment {
-        private Long instructorId;
+        private String instructorId;
         private Long teamId;
 
         public String getInstructorId() {
             return instructorId;
         }
 
-        public void setInstructorId(Long instructorId) {
+        public void setInstructorId(String instructorId) {
             this.instructorId = instructorId;
         }
 
-        public String getTeamId() {
+        public Long getTeamId() {
             return teamId;
         }
 

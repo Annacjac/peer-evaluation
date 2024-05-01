@@ -56,8 +56,16 @@ public class StudentController {
         return new Result(true, StatusCode.SUCCESS, "Update Success", updatedStudentDto);
     }
     @GetMapping("/students")
-    public Result findByLastName(@PathVariable String studentLastName){
-        List<Student> foundStudents = this.studentService.findByLastName(studentLastName);
+    public Result findByLastName(@PathVariable String lastName){
+        List<Student> foundStudents = this.studentService.findByLastName(lastName);
+        List<StudentDto> studentDtos = foundStudents.stream()
+                .map(this.studentToStudentDtoConverter::convert)
+                .collect(Collectors.toList());
+        return new Result(true, StatusCode.SUCCESS, "Find All Success", studentDtos);
+    }
+    @GetMapping("/students")
+    public Result findByFirstName(@PathVariable String firstName){
+        List<Student> foundStudents = this.studentService.findByFirstName(firstName);
         List<StudentDto> studentDtos = foundStudents.stream()
                 .map(this.studentToStudentDtoConverter::convert)
                 .collect(Collectors.toList());
@@ -74,6 +82,14 @@ public class StudentController {
     @GetMapping("/students")
     public Result findByTeamName(@PathVariable String teamName){
         List<Student> foundStudents = this.studentService.findByTeamName(teamName);
+        List<StudentDto> studentDtos = foundStudents.stream()
+                .map(this.studentToStudentDtoConverter::convert)
+                .collect(Collectors.toList());
+        return new Result(true, StatusCode.SUCCESS, "Find All Success", studentDtos);
+    }
+    @GetMapping("/students")
+    public Result findBySectionName(@PathVariable String sectionName){
+        List<Student> foundStudents = this.studentService.findBySectionName(sectionName);
         List<StudentDto> studentDtos = foundStudents.stream()
                 .map(this.studentToStudentDtoConverter::convert)
                 .collect(Collectors.toList());

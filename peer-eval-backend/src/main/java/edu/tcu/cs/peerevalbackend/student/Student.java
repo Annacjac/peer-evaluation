@@ -19,6 +19,7 @@ public class Student implements Serializable{
     private String lastName;
     private String password;
     private String academicYear;
+    private String sectionName;
 
     @ManyToOne
     private SeniorDesignTeam team;

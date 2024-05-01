@@ -46,10 +46,11 @@ public class SeniorDesignTeamController {
         this.studentRepository = studentRepository;
     }
 
-    @GetMapping("/{teamName}")
+    @GetMapping("/teams/{teamName}")
     public Result findByTeamName(@PathVariable String teamName) {
         return this.seniorDesignTeamRepository.findById(teamName)
-                .orElseThrow(() -> new ObjectNotFoundException());
+                .orElseThrow(() -> new ObjectNotFoundException("team", teamName));
+
     }
 
 

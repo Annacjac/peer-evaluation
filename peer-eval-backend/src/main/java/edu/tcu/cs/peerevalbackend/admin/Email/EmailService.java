@@ -28,6 +28,14 @@ public class EmailService {
         }
     }
 
+    public void sendCustomEmail(List<String> instructorEmails, String customMessage) throws MessagingException {
+        String subject = "Custom Invitation - Peer Evaluation Tool";
+
+        for (String email : instructorEmails) {
+            sendEmailToRecipient(email, subject, customMessage);
+        }
+    }
+
     public void sendEmailToRecipient(String email, String subject, String text) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");

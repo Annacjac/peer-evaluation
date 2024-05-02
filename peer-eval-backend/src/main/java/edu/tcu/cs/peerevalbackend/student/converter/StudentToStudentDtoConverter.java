@@ -1,4 +1,6 @@
 package edu.tcu.cs.peerevalbackend.student.converter;
+ import edu.tcu.cs.peerevalbackend.seniorDesignTeam.converter.SeniorDesignTeamDtoToSeniorDesignTeamConverter;
+ import edu.tcu.cs.peerevalbackend.seniorDesignTeam.converter.SeniorDesignTeamtoSeniorDesignTeamDtoConverter;
  import edu.tcu.cs.peerevalbackend.seniorDesignTeam.converter.TeamDtoToTeamConverter;
  import edu.tcu.cs.peerevalbackend.seniorDesignTeam.converter.TeamToTeamDtoConverter;
  import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +15,17 @@ package edu.tcu.cs.peerevalbackend.student.converter;
  @Component
  public class StudentToStudentDtoConverter implements Converter<Student, StudentDto>{
 
-     private final TeamToTeamDtoConverter teamToTeamDtoConverter;
+     private final SeniorDesignTeamtoSeniorDesignTeamDtoConverter seniorDesignTeamtoSeniorDesignTeamDtoConverter;
+     private final SeniorDesignTeamDtoToSeniorDesignTeamConverter seniorDesignTeamDtoToSeniorDesignTeamConverter;
 
-     public StudentToStudentDtoConverter(TeamToTeamDtoConverter teamToTeamDtoConverter) {
-         this.teamToTeamDtoConverter = teamToTeamDtoConverter;
+     public StudentToStudentDtoConverter( SeniorDesignTeamtoSeniorDesignTeamDtoConverter seniorDesignTeamtoSeniorDesignTeamDtoConverter, SeniorDesignTeamDtoToSeniorDesignTeamConverter seniorDesignTeamDtoToSeniorDesignTeamConverter) {
+         this.seniorDesignTeamtoSeniorDesignTeamDtoConverter = seniorDesignTeamtoSeniorDesignTeamDtoConverter;
+         this.seniorDesignTeamDtoToSeniorDesignTeamConverter = seniorDesignTeamDtoToSeniorDesignTeamConverter;
      }
 
      @Override
      public StudentDto convert(Student source) {
-         StudentDto studentDto = new StudentDto(source.getId(), source.getEmail(), source.getFirstName(), source.getMidInit(), source.getLastName(), source.getPassword(), source.getTeam() != null ? this.teamToTeamDtoConverter.convert(source.getTeam()) : null);
+         StudentDto studentDto = new StudentDto((int) source.getId(), source.getEmail(), source.getFirstName(), source.getMidInit(), source.getLastName(), source.getPassword(), source.getTeam() != null ? this.seniorDesignTeamtoSeniorDesignTeamDtoConverter.convert(source.getTeam()) : null);
          return studentDto;
      }
     

@@ -34,8 +34,8 @@ public class StudentController {
     }
 
     @GetMapping("/{studentId}")
-    public Result findStudentById(@PathVariable int studentId) {
-        Student foundStudent = this.studentService.findById(studentId);
+    public Result findStudentByEmail(@PathVariable String studentEmail) {
+        Student foundStudent = this.studentService.findByEmail(studentEmail);
         StudentDto studentDto = this.studentToStudentDtoConverter.convert(foundStudent);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", studentDto);
     }

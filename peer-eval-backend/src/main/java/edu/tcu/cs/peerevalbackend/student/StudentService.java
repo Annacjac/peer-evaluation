@@ -15,6 +15,7 @@ import edu.tcu.cs.peerevalbackend.student.converter.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
  @Transactional
@@ -30,11 +31,6 @@ import java.util.List;
      private StudentDtoToStudentConverter toStudentConverter;
 
      private SectionRepository sectionRepository;
-
-    public Student findById(int studentId){
-        return this.studentRepository.findById("" + studentId)
-                .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
-    }
 
      public Student save(Student newStudent){
          return this.studentRepository.save(newStudent);
@@ -87,6 +83,10 @@ import java.util.List;
          return this.studentRepository.findStudentsByLastName(studentLastName)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentLastName));
      }
+    public Student findByEmail(String email) {
+        Optional<Student> student = studentRepository.findByEmail(email);
+        return student.orElseThrow(() -> new RuntimeException("No student found with email: " + email));
+    }
      public List<Student> findBySectionName(String sectionName){
          return this.studentRepository.findBySectionName(sectionName)
                  .orElseThrow(() -> new ObjectNotFoundException("section", sectionName));

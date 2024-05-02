@@ -1,23 +1,28 @@
 package edu.tcu.cs.peerevalbackend.rubric;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Criterion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
     private String description;
     private int maxScore;
 
+
+
     @ManyToOne
     private Rubric rubric;
+
+    public Criterion() {}
+
+    public Criterion(String name, String description, int maxScore) {
+        this.name = name;
+        this.description = description;
+        this.maxScore = maxScore;
+    }
 
     // Getters and setters
     public Integer getId() {

@@ -1,8 +1,14 @@
 package edu.tcu.cs.peerevalbackend.section.dto;
 
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
+
+import java.util.List;
+
 public class SectionDetailDto {
     private String sectionName;  // Ensure this field exists
     private String academicYear; // Ensure this field exists
+
+    private List<SeniorDesignTeam> teams;
 
     // Getters and Setters
     public String getSectionName() {
@@ -21,5 +27,11 @@ public class SectionDetailDto {
         this.academicYear = academicYear;
     }
 
-    // TODO: Show Teams, Team members and Instructors
+    public List<SeniorDesignTeam> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<SeniorDesignTeam> teams) {
+        this.teams = teams;
+    }
 }

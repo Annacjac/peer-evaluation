@@ -14,9 +14,13 @@ public class SectionController {
     @Autowired
     private SectionService sectionService;
 
-    @GetMapping("/{sectionId}")
+    @GetMapping("/sections/{sectionId}")
     public ResponseEntity<?> getSectionDetails(@PathVariable Integer sectionId) {
-        SectionDetailDto sectionDetail = sectionService.getSectionDetails(sectionId);
-        return ResponseEntity.ok(sectionDetail);
+        try {
+            SectionDetailDto sectionDetail = sectionService.getSectionDetails(sectionId);
+            return ResponseEntity.ok(sectionDetail);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error retrieving section details: " + e.getMessage());
+        }
     }
 }

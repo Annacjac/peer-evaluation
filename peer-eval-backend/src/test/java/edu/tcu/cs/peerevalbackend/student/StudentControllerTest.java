@@ -162,4 +162,32 @@ class StudentControllerTest {
                 .andExpect(jsonPath("$.message").value("Could not find student"))
                 .andExpect(jsonPath("$.data").isEmpty());
     }
+    @Test
+    void testFindStudentByFirstNameSuccess() throws Exception{
+        //Given
+        given(this.studentService.findByFirstName("John")).willReturn(this.students);
+
+        //When and Then
+        this.mockMvc.perform(get(this.baseUrl + "/students/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
+    }
+    @Test
+    void testFindStudentByLastNameSuccess() throws Exception{
+        //Given
+        given(this.studentService.findByLastName("Doe")).willReturn(this.students);
+
+        //When and Then
+        this.mockMvc.perform(get(this.baseUrl + "/students/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
+    }
 }

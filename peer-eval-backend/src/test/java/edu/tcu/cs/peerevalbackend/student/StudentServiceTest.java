@@ -201,4 +201,19 @@ class StudentServiceTest {
         // Act & Assert
         assertThrows(AlreadyExistsException.class, () -> studentService.registerStudent(studentDto));
     }*/
+    @Test
+    void testFindByLastNameNotFound(){
+        //Given
+        given(this.studentRepository.findStudentsByLastName(Mockito.any(String.class))).willReturn(Optional.empty());
+        //When
+        Throwable thrown = catchThrowable(() -> {
+            List<Student> students = this.studentService.findByLastName("Smith");
+        });
+
+        //Then
+        assertThat(thrown)
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("Could not find student with last name Smith");
+                verify(this.studentRepository, times(1)).findStudentsByLastName("Smith");
+    }
 }

@@ -17,4 +17,5 @@ public interface InstructorService {
     InstructorDto getInstructorById(String id);
     void deactivateInstructor(String id);
     void reactivateInstructor(String id);
+
 }

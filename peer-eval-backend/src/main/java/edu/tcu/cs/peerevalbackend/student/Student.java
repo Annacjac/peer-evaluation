@@ -6,13 +6,12 @@ import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 //import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Student implements Serializable{
     @Id
-    private int id;
+    private long id;
     private String email;
     private String firstName;
     private char middleInit;
@@ -28,9 +27,9 @@ public class Student implements Serializable{
 
     }
 
-    public int getId(){return id;}
+    public long getId(){return id;}
 
-    public void setId(int id){this.id = id;}
+    public void setId(long id){this.id = id;}
 
     public String getEmail(){
         return email;

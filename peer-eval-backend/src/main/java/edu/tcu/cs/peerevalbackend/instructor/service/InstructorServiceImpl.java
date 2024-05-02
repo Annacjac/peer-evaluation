@@ -41,7 +41,7 @@ public class InstructorServiceImpl implements InstructorService {
     public void assignInstructorsToTeams(SeniorDesignTeamDto seniorDesignTeamDto) {
         seniorDesignTeamDto.getAssignments().forEach(assignment -> {
             Optional<Instructor> instructor = instructorRepository.findById(assignment.getInstructorId());
-            Optional<SeniorDesignTeam> team = seniorDesignTeamRepository.findById(assignment.getTeamId());
+            Optional<SeniorDesignTeam> team = seniorDesignTeamRepository.findById(String.valueOf(assignment.getTeamId()));
             if (instructor.isPresent() && team.isPresent()) {
                 team.get().setInstructors((List<Instructor>) instructor.get());
                 seniorDesignTeamRepository.save(team.get());

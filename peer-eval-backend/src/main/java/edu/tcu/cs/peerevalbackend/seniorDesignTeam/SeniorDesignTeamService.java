@@ -28,7 +28,10 @@ public class SeniorDesignTeamService{
     public List<SeniorDesignTeam> findAll(){
         return this.seniorDesignTeamRepository.findAll();
     }
-
+    public SeniorDesignTeam findById(String teamName){
+        return this.seniorDesignTeamRepository.findById(teamName)
+                .orElseThrow(() -> new ObjectNotFoundException("senior design team", teamName));
+    }
     public void deleteTeam(String teamName) {
     SeniorDesignTeam teamToBeDeleted = this.seniorDesignTeamRepository.findById(teamName)
             .orElseThrow(() -> new ObjectNotFoundException("team", teamName));

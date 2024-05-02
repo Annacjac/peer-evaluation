@@ -2,6 +2,7 @@ package edu.tcu.cs.peerevalbackend.student;
 
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.section.SectionRepository;
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.Result;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
@@ -75,6 +76,10 @@ import java.util.Optional;
          Student studentToBeDeleted = this.studentRepository.findById(studentId)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
      }
+    public Student findById(Integer id){
+        return this.studentRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("senior design team", id));
+    }
      public List<Student> findByFirstName(String studentFirstName){
         return this.studentRepository.findStudentByFirstName(studentFirstName)
                 .orElseThrow(() -> new ObjectNotFoundException("student", studentFirstName));

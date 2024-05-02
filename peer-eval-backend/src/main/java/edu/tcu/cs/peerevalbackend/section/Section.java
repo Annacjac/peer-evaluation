@@ -30,6 +30,8 @@ public class Section implements Serializable {
 
     @ManyToOne
     private Rubric rubric;
+    @OneToMany
+    private List<Student> students;
 
     @ElementCollection
     private List<String> activeWeeks =  new ArrayList<>();
@@ -92,6 +94,7 @@ public class Section implements Serializable {
     public void setTeams(List<SeniorDesignTeam> teams) {
         this.teams = teams;
     }
+    public void getStudents(List<Student> students){this.students = students;}
 }
 
 

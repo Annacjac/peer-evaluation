@@ -2,7 +2,6 @@ package edu.tcu.cs.peerevalbackend.peerEvaluation.converter;
 
 import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
 import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluation;
-import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import org.springframework.core.convert.converter.Converter;

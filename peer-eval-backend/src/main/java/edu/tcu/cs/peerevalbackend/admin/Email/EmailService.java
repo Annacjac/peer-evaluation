@@ -3,6 +3,7 @@ package edu.tcu.cs.peerevalbackend.admin.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -56,4 +57,13 @@ public class EmailService {
                 "Best regards,\n" +
                 "Peer Evaluation Tool Team";
     }
+    public void sendInvitationEmail(String toEmail){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@peereval.com");
+        message.setTo(toEmail);
+        message.setSubject("Invitation to Join a Senior Design Section");
+        message.setText("You have been invited to join a senior design section.");
+        mailSender.send(message);
+    }
+
 }

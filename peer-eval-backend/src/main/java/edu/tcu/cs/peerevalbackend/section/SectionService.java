@@ -22,6 +22,7 @@ public class SectionService {
         SectionDetailDto dto = new SectionDetailDto();
         dto.setSectionName(section.getSectionName());
         dto.setAcademicYear(section.getAcademicYear());
+        dto.setTeams(section.getTeams());
 
         return dto;
     }

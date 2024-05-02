@@ -26,8 +26,8 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Error sending invitations: " + e.getMessage());
         }
     }
-    @PostMapping("/find-sections")
-    public ResponseEntity<?> findSections(@RequestBody SearchCriteriaDto criteria, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    @GetMapping("/find-sections")
+    public ResponseEntity<?> findSections(SearchCriteriaDto criteria, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         try {
             Pageable pageable = PageRequest.of(page, size);
             Page<Section> sectionsPage = adminService.findSections(criteria, pageable);
@@ -39,5 +39,6 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Error in searching sections: " + e.getMessage());
         }
     }
+
 
 }

@@ -203,7 +203,20 @@ class StudentControllerTest {
         given(this.studentService.findBySectionName("Section1")).willReturn(expectedStudents);
 
         //When and Then
-        this.mockMvc.perform(get(this.baseUrl + "/students/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/sections/Section1/students").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
+    }
+    @Test
+    void testFindStudentBySectionNotFound() throws Exception{
+        //Given
+        given(this.studentService.findBySectionName("Section10")).willThrow(new ObjectNotFoundException("section", "Section10"));
+        //When and Then
+        this.mockMvc.perform(get(this.baseUrl + "/sections/Section10/students").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find Success"))

@@ -101,5 +101,4 @@ import java.util.Optional;
                 .orElseThrow(() -> new ObjectNotFoundException("team", teamName));
     }
 
-
  }

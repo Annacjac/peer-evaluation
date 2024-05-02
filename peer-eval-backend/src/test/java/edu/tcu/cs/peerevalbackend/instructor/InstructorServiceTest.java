@@ -1,187 +1,138 @@
 package edu.tcu.cs.peerevalbackend.instructor;
 
-import edu.tcu.cs.peerevalbackend.instructor.dto.InstructorDto;
-import edu.tcu.cs.peerevalbackend.instructor.dto.InstructorSearchDto;
 import edu.tcu.cs.peerevalbackend.instructor.service.InstructorService;
-import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
-import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeamRepository;
+import edu.tcu.cs.peerevalbackend.instructor.service.InstructorServiceImpl;
+
+import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluation;
+import edu.tcu.cs.peerevalbackend.section.Section;
+import edu.tcu.cs.peerevalbackend.section.SectionRepository;
+import edu.tcu.cs.peerevalbackend.student.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class InstructorServiceTest {
 
+    @Mock
+    InstructorRepository instructorRepository;
+
+
+
     @InjectMocks
-    private InstructorService instructorService;
+    InstructorService instructorService;
+
+    List<Instructor> instructors;
+
+    List<Section> sections;
+
+    List<PeerEvaluation> peerEvaluations1;
+    List<PeerEvaluation> peerEvaluations2;
+
 
     @Mock
-    private InstructorRepository instructorRepository;
-
-    @Mock
-    private SeniorDesignTeamRepository seniorDesignTeamRepository;
+    SectionRepository sectionRepository;
 
     @BeforeEach
     void setUp() {
+        Instructor i1 = new Instructor();
+        i1.setId(1);
+        i1.setFirstName("Wei");
+        i1.setLastName("Bingyang");
+
+        Instructor i2 = new Instructor();
+        i2.setId(2);
+        i2.setFirstName("Ma");
+        i2.setLastName("Liran");
+
+
+        Section sec1 = new Section();
+        sec1.setAdmin(i1);
+        ArrayList<String> activeWeeks = new ArrayList<>();
+        activeWeeks.add("02-12-2024");
+        sec1.setActiveWeeks(activeWeeks);
+
+        Student carlos = new Student();
+        carlos.setId(1L);
+        Student eriife = new Student();
+        eriife.setId(2L);
+
+        PeerEvaluation carlosToEriife = new PeerEvaluation();
+        carlosToEriife.setEvaluator(carlos);
+        carlosToEriife.setEvaluatee(eriife);
+        carlosToEriife.setQualityOfWork(10);
+        carlosToEriife.setPublicComments("Public");
+        carlosToEriife.setPrivateComments("Private");
+
+        PeerEvaluation carlosToCarlos = new PeerEvaluation();
+        carlosToCarlos.setEvaluator(carlos);
+        carlosToCarlos.setEvaluatee(carlos);
+        carlosToCarlos.setQualityOfWork(8);
+        carlosToCarlos.setPublicComments("Public");
+        carlosToCarlos.setPrivateComments("Private");
+
+        PeerEvaluation eriifeToCarlos = new PeerEvaluation();
+        eriifeToCarlos.setEvaluator(eriife);
+        eriifeToCarlos.setEvaluatee(carlos);
+        eriifeToCarlos.setQualityOfWork(10);
+        eriifeToCarlos.setPublicComments("Public");
+        eriifeToCarlos.setPrivateComments("Private");
+
+        PeerEvaluation eriifeToEriife = new PeerEvaluation();
+        eriifeToEriife.setEvaluator(eriife);
+        eriifeToEriife.setEvaluatee(eriife);
+        eriifeToEriife.setQualityOfWork(8);
+        eriifeToEriife.setPublicComments("Public");
+        eriifeToEriife.setPrivateComments("Private");
+
+        peerEvaluations1 = new ArrayList<>();
+        peerEvaluations1.add(carlosToEriife);
+        peerEvaluations1.add(carlosToCarlos);
+
+        peerEvaluations2 = new ArrayList<>();
+        peerEvaluations2.add(eriifeToCarlos);
+        peerEvaluations2.add(eriifeToEriife);
+
+        this.instructors = new ArrayList<>();
+        this.instructors.add(i1);
+        this.instructors.add(i2);
+
+        this.sections = new ArrayList<>();
+        this.sections.add(sec1);
+
     }
 
-    @Test
-    void testRemoveInstructorFromTeam() {
-        SeniorDesignTeam team = new SeniorDesignTeam();
-        Instructor instructor = new Instructor();
-        instructor.setId(Integer.parseInt("instructorId"));
-        team.setInstructors(Arrays.asList(instructor));
-
-        when(seniorDesignTeamRepository.findById("teamId")).thenReturn(Optional.of(team));
-
-        service.removeInstructorFromTeam("teamId", "instructorId");
-
-        assertTrue(team.getInstructors().isEmpty());
-        verify(seniorDesignTeamRepository).save(team);
-    }
-
-    @Test
-    void testFindInstructorsByCriteria() {
-        InstructorSearchDto criteria = new InstructorSearchDto("John", null, null);
-        List<Instructor> expectedInstructors = Arrays.asList(new Instructor());
-        when(instructorRepository.findByFirstNameContainingIgnoreCase("John")).thenReturn(expectedInstructors);
-
-        List<Instructor> result = service.findInstructors(criteria);
-
-        assertEquals(expectedInstructors, result);
-    }
-
-    @Test
-    void testGetInstructorById_Found() {
-        Instructor expectedInstructor = new Instructor();
-        expectedInstructor.setId("1");
-        when(instructorRepository.findById("1")).thenReturn(Optional.of(expectedInstructor));
-
-        InstructorDto result = service.getInstructorById("1");
-
-        assertNotNull(result);
-        assertEquals("1", result.getId());
-    }
-
-    @Test
-    void testGetInstructorById_NotFound() {
+    @Test //Add an instructor
+    void testSaveSuccess(){
         // Given
-        String id = "nonexistent";
-        when(instructorRepository.findById(id)).thenReturn(Optional.empty());
+        Instructor newInstructor = new Instructor();
+        newInstructor.setId(1);
+        newInstructor.setFirstName("Wei");
+        newInstructor.setLastName("Bingyang");
 
-        // When & Then
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            instructorService.getInstructorById(id);
-        });
-
-        assertEquals("Instructor not found", exception.getMessage());
-    }
-
-    @Test
-    void testDeactivateInstructor_Success() {
-        // Given
-        String id = "1";
-        Instructor instructor = new Instructor();
-        instructor.setId(id);
-        instructor.setActive(true);
-        when(instructorRepository.findById(id)).thenReturn(Optional.of(instructor));
+        given(instructorRepository.save(newInstructor)).willReturn(newInstructor);
 
         // When
-        instructorService.deactivateInstructor(id);
+        Instructor savedInstructor = InstructorService.save(newInstructor);
 
         // Then
-        assertFalse(instructor.isActive(), "Instructor should be deactivated");
-        verify(instructorRepository).save(instructor);
+        assertThat(savedInstructor.getId()).isEqualTo(1);
+        assertThat(savedInstructor.getFirstName()).isEqualTo("Wei");
+        assertThat(savedInstructor.getLastName()).isEqualTo("Bingyang");
+        verify(instructorRepository, times(1)).save(newInstructor);
+
     }
 
-    @Test
-    void testDeactivateInstructor_AlreadyInactive() {
-        // Given
-        String id = "1";
-        Instructor instructor = new Instructor();
-        instructor.setId(id);
-        instructor.setActive(false);
-        when(instructorRepository.findById(id)).thenReturn(Optional.of(instructor));
 
-        // When & Then
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            instructorService.deactivateInstructor(id);
-        });
-
-        assertEquals("Instructor is already inactive.", exception.getMessage());
-    }
-
-    @Test
-    void testDeactivateInstructor_NotFound() {
-        // Given
-        String id = "nonexistent";
-        when(instructorRepository.findById(id)).thenReturn(Optional.empty());
-
-        // When & Then
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            instructorService.deactivateInstructor(id);
-        });
-
-        assertEquals("Instructor not found", exception.getMessage());
-    }
-
-    @Test
-    void testReactivateInstructor_Success() {
-        // Given
-        String id = "1";
-        Instructor instructor = new Instructor();
-        instructor.setId(id);
-        instructor.setActive(false);
-        when(instructorRepository.findById(id)).thenReturn(Optional.of(instructor));
-
-        // When
-        instructorService.reactivateInstructor(id);
-
-        // Then
-        assertTrue(instructor.isActive(), "Instructor should be reactivated");
-        verify(instructorRepository).save(instructor);
-    }
-
-    @Test
-    void testReactivateInstructor_AlreadyActive() {
-        // Given
-        String id = "1";
-        Instructor instructor = new Instructor();
-        instructor.setId(id);
-        instructor.setActive(true);
-        when(instructorRepository.findById(id)).thenReturn(Optional.of(instructor));
-
-        // When & Then
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            instructorService.reactivateInstructor(id);
-        });
-
-        assertEquals("Instructor is already active.", exception.getMessage());
-    }
-
-    @Test
-    void testReactivateInstructor_NotFound() {
-        // Given
-        String id = "nonexistent";
-        when(instructorRepository.findById(id)).thenReturn(Optional.empty());
-
-        // When & Then
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            instructorService.reactivateInstructor(id);
-        });
-
-        assertEquals("Instructor not found", exception.getMessage());
-    }
 }

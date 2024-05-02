@@ -31,7 +31,8 @@ public class Section implements Serializable {
     @ManyToOne
     private Rubric rubric;
 
-
+    @ElementCollection
+    private List<String> activeWeeks =  new ArrayList<>();
 
     // Getters and Setters
     public Integer getId() {
@@ -79,6 +80,9 @@ public class Section implements Serializable {
     }
 
 
+    public void setActiveWeeks(List<String> activeWeeks) {
+        this.activeWeeks = activeWeeks;
+    }
 
 
 

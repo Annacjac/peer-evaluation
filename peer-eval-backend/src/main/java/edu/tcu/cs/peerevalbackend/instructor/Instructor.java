@@ -66,10 +66,10 @@ public class Instructor implements Serializable {
         this.sections = sections;
     }
 
-//    public void addSection(Section section) {
-//        section.setAdmin(this);
-//        this.sections.add(section);
-//    }
+    public void addSection(Section section) {
+        section.setAdmin(section.getAdmin());
+        this.sections.add(section);
+    }
 
     public Integer getNumberOfSections() {
         return this.sections.size();

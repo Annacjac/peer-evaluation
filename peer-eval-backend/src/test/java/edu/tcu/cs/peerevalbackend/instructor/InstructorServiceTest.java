@@ -64,9 +64,9 @@ class InstructorServiceTest {
         sec1.setActiveWeeks(activeWeeks);
 
         Student carlos = new Student();
-        carlos.setId(1);
+        carlos.setId("1");
         Student eriife = new Student();
-        eriife.setId(2);
+        eriife.setId("2");
 
         PeerEvaluation carlosToEriife = new PeerEvaluation();
         carlosToEriife.setEvaluator(carlos);

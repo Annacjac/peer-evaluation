@@ -80,7 +80,7 @@ public class AdminService {
         student.setTeam(null); // Assuming a null team means the student is not part of any team
         studentRepository.save(student);
     }
-    public void updateStudentDetails(Long studentId, StudentDto studentDto) {
+    public void updateStudentDetails(String studentId, StudentDto studentDto) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("In updateStudentDetails: Student not found with ID: " + studentId));
         student.setFirstName(studentDto.firstName());
@@ -103,9 +103,9 @@ public class AdminService {
                 "Peer Evaluation Tool Team";
     }
 
-
     public Page<Section> findSections(SearchCriteriaDto criteria, Pageable pageable) throws Exception {
         return sectionRepository.findByCriteria(criteria.getSectionName(), criteria.getAcademicYear(), pageable);
     }
+
 
 }

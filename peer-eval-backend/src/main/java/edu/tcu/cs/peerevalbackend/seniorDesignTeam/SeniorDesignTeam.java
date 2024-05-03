@@ -74,4 +74,7 @@ import java.util.List;
     public void setStudents(List<Student> students) {
         this.students = students;
     }
+
+    public void setId(String teamId) {
+    }
 }

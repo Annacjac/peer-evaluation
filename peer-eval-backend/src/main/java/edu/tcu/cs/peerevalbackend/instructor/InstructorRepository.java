@@ -11,6 +11,6 @@ public interface InstructorRepository extends JpaRepository<Instructor, String> 
     List<Instructor> findByFirstNameContainingIgnoreCase(String firstName);
     List<Instructor> findByLastNameContainingIgnoreCase(String lastName);
     List<Instructor> findByEmailContainingIgnoreCase(String email);
-    Optional<Instructor> findById(String id);
+    Optional<Instructor> findById(Integer id);
 
     List<Instructor> findAll(Specification<Instructor> spec);}

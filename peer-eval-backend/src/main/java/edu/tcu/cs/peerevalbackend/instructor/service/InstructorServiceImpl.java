@@ -120,4 +120,30 @@ public class InstructorServiceImpl implements InstructorService {
         instructorRepository.save(instructor);
     }
     // Implementation of other methods
+
+    public Instructor registerInstructor(InstructorDto instructorDto) {
+        Instructor instructor = new Instructor();
+        instructor.setFirstName(instructorDto.firstName());
+        instructor.setLastName(instructorDto.lastName());
+        instructor.setEmail(instructorDto.email());
+        instructor.setActive(true); // Default to active when registering
+        return instructorRepository.save(instructor);
+    }
+
+    public InstructorDto createInstructor(InstructorDto instructorDto) {
+        Instructor instructor = new Instructor();
+        instructor.setFirstName(instructorDto.firstName());
+        instructor.setLastName(instructorDto.lastName());
+        instructor.setEmail(instructorDto.email());
+        instructor.setActive(true); // Assume new instructors are active by default
+
+        // Persist the new instructor in the database
+        Instructor savedInstructor = instructorRepository.save(instructor);
+
+        // Convert the saved entity back to DTO
+        return new InstructorDto(savedInstructor.getId(),
+                savedInstructor.getFirstName(),
+                savedInstructor.getLastName(),
+                savedInstructor.getEmail());
+    }
 }

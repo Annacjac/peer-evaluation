@@ -18,6 +18,7 @@ public class Instructor implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
+    public boolean isActive;
 //    private String password;
 
     //when one instructor is saved, all sections for that instructor is saved as well.
@@ -47,7 +48,6 @@ public class Instructor implements Serializable {
     public String getEmail() {
         return email;
     }
-    public boolean isActive;
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

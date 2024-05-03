@@ -8,6 +8,7 @@ import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.section.SectionRepository;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.student.Student;
+import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,6 +75,15 @@ public class AdminService {
                 .orElseThrow(() -> new IllegalArgumentException("Student not found with ID: " + studentId));
 
         student.setTeam(null); // Assuming a null team means the student is not part of any team
+        studentRepository.save(student);
+    }
+    public void updateStudentDetails(Long studentId, StudentDto studentDto) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("In updateStudentDetails: Student not found with ID: " + studentId));
+        student.setFirstName(studentDto.firstName());
+        student.setLastName(studentDto.lastName());
+        student.setEmail(studentDto.email());
+        // Ensure you handle any domain-specific validations or operations here
         studentRepository.save(student);
     }
     private String generateRegistrationLink(String email) {

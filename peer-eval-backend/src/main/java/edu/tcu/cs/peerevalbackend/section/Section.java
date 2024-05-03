@@ -12,7 +12,7 @@ import java.util.List;
 public class Section implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id; //Section name is the id
 
     //@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
     //private List<SeniorDesignTeam> team = new ArrayList<>();
@@ -20,7 +20,9 @@ public class Section implements Serializable {
     private String academicYear;
 
     private String sectionName;
+    private String firstDate;
 
+    private String lastDate;
 
     @ManyToOne
     private Admin admin;
@@ -32,11 +34,11 @@ public class Section implements Serializable {
     private List<String> activeWeeks =  new ArrayList<>();
 
     // Getters and Setters
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -81,7 +83,21 @@ public class Section implements Serializable {
         this.activeWeeks = activeWeeks;
     }
 
+    public String getFirstDate() {
+        return firstDate;
+    }
 
+    public void setFirstDate(String firstDate) {
+        this.firstDate = firstDate;
+    }
+
+    public String getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(String lastDate) {
+        this.lastDate = lastDate;
+    }
 
 }
 

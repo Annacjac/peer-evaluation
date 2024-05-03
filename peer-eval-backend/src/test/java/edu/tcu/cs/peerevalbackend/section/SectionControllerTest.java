@@ -39,7 +39,7 @@ public class SectionControllerTest {
         request.setRubricId(1);
 
         Section expectedSection = new Section();
-        expectedSection.setId(1);
+        expectedSection.setId("1");
         expectedSection.setSectionName(request.getSectionName());
         expectedSection.setAcademicYear(request.getAcademicYear());
 

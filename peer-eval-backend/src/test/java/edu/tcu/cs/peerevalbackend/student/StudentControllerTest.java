@@ -1,6 +1,7 @@
 package edu.tcu.cs.peerevalbackend.student;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.StatusCode;
@@ -52,6 +53,7 @@ class StudentControllerTest {
     ObjectMapper objectMapper;
 
     List<Student> students;
+    Admin admin;
     Section section;
 
     @Value("/api/v1")
@@ -59,8 +61,15 @@ class StudentControllerTest {
 
     @BeforeEach
     void setUp(){
+        this.admin = new Admin();
+        admin.setId(1);
+        admin.setName("admin1");
+
         this.section = new Section();
         section.setSectionName("Section1");
+        section.setId("1");
+        section.setAdmin(admin);
+
         this.students = new ArrayList<>();
 
         Student s1 = new Student();
@@ -78,6 +87,7 @@ class StudentControllerTest {
         s2.setFirstName("Jane");
         s2.setLastName("Dou");
         s2.setPassword("password2");
+        s2.setSectionName("Section1");
         this.students.add(s2);
 
         Student s3 = new Student();
@@ -86,6 +96,7 @@ class StudentControllerTest {
         s3.setFirstName("Brian");
         s3.setLastName("Smith");
         s3.setPassword("password3");
+        s3.setSectionName("Section2");
         this.students.add(s3);
     }
 

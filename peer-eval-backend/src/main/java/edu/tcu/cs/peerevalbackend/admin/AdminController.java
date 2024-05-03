@@ -18,7 +18,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @Autowired
+
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
@@ -47,7 +47,7 @@ public class AdminController {
     }
     // Endpoint to assign students to a team
     @PostMapping("/assignStudentsToTeam")
-    public ResponseEntity<?> assignStudentsToTeam(@RequestParam String teamId, @RequestBody List<Long> studentIds) {
+    public ResponseEntity<?> assignStudentsToTeam(@RequestParam String teamId, @RequestBody List<String> studentIds) {
         try {
             adminService.assignStudentsToTeam(teamId, studentIds);
             return ResponseEntity.ok().body("Students have been successfully assigned to the team.");
@@ -57,7 +57,7 @@ public class AdminController {
     }
     // Endpoint to remove a student from a team
     @DeleteMapping("/removeStudentFromTeam/{studentId}")
-    public ResponseEntity<?> removeStudentFromTeam(@PathVariable Long studentId) {
+    public ResponseEntity<?> removeStudentFromTeam(@PathVariable String studentId) {
         try {
             adminService.removeStudentFromTeam(studentId);
             return ResponseEntity.ok("Student removed from the team successfully.");

@@ -86,7 +86,7 @@ class SeniorDesignTeamControllerTest {
         admin1.setId(1);
 
         Section section1 = new Section();
-        section1.setId(1);
+        section1.setId("1");
         section1.setAdmin(admin1);
 
         Instructor instructor1 = new Instructor();

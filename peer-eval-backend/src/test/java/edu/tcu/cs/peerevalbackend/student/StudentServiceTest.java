@@ -268,4 +268,20 @@ class StudentServiceTest {
         assertEquals(5.0, result.getQualityOfWorkAverage());
         assertEquals("Excellent work", result.getPublicComments());
     }
+  
+    @Test
+    void testFindByLastNameNotFound(){
+        //Given
+        given(this.studentRepository.findStudentsByLastName(Mockito.any(String.class))).willReturn(Optional.empty());
+        //When
+        Throwable thrown = catchThrowable(() -> {
+            List<Student> students = this.studentService.findByLastName("Smith");
+        });
+
+        //Then
+        assertThat(thrown)
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("Could not find student with last name Smith");
+                verify(this.studentRepository, times(1)).findStudentsByLastName("Smith");
+    }
 }

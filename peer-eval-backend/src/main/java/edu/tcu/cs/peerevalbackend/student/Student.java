@@ -88,5 +88,7 @@ public class Student implements Serializable{
     public void setAcademicYear(String academicYear){
         this.academicYear = academicYear;
     }
+    public void setSectionName(String secionName){this.sectionName = secionName;}
+    public String getSectionName(){return sectionName;}
 }
 

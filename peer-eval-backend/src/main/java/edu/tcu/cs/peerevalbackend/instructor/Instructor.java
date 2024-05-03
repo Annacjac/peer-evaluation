@@ -21,11 +21,10 @@ public class Instructor implements Serializable {
 //    private String password;
 
     //when one instructor is saved, all sections for that instructor is saved as well.
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
-    private List<Section> sections = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "instructor")
-    private List<SeniorDesignTeam> teams = new ArrayList<>();
-
+    private List<Section> sections = new ArrayList<>();
+    @ManyToOne
+    private SeniorDesignTeam team;
 
     public Instructor() {
     }
@@ -86,17 +85,12 @@ public class Instructor implements Serializable {
         this.sections.remove(sectionToBeAssigned);
     }
 
-    public List<SeniorDesignTeam> getTeams() {
-        return teams;
+    public SeniorDesignTeam getTeam() {
+        return team;
     }
 
-    public void setTeams(List<SeniorDesignTeam> teams) {
-        this.teams = teams;
-    }
-
-    public void addTeam(SeniorDesignTeam seniorDesignTeam) {
-        seniorDesignTeam.getInstructors().add(this);
-        this.teams.add(seniorDesignTeam);
+    public void setTeam(SeniorDesignTeam team) {
+        this.team = team;
     }
 
     public boolean isActive() {

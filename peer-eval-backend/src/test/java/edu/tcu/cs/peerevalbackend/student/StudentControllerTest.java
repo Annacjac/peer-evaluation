@@ -144,10 +144,10 @@ class StudentControllerTest {
     @Test
     void testFindStudentByEmailSuccess() throws Exception {
         //Given
-        given(this.studentService.findById(1)).willReturn(this.students.get(0));
+        given(this.studentService.findByEmail("student1@gmail.com")).willReturn(this.students.get(0));
 
         //When and then
-        this.mockMvc.perform(get(this.baseUrl + "/students/1").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/students/student1@gmail.com").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find Success"))
@@ -157,9 +157,9 @@ class StudentControllerTest {
     }
 
     @Test
-    void testFindStudentByIdNotFound() throws Exception {
+    void testFindStudentByEmailNotFound() throws Exception {
         //Given
-        given(this.studentService.findById(5)).willThrow(new ObjectNotFoundException("student", 5));
+        given(this.studentService.findByEmail("test@example.com")).willThrow(new ObjectNotFoundException("student", "test@example.com"));
 
         //When and then
         this.mockMvc.perform(get(this.baseUrl + "/students/5").accept(MediaType.APPLICATION_JSON))

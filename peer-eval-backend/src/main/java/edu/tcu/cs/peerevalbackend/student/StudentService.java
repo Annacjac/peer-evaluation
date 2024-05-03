@@ -106,4 +106,14 @@ import java.util.Optional;
                 .orElseThrow(() -> new ObjectNotFoundException("team", teamName));
     }
 
+    @Transactional
+    public StudentDto registerStudent(StudentDto studentDto) {
+        if (studentRepository.findByEmail(studentDto.email()).isPresent()) {
+            throw new IllegalStateException("Email already in use");
+        }
+        Student newStudent = toStudentConverter.convert(studentDto);
+        Student savedStudent = studentRepository.save(newStudent);
+        return toDtoConverter.convert(savedStudent);
+    }
+
  }

@@ -1,5 +1,7 @@
 package edu.tcu.cs.peerevalbackend.student;
 
+import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
+import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
 import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
@@ -35,8 +37,14 @@ class StudentServiceTest {
 
     List<Student> students;
 
+    @Mock
+    private StudentDtoToStudentConverter dtoToStudentConverter;
+
+    @Mock
+    private StudentToStudentDtoConverter studentToDtoConverter;
+
     @BeforeEach
-    void setUp(){
+    void setUp() {
         this.students = new ArrayList<>();
 
         Student s1 = new Student();
@@ -62,12 +70,12 @@ class StudentServiceTest {
     }
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
 
     }
 
     @Test
-    void testFindByEmailSuccess(){
+    void testFindByEmailSuccess() {
         //Given
         Student s = new Student();
         s.setEmail("example@test.com");
@@ -86,7 +94,8 @@ class StudentServiceTest {
         verify(this.studentRepository, times(1)).findById("example@test.com");
     }
 
-    void testFindByEmailNotFound(){
+    @Test
+    void testFindByEmailNotFound() {
         //Given
         given(this.studentRepository.findById(Mockito.any(String.class))).willReturn(Optional.empty());
 
@@ -126,7 +135,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void testUpdateSuccess(){
+    void testUpdateSuccess() {
         //Given
         Student oldStudent = new Student();
         oldStudent.setEmail("student1@gmail.com");
@@ -168,39 +177,38 @@ class StudentServiceTest {
         verify(this.studentRepository, times(1)).findById("student5@gmail.com");
     }
 
-    /*@Test
+    @Test
     void testRegisterStudentSuccess() {
-        // Arrange
-        StudentDto studentDto = new StudentDto("test@example.com", "Random", ' ', "Name", "password123", null);
-
+        StudentDto studentDto = new StudentDto(4, "student4@gmail.com", "Greg", ' ', "Universe", "password4", null);
         Student student = new Student();
-        student.setEmail(studentDto.email());
-        student.setFirstName(studentDto.firstName());
-        student.setLastName(studentDto.lastName());
-        student.setPassword(studentDto.password());
+        student.setEmail("student4@gmail.com");
+        student.setFirstName("Greg");
+        student.setLastName("Universe");
+        student.setPassword("password4");
 
-        when(studentRepository.findByEmail(anyString())).thenReturn(false);
-        when(studentRepository.save(any(Student.class))).thenReturn(student);
+        when(dtoToStudentConverter.convert(studentDto)).thenReturn(student);
+        when(studentRepository.findByEmail("student4@gmail.com")).thenReturn(Optional.empty());
+        when(studentRepository.save(student)).thenReturn(student);
+        when(studentToDtoConverter.convert(student)).thenReturn(studentDto);
 
-        // Act
-        StudentDto savedStudentDto = studentService.registerStudent(studentDto);
+        StudentDto savedDto = studentService.registerStudent(studentDto);
 
-        // Assert
-        assertEquals(studentDto.getEmail(), savedStudentDto.getEmail());
-        verify(studentRepository).save(any(Student.class));
+        verify(studentRepository).save(student);
+        assertNotNull(savedDto);
+        assertEquals("Greg", savedDto.firstName());
     }
 
     @Test
-    void testRegisterStudentAccountExists() {
-        // Arrange
-        StudentDto studentDto = new StudentDto();
-        studentDto.setEmail("test@example.com");
+    void testRegisterStudentEmailAlreadyExists() {
+        StudentDto studentDto = new StudentDto(5, "student1@gmail.com", "John", ' ', "Doe", "password1", null);
 
-        when(studentRepository.findByEmail(anyString())).thenReturn(true);
+        when(studentRepository.findByEmail("student1@gmail.com")).thenReturn(Optional.of(new Student()));
 
-        // Act & Assert
-        assertThrows(AlreadyExistsException.class, () -> studentService.registerStudent(studentDto));
-    }*/
+        assertThrows(IllegalStateException.class, () -> {
+            studentService.registerStudent(studentDto);
+        });
+    }
+  
     @Test
     void testFindByLastNameNotFound(){
         //Given

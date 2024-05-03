@@ -14,7 +14,7 @@ import java.util.List;
 public class Section implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id; //Section name is  id
+    private String id; //Section name is id
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
     private List<SeniorDesignTeam> team = new ArrayList<>();

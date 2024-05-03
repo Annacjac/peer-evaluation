@@ -1,6 +1,7 @@
 package edu.tcu.cs.peerevalbackend.student;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
@@ -26,6 +27,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -50,12 +52,15 @@ class StudentControllerTest {
     ObjectMapper objectMapper;
 
     List<Student> students;
+    Section section;
 
     @Value("/api/v1")
     String baseUrl;
 
     @BeforeEach
     void setUp(){
+        this.section = new Section();
+        section.setSectionName("Section1");
         this.students = new ArrayList<>();
 
         Student s1 = new Student();
@@ -64,6 +69,7 @@ class StudentControllerTest {
         s1.setFirstName("John");
         s1.setLastName("Doe");
         s1.setPassword("password1");
+        s1.setSectionName("Section1");
         this.students.add(s1);
 
         Student s2 = new Student();
@@ -138,10 +144,10 @@ class StudentControllerTest {
     @Test
     void testFindStudentByEmailSuccess() throws Exception {
         //Given
-        given(this.studentService.findById(1)).willReturn(this.students.get(0));
+        given(this.studentService.findByEmail("student1@gmail.com")).willReturn(this.students.get(0));
 
         //When and then
-        this.mockMvc.perform(get(this.baseUrl + "/students/1").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/students/student1@gmail.com").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find Success"))
@@ -151,9 +157,9 @@ class StudentControllerTest {
     }
 
     @Test
-    void testFindStudentByIdNotFound() throws Exception {
+    void testFindStudentByEmailNotFound() throws Exception {
         //Given
-        given(this.studentService.findById(5)).willThrow(new ObjectNotFoundException("student", 5));
+        given(this.studentService.findByEmail("test@example.com")).willThrow(new ObjectNotFoundException("student", "test@example.com"));
 
         //When and then
         this.mockMvc.perform(get(this.baseUrl + "/students/5").accept(MediaType.APPLICATION_JSON))
@@ -161,5 +167,61 @@ class StudentControllerTest {
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find student"))
                 .andExpect(jsonPath("$.data").isEmpty());
+    }
+    @Test
+    void testFindStudentByFirstNameSuccess() throws Exception{
+        //Given
+        given(this.studentService.findByFirstName("John")).willReturn(this.students);
+
+        //When and Then
+        this.mockMvc.perform(get(this.baseUrl + "/students/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
+    }
+    @Test
+    void testFindStudentByLastNameSuccess() throws Exception{
+        //Given
+        given(this.studentService.findByLastName("Doe")).willReturn(this.students);
+
+        //When and Then
+        this.mockMvc.perform(get(this.baseUrl + "/students/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
+    }
+    @Test
+    void testFindStudentBySectionSuccess() throws Exception{
+        //Given
+        List<Student> expectedStudents = Arrays.asList(students.get(0));
+        given(this.studentService.findBySectionName("Section1")).willReturn(expectedStudents);
+
+        //When and Then
+        this.mockMvc.perform(get(this.baseUrl + "/sections/Section1/students").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
+    }
+    @Test
+    void testFindStudentBySectionNotFound() throws Exception{
+        //Given
+        given(this.studentService.findBySectionName("Section10")).willThrow(new ObjectNotFoundException("section", "Section10"));
+        //When and Then
+        this.mockMvc.perform(get(this.baseUrl + "/sections/Section10/students").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Find Success"))
+                .andExpect(jsonPath("$.data.firstName").value("John"))
+                .andExpect(jsonPath("$.data.lastName").value("Doe"))
+                .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
     }
 }

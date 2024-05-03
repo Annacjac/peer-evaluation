@@ -89,5 +89,6 @@ import java.util.List;
     }
 
     public void setAdmin(Admin admin) { this.admin = admin;
+    public void setId(String teamId) {
     }
 }

@@ -43,8 +43,8 @@ public class PeerEvaluationControllerTest {
 
     @BeforeEach
     void setUp() {
-        studentToStudentDtoConverter = new StudentToStudentDtoConverter();
-        evaluationToEvaluationDtoConverter = new EvaluationToEvaluationDtoConverter(studentToStudentDtoConverter);
+        //studentToStudentDtoConverter = new StudentToStudentDtoConverter();
+        //evaluationToEvaluationDtoConverter = new EvaluationToEvaluationDtoConverter(studentToStudentDtoConverter);
 
         evaluator = new Student();
         evaluator.setId(1);

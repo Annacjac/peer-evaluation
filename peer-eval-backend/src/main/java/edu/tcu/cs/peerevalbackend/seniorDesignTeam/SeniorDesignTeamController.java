@@ -48,11 +48,9 @@ public class SeniorDesignTeamController {
 
     @GetMapping("/teams/{teamName}")
     public Result findByTeamName(@PathVariable String teamName) {
-        return this.seniorDesignTeamRepository.findById(teamName)
-                .orElseThrow(() -> new ObjectNotFoundException("team", teamName));
-
+        SeniorDesignTeam seniorDesignTeam = this.seniorDesignTeamService.findById(teamName);
+    return new Result(true, StatusCode.SUCCESS, "Find one success", seniorDesignTeam);
     }
-
 
     @PostMapping
     public Result addTeam(@Valid @RequestBody SeniorDesignTeamDto seniorDesignTeamDto) {

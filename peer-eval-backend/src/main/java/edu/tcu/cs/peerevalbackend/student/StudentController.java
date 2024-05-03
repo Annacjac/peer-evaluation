@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,16 +27,18 @@ public class StudentController {
     private final StudentService studentService;
     private final StudentDtoToStudentConverter studentDtoToStudentConverter;
     private final StudentToStudentDtoConverter studentToStudentDtoConverter;
+    private final InvitationService invitationService;
 
-    public StudentController(StudentService studentService, StudentDtoToStudentConverter studentDtoToStudentConverter, StudentToStudentDtoConverter studentToStudentDtoConverter){
+    public StudentController(StudentService studentService, StudentDtoToStudentConverter studentDtoToStudentConverter, StudentToStudentDtoConverter studentToStudentDtoConverter, InvitationService invitationService){
         this.studentService = studentService;
         this.studentDtoToStudentConverter = studentDtoToStudentConverter;
         this.studentToStudentDtoConverter = studentToStudentDtoConverter;
+        this.invitationService = invitationService;
     }
 
     @GetMapping("/{studentId}")
-    public Result findStudentById(@PathVariable int studentId) {
-        Student foundStudent = this.studentService.findById(studentId);
+    public Result findStudentByEmail(@PathVariable String studentEmail) {
+        Student foundStudent = this.studentService.findByEmail(studentEmail);
         StudentDto studentDto = this.studentToStudentDtoConverter.convert(foundStudent);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", studentDto);
     }
@@ -94,6 +97,15 @@ public class StudentController {
                 .map(this.studentToStudentDtoConverter::convert)
                 .collect(Collectors.toList());
         return new Result(true, StatusCode.SUCCESS, "Find All Success", studentDtos);
+    }
+    @PostMapping("/invite-students")
+    public Result inviteStudents(@RequestBody String emails){
+        List<String> emailList = Arrays.stream(emails.split("[ ;]+"))
+                        .map(String::trim)
+                        .filter(email -> !email.isEmpty())
+                        .collect(Collectors.toList());
+        invitationService.inviteStudents(emailList);
+        return new Result(true, StatusCode.SUCCESS, "Invitation send success", emailList);
     }
 
 }

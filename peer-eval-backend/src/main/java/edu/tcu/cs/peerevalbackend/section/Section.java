@@ -7,7 +7,6 @@ import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.student.Student;
 import jakarta.persistence.*;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +15,10 @@ import java.util.List;
 public class Section implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id; //Section name is id
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
-    private List<SeniorDesignTeam> teams = new ArrayList<>();
+    private List<SeniorDesignTeam> team = new ArrayList<>();
 
     @ManyToOne
     private Instructor instructor;
@@ -27,25 +26,26 @@ public class Section implements Serializable {
     private String academicYear;
 
     private String sectionName;
+    private String firstDate;
 
-
+    private String lastDate;
+    @OneToMany
+    private List<Student> students;
     @ManyToOne
     private Admin admin;
 
     @ManyToOne
     private Rubric rubric;
-    @OneToMany
-    private List<Student> students;
 
     @ElementCollection
     private List<String> activeWeeks =  new ArrayList<>();
 
     // Getters and Setters
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -72,7 +72,6 @@ public class Section implements Serializable {
         this.admin = admin;
     }
 
-
     public Rubric getRubric() {
         return rubric;
     }
@@ -80,22 +79,36 @@ public class Section implements Serializable {
     public void setRubric(Rubric rubric) {
         this.rubric = rubric;
     }
-
+    public void setTeams(List<SeniorDesignTeam> team) {
+        this.team = team;
+    }
+    public List<SeniorDesignTeam> getTeams() {
+        return team;
+    }
 
     public void setActiveWeeks(List<String> activeWeeks) {
         this.activeWeeks = activeWeeks;
     }
 
-    public List<SeniorDesignTeam> getTeams() {
-        return teams;
+    public String getFirstDate() {
+        return firstDate;
     }
 
-    public void setTeams(List<SeniorDesignTeam> teams) {
-        this.teams = teams;
+    public void setFirstDate(String firstDate) {
+        this.firstDate = firstDate;
+    }
+
+    public String getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(String lastDate) {
+        this.lastDate = lastDate;
     }
     public void getStudents(List<Student> students){this.students = students;}
 
-    public Instructor getInstructor() {
+  
+      public Instructor getInstructor() {
         return instructor;
     }
 

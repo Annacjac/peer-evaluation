@@ -1,6 +1,7 @@
 package edu.tcu.cs.peerevalbackend.seniorDesignTeam;
 
 
+import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.instructor.Instructor;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.Student;
@@ -25,6 +26,11 @@ import java.util.List;
 
     @ManyToOne
     private Section section;
+    @ManyToOne
+    private Admin admin;
+    private String academicYear;
+    @ManyToOne
+    private Instructor instructor;
 
     public SeniorDesignTeam() {
     }
@@ -45,6 +51,13 @@ import java.util.List;
         return section;
     }
 
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
     public void setInstructors(List<Instructor> instructors) {
         this.instructors = instructors;
     }
@@ -73,5 +86,10 @@ import java.util.List;
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public void setAdmin(Admin admin) { this.admin = admin;}
+        
+    public void setId(String teamId) {
     }
 }

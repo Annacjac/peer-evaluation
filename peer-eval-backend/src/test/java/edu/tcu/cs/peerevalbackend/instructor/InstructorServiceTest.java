@@ -58,7 +58,7 @@ class InstructorServiceTest {
 
 
         Section sec1 = new Section();
-        sec1.setAdmin(i1);
+        //sec1.setAdmin(i1);
         ArrayList<String> activeWeeks = new ArrayList<>();
         activeWeeks.add("02-12-2024");
         sec1.setActiveWeeks(activeWeeks);

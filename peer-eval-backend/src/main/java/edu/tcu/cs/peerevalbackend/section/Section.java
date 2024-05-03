@@ -12,33 +12,33 @@ import java.util.List;
 public class Section implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id; //Section name is the id
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
-    private List<SeniorDesignTeam> teams = new ArrayList<>();
+    //@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
+    //private List<SeniorDesignTeam> team = new ArrayList<>();
 
     private String academicYear;
 
     private String sectionName;
+    private String firstDate;
 
+    private String lastDate;
 
     @ManyToOne
     private Admin admin;
 
     @ManyToOne
     private Rubric rubric;
-    @OneToMany
-    private List<Student> students;
 
     @ElementCollection
     private List<String> activeWeeks =  new ArrayList<>();
 
     // Getters and Setters
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -70,7 +70,6 @@ public class Section implements Serializable {
     //    team.setSection(this);
     //}
 
-
     public Rubric getRubric() {
         return rubric;
     }
@@ -84,14 +83,22 @@ public class Section implements Serializable {
         this.activeWeeks = activeWeeks;
     }
 
-    public List<SeniorDesignTeam> getTeams() {
-        return teams;
+    public String getFirstDate() {
+        return firstDate;
     }
 
-    public void setTeams(List<SeniorDesignTeam> teams) {
-        this.teams = teams;
+    public void setFirstDate(String firstDate) {
+        this.firstDate = firstDate;
     }
-    public void getStudents(List<Student> students){this.students = students;}
+
+    public String getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(String lastDate) {
+        this.lastDate = lastDate;
+    }
+
 }
 
 

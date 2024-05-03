@@ -28,6 +28,9 @@ import java.util.List;
     private Section section;
     @ManyToOne
     private Admin admin;
+    private String academicYear;
+    @ManyToOne
+    private Instructor instructor;
 
     public SeniorDesignTeam() {
     }
@@ -48,6 +51,13 @@ import java.util.List;
         return section;
     }
 
+    public String getAcademicYear() {
+        return academicYear;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
     public void setInstructors(List<Instructor> instructors) {
         this.instructors = instructors;
     }

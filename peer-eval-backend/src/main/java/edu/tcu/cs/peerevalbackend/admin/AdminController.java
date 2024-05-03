@@ -10,12 +10,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final AdminService adminService;
+
     @Autowired
-    private AdminService adminService;
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     @PostMapping("/invite-instructors")
     public ResponseEntity<?> inviteInstructors(@RequestBody AdminDto adminDto) {
@@ -37,6 +43,40 @@ public class AdminController {
             return ResponseEntity.ok(sectionsPage);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error in searching sections: " + e.getMessage());
+        }
+    }
+    // Endpoint to assign students to a team
+    @PostMapping("/assignStudentsToTeam")
+    public ResponseEntity<?> assignStudentsToTeam(@RequestParam String teamId, @RequestBody List<Long> studentIds) {
+        try {
+            adminService.assignStudentsToTeam(teamId, studentIds);
+            return ResponseEntity.ok().body("Students have been successfully assigned to the team.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    // Endpoint to remove a student from a team
+    @DeleteMapping("/removeStudentFromTeam/{studentId}")
+    public ResponseEntity<?> removeStudentFromTeam(@PathVariable Long studentId) {
+        try {
+            adminService.removeStudentFromTeam(studentId);
+            return ResponseEntity.ok("Student removed from the team successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An error occurred: " + e.getMessage());
+        }
+    }
+    // Endpoint to delete a senior design team
+    @DeleteMapping("/deleteSeniorDesignTeam/{teamId}")
+    public ResponseEntity<?> deleteSeniorDesignTeam(@PathVariable String teamId) {
+        try {
+            adminService.deleteSeniorDesignTeam(teamId);
+            return ResponseEntity.ok("Senior design team deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An error occurred: " + e.getMessage());
         }
     }
 

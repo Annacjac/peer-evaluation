@@ -1,6 +1,7 @@
 package edu.tcu.cs.peerevalbackend.seniorDesignTeam;
 
 
+import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.instructor.Instructor;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.Student;
@@ -25,6 +26,8 @@ import java.util.List;
 
     @ManyToOne
     private Section section;
+    @ManyToOne
+    private Admin admin;
 
     public SeniorDesignTeam() {
     }
@@ -75,6 +78,7 @@ import java.util.List;
         this.students = students;
     }
 
+    public void setAdmin(Admin admin) { this.admin = admin;
     public void setId(String teamId) {
     }
 }

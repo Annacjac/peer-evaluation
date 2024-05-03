@@ -2,6 +2,8 @@ package edu.tcu.cs.peerevalbackend.section;
 
 import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.rubric.Rubric;
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
+import edu.tcu.cs.peerevalbackend.student.Student;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,8 +16,8 @@ public class Section implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id; //Section name is the id
 
-    //@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
-    //private List<SeniorDesignTeam> team = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
+    private List<SeniorDesignTeam> team = new ArrayList<>();
 
     private String academicYear;
 
@@ -23,7 +25,8 @@ public class Section implements Serializable {
     private String firstDate;
 
     private String lastDate;
-
+    @OneToMany
+    private List<Student> students;
     @ManyToOne
     private Admin admin;
 
@@ -77,7 +80,12 @@ public class Section implements Serializable {
     public void setRubric(Rubric rubric) {
         this.rubric = rubric;
     }
-
+    public void setTeams(List<SeniorDesignTeam> team) {
+        this.team = team;
+    }
+    public List<SeniorDesignTeam> getTeams() {
+        return team;
+    }
 
     public void setActiveWeeks(List<String> activeWeeks) {
         this.activeWeeks = activeWeeks;
@@ -98,6 +106,7 @@ public class Section implements Serializable {
     public void setLastDate(String lastDate) {
         this.lastDate = lastDate;
     }
+    public void getStudents(List<Student> students){this.students = students;}
 
 }
 

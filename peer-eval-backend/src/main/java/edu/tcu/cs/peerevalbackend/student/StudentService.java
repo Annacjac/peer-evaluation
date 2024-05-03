@@ -1,5 +1,9 @@
 package edu.tcu.cs.peerevalbackend.student;
 
+import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluation;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
+import edu.tcu.cs.peerevalbackend.repository.PeerEvaluationRepository;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.section.SectionRepository;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
@@ -16,6 +20,7 @@ import edu.tcu.cs.peerevalbackend.student.converter.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
  @Transactional
@@ -31,6 +36,8 @@ import java.util.Optional;
      private StudentDtoToStudentConverter toStudentConverter;
 
      private SectionRepository sectionRepository;
+
+     private PeerEvaluationRepository peerEvaluationRepository;
 
      public Student save(Student newStudent){
          return this.studentRepository.save(newStudent);
@@ -109,6 +116,75 @@ import java.util.Optional;
         Student newStudent = toStudentConverter.convert(studentDto);
         Student savedStudent = studentRepository.save(newStudent);
         return toDtoConverter.convert(savedStudent);
+    }
+
+    public PeerEvaluationReportDto submitPeerEvaluation(PeerEvaluationDto peerEvaluationDto) {
+        PeerEvaluation peerEvaluation = convertToEntity(peerEvaluationDto);
+        peerEvaluationRepository.save(peerEvaluation);
+        return generateReportForLastWeek(peerEvaluation.getWeek());
+    }
+
+    private PeerEvaluationReportDto generateReportForLastWeek(String week) {
+        List<PeerEvaluation> evaluations = peerEvaluationRepository.findByWeek(week);
+        Double averageQualityOfWork = evaluations.stream()
+                .mapToInt(PeerEvaluation::getQualityOfWork)
+                .average()
+                .orElse(0.0);
+        String combinedPublicComments = evaluations.stream()
+                .map(PeerEvaluation::getPublicComments)
+                .collect(Collectors.joining(" "));
+        Integer overallGrade = averageQualityOfWork.intValue();
+
+        return new PeerEvaluationReportDto("Student Name", averageQualityOfWork, combinedPublicComments, overallGrade, week);
+    }
+
+    public PeerEvaluation convertToEntity(PeerEvaluationDto dto) {
+        PeerEvaluation peerEvaluation = new PeerEvaluation();
+        Student evaluator = convertStudentDtoToEntity(dto.evaluator());
+        Student evaluatee = convertStudentDtoToEntity(dto.evaluatee());
+        peerEvaluation.setEvaluator(evaluator);
+        peerEvaluation.setEvaluatee(evaluatee);
+        peerEvaluation.setQualityOfWork(dto.qualityOfWork());
+        peerEvaluation.setPublicComments(dto.publicComments());
+        peerEvaluation.setPrivateComments(dto.privateComments());
+        peerEvaluation.setWeek(dto.week());
+        return peerEvaluation;
+    }
+
+    public Student convertStudentDtoToEntity(StudentDto studentDto) {
+        if (studentDto == null) {
+            return null;
+        }
+        Student student = new Student();
+        student.setId(studentDto.id());
+        student.setEmail(studentDto.email());
+        student.setFirstName(studentDto.firstName());
+        student.setLastName(studentDto.lastName());
+        student.setPassword(studentDto.password());
+        return student;
+    }
+
+    public PeerEvaluationReportDto getPeerEvaluationReport(String email, String week) {
+        Student student = studentRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Student not found"));
+        List<PeerEvaluation> evaluations = peerEvaluationRepository.findByWeekAndEvaluatee(week, student);
+        return buildReport(evaluations, week, student);
+    }
+
+    private PeerEvaluationReportDto buildReport(List<PeerEvaluation> evaluations, String week, Student student) {
+        Double averageQuality = evaluations.stream()
+                .mapToInt(PeerEvaluation::getQualityOfWork)
+                .average()
+                .orElse(0.0);
+        String comments = evaluations.stream()
+                .map(PeerEvaluation::getPublicComments)
+                .collect(Collectors.joining(" "));
+
+        String studentName = student.getFirstName() + " " + student.getLastName();
+        return new PeerEvaluationReportDto(studentName, averageQuality, comments, calculateOverallGrade(averageQuality), week);
+    }
+
+    private Integer calculateOverallGrade(Double averageQuality) {
+        return (int) Math.round(averageQuality); // Simplified grading logic
     }
 
  }

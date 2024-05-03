@@ -1,5 +1,9 @@
 package edu.tcu.cs.peerevalbackend.student;
 
+import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluation;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
+import edu.tcu.cs.peerevalbackend.repository.PeerEvaluationRepository;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
@@ -42,6 +46,9 @@ class StudentServiceTest {
 
     @Mock
     private StudentToStudentDtoConverter studentToDtoConverter;
+
+    @Mock
+    private PeerEvaluationRepository peerEvaluationRepository;
 
     @BeforeEach
     void setUp() {
@@ -207,5 +214,58 @@ class StudentServiceTest {
         assertThrows(IllegalStateException.class, () -> {
             studentService.registerStudent(studentDto);
         });
+    }
+
+    @Test
+    void testSubmitPeerEvaluation() {
+        PeerEvaluationDto dto = new PeerEvaluationDto(1L, 5, "Good work", "For internal use", "2024-W02", new StudentDto(1, "evaluator@email.com", "John", 'D', "Doe", "password", null), new StudentDto(2, "evaluatee@email.com", "Jane", 'M', "Doe", "password2", null));
+
+        PeerEvaluation peerEvaluation = new PeerEvaluation();
+        peerEvaluation.setEvaluator(new Student()); // Simulate converted Student
+        peerEvaluation.setEvaluatee(new Student()); // Simulate converted Student
+        peerEvaluation.setQualityOfWork(dto.qualityOfWork());
+        peerEvaluation.setPublicComments(dto.publicComments());
+        peerEvaluation.setPrivateComments(dto.privateComments());
+        peerEvaluation.setWeek(dto.week());
+
+        when(studentService.convertToEntity(dto)).thenReturn(peerEvaluation);
+        when(peerEvaluationRepository.save(peerEvaluation)).thenReturn(peerEvaluation);
+
+        PeerEvaluationReportDto reportDto = studentService.submitPeerEvaluation(dto);
+
+        assertNotNull(reportDto);
+        assertEquals("Good work", reportDto.getPublicComments());
+        assertEquals("2024-W02", reportDto.getWeek());
+    }
+
+    @Test
+    void testGetPeerEvaluationReport() {
+        String email = "student1@gmail.com";
+        String week = "2024-W02";
+        Student student = new Student();
+        student.setEmail(email);
+        student.setFirstName("John");
+        student.setLastName("Doe");
+
+        List<PeerEvaluation> evaluations = new ArrayList<>();
+        PeerEvaluation pe = new PeerEvaluation();
+        pe.setId(1L);
+        pe.setEvaluator(student);
+        pe.setEvaluatee(student);
+        pe.setQualityOfWork(5);
+        pe.setPublicComments("Excellent work");
+        pe.setPrivateComments("N/A");
+        pe.setWeek(week);
+        evaluations.add(pe);
+
+        when(studentRepository.findByEmail(email)).thenReturn(Optional.of(student));
+        when(peerEvaluationRepository.findByWeekAndEvaluatee(week, student)).thenReturn(evaluations);
+
+        PeerEvaluationReportDto result = studentService.getPeerEvaluationReport(email, week);
+
+        assertNotNull(result);
+        assertEquals("John Doe", result.getStudentName());
+        assertEquals(5.0, result.getQualityOfWorkAverage());
+        assertEquals("Excellent work", result.getPublicComments());
     }
 }

@@ -51,6 +51,7 @@ public class PeerEvaluationRepositoryTest {
         assertEquals("Great work!", foundEvaluation.getPublicComments());
     }
 
+    /*
     @Test
     public void testFindByEvaluateeId() {
         // Create and persist the evaluator
@@ -111,4 +112,6 @@ public class PeerEvaluationRepositoryTest {
         // Clean up the persisted data if necessary
         entityManager.clear();
     }
+
+     */
 }

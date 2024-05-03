@@ -5,7 +5,7 @@ import edu.tcu.cs.peerevalbackend.seniorDesignTeam.dto.SeniorDesignTeamDto;
 
 
 
-public record StudentDto (int id,
+public record StudentDto (String id,
                           @NotEmpty(message = "Email is required") String email,
                           @NotEmpty(message = "First name is required") String firstName,
                           char midInit,

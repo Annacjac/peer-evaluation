@@ -73,7 +73,7 @@ class StudentControllerTest {
         this.students = new ArrayList<>();
 
         Student s1 = new Student();
-        s1.setId(1);
+        s1.setId("1");
         s1.setEmail("student1@gmail.com");
         s1.setFirstName("John");
         s1.setLastName("Doe");
@@ -82,7 +82,7 @@ class StudentControllerTest {
         this.students.add(s1);
 
         Student s2 = new Student();
-        s2.setId(2);
+        s2.setId("2");
         s2.setEmail("student2@gmail.com");
         s2.setFirstName("Jane");
         s2.setLastName("Dou");
@@ -91,7 +91,7 @@ class StudentControllerTest {
         this.students.add(s2);
 
         Student s3 = new Student();
-        s3.setId(3);
+        s3.setId("3");
         s3.setEmail("student3@gmail.com");
         s3.setFirstName("Brian");
         s3.setLastName("Smith");
@@ -109,7 +109,7 @@ class StudentControllerTest {
     void testRegisterStudentSuccess() throws Exception {
         //Given
         Student student = new Student();
-        student.setId(4);
+        student.setId("4");
         student.setEmail("student4@gmail.com");
         student.setFirstName("Greg");
         student.setLastName("Universe");
@@ -117,7 +117,7 @@ class StudentControllerTest {
 
         String json = this.objectMapper.writeValueAsString(student);
 
-        student.setId(4);
+        student.setId("4");
 
         given(this.studentService.save(Mockito.any(Student.class))).willReturn(student);
 
@@ -136,7 +136,7 @@ class StudentControllerTest {
     @Test
     void testRegisterStudentEmailAlreadyExists() throws Exception {
         // Given
-        StudentDto studentDto = new StudentDto(4, "student1@gmail.com", "John", 'D', "Doe", "password1", null);
+        StudentDto studentDto = new StudentDto("4", "student1@gmail.com", "John", 'D', "Doe", "password1", null);
         String json = this.objectMapper.writeValueAsString(studentDto);
 
         // Mock the behavior to simulate email already exists scenario

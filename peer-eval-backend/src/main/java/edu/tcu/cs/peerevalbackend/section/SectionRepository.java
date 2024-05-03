@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SectionRepository extends JpaRepository<Section, Integer> {
-
     Page<Section> findByCriteria(@Param("sectionName") String sectionName, @Param("academicYear") String academicYear, Pageable pageable);
+
 
     boolean existsBySectionName(String sectionName);
 }

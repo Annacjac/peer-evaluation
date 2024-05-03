@@ -30,7 +30,7 @@ public class AdminSectionSearchTest {
     @Test
     public void testFindSections() throws Exception {
         // Setup
-        SearchCriteriaDto criteria = new SearchCriteriaDto("Engineering", "2022");
+        SearchCriteriaDto criteria = new SearchCriteriaDto("Computer Science", "2023-2024");
         Section section = new Section(); // Set the necessary properties if needed
         Page<Section> expectedPage = new PageImpl<>(Arrays.asList(section));
         Pageable pageable = PageRequest.of(0, 10);

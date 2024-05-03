@@ -14,8 +14,8 @@ public class Section implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
-    //private List<SeniorDesignTeam> team = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
+    private List<SeniorDesignTeam> teams = new ArrayList<>();
 
     private String academicYear;
 
@@ -27,6 +27,8 @@ public class Section implements Serializable {
 
     @ManyToOne
     private Rubric rubric;
+    @OneToMany
+    private List<Student> students;
 
     @ElementCollection
     private List<String> activeWeeks =  new ArrayList<>();
@@ -68,6 +70,7 @@ public class Section implements Serializable {
     //    team.setSection(this);
     //}
 
+
     public Rubric getRubric() {
         return rubric;
     }
@@ -81,8 +84,14 @@ public class Section implements Serializable {
         this.activeWeeks = activeWeeks;
     }
 
+    public List<SeniorDesignTeam> getTeams() {
+        return teams;
+    }
 
-
+    public void setTeams(List<SeniorDesignTeam> teams) {
+        this.teams = teams;
+    }
+    public void getStudents(List<Student> students){this.students = students;}
 }
 
 

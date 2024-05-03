@@ -18,11 +18,14 @@
           <el-menu-item index="6">
             <router-link :to="{ name: 'home' }">Home</router-link>
           </el-menu-item>
-          <el-menu-item index="7">Student
-            <!-- <router-link :to="{ name: 'student' }">Student Page</router-link> -->
+          <el-menu-item index="7">
+            <router-link :to="{ name: 'studentlist' }">Students</router-link>
           </el-menu-item>
-          <el-menu-item index="8">Team
-            <!-- <router-link :to="{ name: 'admin' }">My Team</router-link> -->
+          <el-menu-item index="8">
+            <router-link :to="{ name: 'teamlist' }">Teams</router-link>
+          </el-menu-item>
+          <el-menu-item index="9">
+            <router-link :to="{ name: 'sectionlist' }">Sections</router-link>
           </el-menu-item>
           <el-sub-menu index="4"><template #title>
             <span>Sign up / Sign in</span>

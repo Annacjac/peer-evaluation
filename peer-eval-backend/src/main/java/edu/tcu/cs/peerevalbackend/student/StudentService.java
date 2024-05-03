@@ -2,6 +2,7 @@ package edu.tcu.cs.peerevalbackend.student;
 
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.section.SectionRepository;
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.Result;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
@@ -15,6 +16,7 @@ import edu.tcu.cs.peerevalbackend.student.converter.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
  @Transactional
@@ -30,11 +32,6 @@ import java.util.List;
      private StudentDtoToStudentConverter toStudentConverter;
 
      private SectionRepository sectionRepository;
-
-    public Student findById(int studentId){
-        return this.studentRepository.findById("" + studentId)
-                .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
-    }
 
      public Student save(Student newStudent){
          return this.studentRepository.save(newStudent);
@@ -79,6 +76,10 @@ import java.util.List;
          Student studentToBeDeleted = this.studentRepository.findById(studentId)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
      }
+    public Student findById(Integer id){
+        return this.studentRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("senior design team", id));
+    }
      public List<Student> findByFirstName(String studentFirstName){
         return this.studentRepository.findStudentByFirstName(studentFirstName)
                 .orElseThrow(() -> new ObjectNotFoundException("student", studentFirstName));
@@ -87,6 +88,10 @@ import java.util.List;
          return this.studentRepository.findStudentsByLastName(studentLastName)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentLastName));
      }
+    public Student findByEmail(String email) {
+        Optional<Student> student = studentRepository.findByEmail(email);
+        return student.orElseThrow(() -> new RuntimeException("No student found with email: " + email));
+    }
      public List<Student> findBySectionName(String sectionName){
          return this.studentRepository.findBySectionName(sectionName)
                  .orElseThrow(() -> new ObjectNotFoundException("section", sectionName));
@@ -101,5 +106,14 @@ import java.util.List;
                 .orElseThrow(() -> new ObjectNotFoundException("team", teamName));
     }
 
+    @Transactional
+    public StudentDto registerStudent(StudentDto studentDto) {
+        if (studentRepository.findByEmail(studentDto.email()).isPresent()) {
+            throw new IllegalStateException("Email already in use");
+        }
+        Student newStudent = toStudentConverter.convert(studentDto);
+        Student savedStudent = studentRepository.save(newStudent);
+        return toDtoConverter.convert(savedStudent);
+    }
 
  }

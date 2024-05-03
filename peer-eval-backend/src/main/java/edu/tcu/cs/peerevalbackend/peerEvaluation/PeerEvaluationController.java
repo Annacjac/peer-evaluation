@@ -1,5 +1,8 @@
 package edu.tcu.cs.peerevalbackend.peerEvaluation;
 
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.ReportParametersDto;
+import edu.tcu.cs.peerevalbackend.system.exception.DataNotFoundException;
+import edu.tcu.cs.peerevalbackend.system.exception.ValidationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,6 +90,18 @@ public class PeerEvaluationController {
                 .map(evaluationToEvaluationDtoConverter::convert)
                 .collect(Collectors.toList());
         return new Result(true, StatusCode.SUCCESS, "Find All by Evaluatee Id Success", evaluationDtos);
+    }
+
+    @PostMapping("/generate-report")
+    public ResponseEntity<?> generateReport(@RequestBody ReportParametersDto reportParams) {
+        try {
+            PeerEvaluationReportDto report = peerEvaluationService.generateReport(reportParams);
+            return ResponseEntity.ok(report);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
 

@@ -15,7 +15,11 @@ public interface PeerEvaluationRepository extends JpaRepository<PeerEvaluation, 
      */
     List<PeerEvaluation> findByEvaluateeId(Long evaluateeId);
 
+    List<PeerEvaluation> findByWeek(String week);
+
     List<PeerEvaluation> findAllByWeek(String peerEvaluationWeek);
 
     List<PeerEvaluation> findAllByEvaluateeId(Long id);
+
+    Integer getOverallGrade(Long evaluationId);
 }

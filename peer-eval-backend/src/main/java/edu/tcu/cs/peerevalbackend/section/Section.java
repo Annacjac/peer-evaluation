@@ -1,6 +1,7 @@
 package edu.tcu.cs.peerevalbackend.section;
 
 import edu.tcu.cs.peerevalbackend.admin.Admin;
+import edu.tcu.cs.peerevalbackend.instructor.Instructor;
 import edu.tcu.cs.peerevalbackend.rubric.Rubric;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.student.Student;
@@ -19,6 +20,9 @@ public class Section implements Serializable {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
     private List<SeniorDesignTeam> teams = new ArrayList<>();
+
+    @ManyToOne
+    private Instructor instructor;
 
     private String academicYear;
 
@@ -68,11 +72,6 @@ public class Section implements Serializable {
         this.admin = admin;
     }
 
-    //public void addTeam(SeniorDesignTeam team) {
-    //    SeniorDesignTeam.add(team);
-    //    team.setSection(this);
-    //}
-
 
     public Rubric getRubric() {
         return rubric;
@@ -95,6 +94,14 @@ public class Section implements Serializable {
         this.teams = teams;
     }
     public void getStudents(List<Student> students){this.students = students;}
+
+    public Instructor getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
+    }
 }
 
 

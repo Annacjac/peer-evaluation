@@ -17,10 +17,10 @@ import java.util.List;
     @Id
     private String name;
 
-    @OneToMany(mappedBy = "name", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Student> students = new ArrayList<>();
 
-    @OneToMany(mappedBy = "instructor")
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Instructor> instructors = new ArrayList<>();
 
     @ManyToOne

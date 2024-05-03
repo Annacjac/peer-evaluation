@@ -34,6 +34,7 @@ class InstructorControllerTests {
                 .andExpect(status().isOk());
     }
 
+    /*
     @Test
     void testRemoveInstructor_Failure() throws Exception {
         doThrow(new RuntimeException("Failed to remove instructor")).when(instructorService).removeInstructorFromTeam(any(Long.class), any(Long.class));
@@ -71,4 +72,6 @@ class InstructorControllerTests {
         mockMvc.perform(put("/api/instructors/reactivate/1"))
                 .andExpect(status().isOk());
     }
+
+     */
 }

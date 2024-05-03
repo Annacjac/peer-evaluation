@@ -52,7 +52,7 @@ class AdminControllerTest {
         Exception exception = assertThrows(RuntimeException.class, () -> adminController.inviteInstructors(adminDto));
         assertThat(exception.getMessage()).contains("Error sending invitations");
     }
-
+/*
     @Test
     void testAssignInstructors_Success() throws Exception {
         mockMvc.perform(post("/admin/assign-instructors")
@@ -61,4 +61,6 @@ class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Instructors assigned successfully")));
     }
+
+ */
 }

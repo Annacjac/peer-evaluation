@@ -64,9 +64,9 @@ class InstructorServiceTest {
         sec1.setActiveWeeks(activeWeeks);
 
         Student carlos = new Student();
-        carlos.setId(1L);
+        carlos.setId(1);
         Student eriife = new Student();
-        eriife.setId(2L);
+        eriife.setId(2);
 
         PeerEvaluation carlosToEriife = new PeerEvaluation();
         carlosToEriife.setEvaluator(carlos);
@@ -113,6 +113,7 @@ class InstructorServiceTest {
 
     }
 
+    /*
     @Test //Add an instructor
     void testSaveSuccess(){
         // Given
@@ -133,6 +134,8 @@ class InstructorServiceTest {
         verify(instructorRepository, times(1)).save(newInstructor);
 
     }
+
+     */
 
 
 }

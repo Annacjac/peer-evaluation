@@ -20,7 +20,7 @@ public class Admin implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "admin")
     private List<Section> sections;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "overseer")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "admin")
     private List<SeniorDesignTeam> teams = new ArrayList<>();
     // Getters and Setters
     public Integer getId() {

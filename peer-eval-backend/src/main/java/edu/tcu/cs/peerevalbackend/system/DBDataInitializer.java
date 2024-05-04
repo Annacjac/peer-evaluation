@@ -11,6 +11,9 @@ import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class DBDataInitializer implements CommandLineRunner {
 
@@ -94,6 +97,12 @@ public class DBDataInitializer implements CommandLineRunner {
         instructor.setFirstName("Test instructor");
         instructor.setLastName("Test instructor");
 
+        Instructor instructor2 = new Instructor();
+        instructor2.setId(2);
+        instructor2.setFirstName("Test instructor2");
+        instructor2.setLastName("Test instructor2");
+
+        List<Instructor> instructors = Arrays.asList(instructor, instructor2);
 
         //Teams Initialization
         SeniorDesignTeam team1 = new SeniorDesignTeam();
@@ -105,14 +114,14 @@ public class DBDataInitializer implements CommandLineRunner {
         SeniorDesignTeam team2 = new SeniorDesignTeam();
         team2.setName("Team 2");
         team2.setAcademicYear("2020-21");
-        //team2.setInstructor(instructor);
+        team2.setInstructors(instructors);
         team2.setSection(sec7);
         team2.setAdmin(adm1);
 
         SeniorDesignTeam team3 = new SeniorDesignTeam();
         team3.setName("Team 3");
         team3.setAcademicYear("2023-24");
-        //team3.setInstructors(instructor);
+        team3.setInstructors(instructors);
         team3.setAdmin(adm1);
 
         //Populating admin with sections
@@ -127,8 +136,6 @@ public class DBDataInitializer implements CommandLineRunner {
         //Populating admin with teams.
         adm1.addTeam(team1);
         adm2.addTeam(team2);
-        //instructor.addTeam(team1);
-
 
         //Saving entities in H2 database using repository save.
         //Admin

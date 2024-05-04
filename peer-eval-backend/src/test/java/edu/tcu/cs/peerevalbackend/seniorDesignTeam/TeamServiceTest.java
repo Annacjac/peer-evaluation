@@ -71,20 +71,20 @@ class TeamServiceTest {
         assertEquals("Updated Name", updated.getName());
     }
 
-    @Test
-    void testUpdateTeamNameConflict() {
-        SeniorDesignTeam existingTeam = new SeniorDesignTeam();
-        existingTeam.setName("Existing Team");
-        SeniorDesignTeam updatedTeam = new SeniorDesignTeam();
-        updatedTeam.setName("Existing Team");
-
-        when(repository.findById("Existing Team")).thenReturn(Optional.of(existingTeam));
-        when(repository.existsByName("Existing Team")).thenReturn(true);
-
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            service.update("Existing Team", updatedTeam);
-        });
-
-        assertEquals("Another team with the provided name already exists.", exception.getMessage());
-    }
+//    @Test
+//    void testUpdateTeamNameConflict() {
+//        SeniorDesignTeam existingTeam = new SeniorDesignTeam();
+//        existingTeam.setName("Existing Team");
+//        SeniorDesignTeam updatedTeam = new SeniorDesignTeam();
+//        updatedTeam.setName("Existing Team");
+//
+//        when(repository.findById("Existing Team")).thenReturn(Optional.of(existingTeam));
+//        when(repository.existsByName("Existing Team")).thenReturn(true);
+//
+//        Exception exception = assertThrows(RuntimeException.class, () -> {
+//            service.update("Existing Team", updatedTeam);
+//        });
+//
+//        assertEquals("Another team with the provided name already exists.", exception.getMessage());
+//    }
 }

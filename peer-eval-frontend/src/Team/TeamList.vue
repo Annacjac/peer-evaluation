@@ -19,8 +19,8 @@
       </template>
     </el-table-column>
     <el-table-column fixed="right" prop="generateWarReport" label="Generate WAR Report" width="200">
-      <template #default>
-        <el-button type="primary" size="small" @click="handleClick">Generate WAR Report</el-button>
+      <template #default="scope">
+        <el-button type="primary" size="small" @click="toggleWarReportVisibility(scope.row.name)">Generate WAR Report</el-button>
       </template>
     </el-table-column>
     <el-table-column fixed="right" label="Operations" width="180">
@@ -30,6 +30,17 @@
       </template>
     </el-table-column>
   </el-table>
+  <template v-if="warReportVisible">
+    <div style="margin-top: 20px; font-size: 24px; font-weight: bold;">Weekly Activity Report for {{ selectedTeamName }}</div>
+    <el-table :data="activityData" style="width: 100%" height="250">
+      <el-table-column fixed prop="Student" label="Date" width="150" />
+      <el-table-column prop="Task" label="Name" width="120" />
+      <el-table-column prop="Planned Task" label="State" width="120" />
+      <el-table-column prop="Hours" label="City" width="320" />
+      <el-table-column prop="Planned Hours" label="Address" width="600" />
+      <el-table-column prop="Status" label="Zip" width="120" />
+    </el-table>
+  </template>
 </template>
 
 <script lang="ts" setup>
@@ -37,6 +48,9 @@ import { ref, nextTick } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 
 const tableData = ref([]);
+const activityData = ref([]); // Assuming you have some data to show in the activity table
+const warReportVisible = ref(false);
+const selectedTeamName = ref('');
 
 const addTeam = () => {
   if (tableData.value.some(item => item.editable && !item.name.trim())) {
@@ -93,9 +107,11 @@ const deleteTeam = (index) => {
   tableData.value.splice(index, 1);
 }
 
-const handleClick = () => {
-  console.log('Generate report click');
+const toggleWarReportVisibility = (teamName) => {
+  selectedTeamName.value = teamName;
+  warReportVisible.value = true;
 }
+
 </script>
 <style scoped>
 </style>

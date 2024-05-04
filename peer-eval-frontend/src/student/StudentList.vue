@@ -1,18 +1,18 @@
 <template>
     <el-button style='margin-bottom: 10px'>Add Student</el-button>
-    <el-button style="margin-left: 10px; margin-bottom: 10px" >Assign Student</el-button>
+    <el-button style="margin-left: 10px; margin-bottom: 10px" @click="showAssignModal = true">Assign Students To Team</el-button>
+    <el-button style="margin-left: 10px; margin-bottom: 10px">Invite Student</el-button>
 
-    <el-dialog :visible.sync="showAssignModel" title="Assign Students to Team" width="600px">
+    <el-dialog v-model:visible="showAssignModal" title="Assign Students to Team" width="600px">
       <div v-if="!selectedTeam">
         <h3>Select a Team:</h3>
-        <el-list
+        <ul
           v-for="team in teams"
           :key="team.id"
-          :bordered="false"
-          @click.native="selectTeam(team)"
+          @click="selectTeam(team)"
           style="cursor: pointer; margin-bottom: 10px;">
-        <el-list-item>{{ team.name }}</el-list-item>
-      </el-list>
+        <li>{{ team.name }}</li>
+      </ul>
     </div>
       <div v-if="selectedTeam">
         <h3>Selected Team: {{ selectedTeam.name }}</h3>
@@ -71,7 +71,8 @@
     console.log('click')
   }
 
-  const showAssignModel = ref(false);
+
+  const showAssignModal = ref(false);
   const teams = ref([]);
   const students = ref([]);
   const selectedTeam = ref(null);
@@ -146,10 +147,13 @@
     selectedTeam.value = team;
   };
 
-
   const assignStudents = async () => {
+    if(!selectedTeam.value || selectedStudentIds.value.length === 0){
+      alert('Please select a team and students.');
+      return;
+    }
     try{
-      const response = await axios.post('api/student/assign-student', {
+      const response = await axios.post('api/students/assign-student', {
         studentIds: selectedStudentIds.value,
         teamId: selectedTeam.value.id
       });
@@ -161,7 +165,7 @@
     }
   };
   const resetAndClose = () => {
-    showAssignModel.value = false;
+    showAssignModal.value = false;
     selectedTeam.value = null;
     selectedStudentIds.value = [];
   };

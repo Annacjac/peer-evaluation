@@ -215,7 +215,7 @@ class StudentControllerTest {
 
     @Test
     void testSubmitPeerEvaluation() throws Exception {
-        PeerEvaluationDto dto = new PeerEvaluationDto(1L, 5, "Good work", "For internal use", "2024-W02", new StudentDto(1, "evaluator@email.com", "John", 'D', "Doe", "password", null), new StudentDto(2, "evaluatee@email.com", "Jane", 'M', "Doe", "password2", null));
+        PeerEvaluationDto dto = new PeerEvaluationDto(1L, 5, "Good work", "For internal use", "2024-W02", new StudentDto("1", "evaluator@email.com", "John", 'D', "Doe", "password", null), new StudentDto("2", "evaluatee@email.com", "Jane", 'M', "Doe", "password2", null));
         String jsonContent = "{...}";  // JSON representation of dto
 
         when(studentService.submitPeerEvaluation(any(PeerEvaluationDto.class))).thenReturn(new PeerEvaluationReportDto("Student Name", 4.5, "Good work", 85, "2024-W02"));

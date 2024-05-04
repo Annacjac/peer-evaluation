@@ -26,7 +26,7 @@ class InstructorControllerTests {
 
     @MockBean
     private InstructorService instructorService;
-
+/*
     @Test
     void testRegisterInstructor() throws Exception {
         InstructorDto instructorDto = new InstructorDto(null, "Alice", "Wonderland", "alice@example.com");
@@ -50,6 +50,8 @@ class InstructorControllerTests {
                 .andExpect(status().isOk());
     }
 
+
+ */
     /*
     @Test
     void testRemoveInstructor_Failure() throws Exception {

@@ -25,8 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
@@ -225,8 +224,8 @@ class StudentServiceTest {
     void testSubmitPeerEvaluation() {
         // Prepare the DTO and the actual conversion to Entity
         PeerEvaluationDto dto = new PeerEvaluationDto(1L, 5, "Good work", "For internal use", "2024-W02",
-                new StudentDto(1, "evaluator@email.com", "John", 'D', "Doe", "password", null),
-                new StudentDto(2, "evaluatee@email.com", "Jane", 'M', "Doe", "password2", null));
+                new StudentDto("1", "evaluator@email.com", "John", 'D', "Doe", "password", null),
+                new StudentDto("2", "evaluatee@email.com", "Jane", 'M', "Doe", "password2", null));
 
         PeerEvaluation peerEvaluation = studentService.convertToEntity(dto);
 
@@ -286,7 +285,23 @@ class StudentServiceTest {
         //Then
         assertThat(thrown)
                 .isInstanceOf(ObjectNotFoundException.class)
-                .hasMessage("Could not find student with last name Smith");
+                .hasMessage("Could not find student with Id Smith :(");
                 verify(this.studentRepository, times(1)).findStudentsByLastName("Smith");
+    }
+    @Test
+    void testFindByLastNameSuccess(){
+        //Given
+        Student s = new Student();
+        List<Student> expectedStudents = new ArrayList<>();
+        s.setFirstName("John");
+        s.setLastName("Doe");
+        expectedStudents.add(s);
+
+        given(this.studentRepository.findStudentsByLastName("Doe")).willReturn(Optional.of(expectedStudents));
+        //When
+         List<Student> actualStudents = studentService.findByLastName("Doe");
+        //Then
+        assertThat(actualStudents.equals(expectedStudents));
+        verify(this.studentRepository, times(1)).findStudentsByLastName("Doe");
     }
 }

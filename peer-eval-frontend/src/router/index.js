@@ -30,7 +30,7 @@ const router = createRouter({
         component: StudentList
     },
     {
-        path: '/team-list', 
+        path: '/teams',
         name: 'teamlist',
         component: TeamList
     },

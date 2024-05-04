@@ -5,6 +5,7 @@ import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.instructor.Instructor;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.Student;
+import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.BDDMockito.given;
 
@@ -23,6 +25,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -139,6 +143,29 @@ class SeniorDesignTeamServiceTest {
 
         //Then
         verify(this.seniorDesignTeamRepository, times(1)).findById("Team-1");
+    }
+    @Test
+    void removeStudentSuccess() throws Exception{
+        //Given
+        SeniorDesignTeam team1 = new SeniorDesignTeam();
+        team1.setId("1");
+        Student s = new Student();
+        s.setTeam(team1);
+        s.setId("1");
+        doNothing().when(this.seniorDesignTeamService).removeStudent("1");
+
+        //When and Then
+        this.mockMvc.perform(delete("/api/v1/teams/students/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Remove success."))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
+    @Test
+    void removeStudentNonExistent() throws Exception{
+        //Given
+
+        //When
     }
 
 }

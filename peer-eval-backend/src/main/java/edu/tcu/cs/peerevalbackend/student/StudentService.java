@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
          Student studentToBeDeleted = this.studentRepository.findById(studentId)
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentId));
      }
-    public Student findById(Integer id){
+    public Student findById(String id){
         return this.studentRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("senior design team", id));
     }

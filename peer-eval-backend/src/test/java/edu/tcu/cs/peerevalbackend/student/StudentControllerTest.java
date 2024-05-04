@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
 import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
-
+import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.section.Section;
-
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
 import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import edu.tcu.cs.peerevalbackend.system.exception.AlreadyExistsException;
@@ -58,6 +57,7 @@ class StudentControllerTest {
     ObjectMapper objectMapper;
 
     List<Student> students;
+    Admin admin;
     Section section;
 
     @Value("/api/v1")
@@ -65,12 +65,19 @@ class StudentControllerTest {
 
     @BeforeEach
     void setUp(){
+        this.admin = new Admin();
+        admin.setId(1);
+        admin.setName("admin1");
+
         this.section = new Section();
         section.setSectionName("Section1");
+        section.setId("1");
+        section.setAdmin(admin);
+
         this.students = new ArrayList<>();
 
         Student s1 = new Student();
-        s1.setId(1);
+        s1.setId("1");
         s1.setEmail("student1@gmail.com");
         s1.setFirstName("John");
         s1.setLastName("Doe");
@@ -79,19 +86,21 @@ class StudentControllerTest {
         this.students.add(s1);
 
         Student s2 = new Student();
-        s2.setId(2);
+        s2.setId("2");
         s2.setEmail("student2@gmail.com");
         s2.setFirstName("Jane");
         s2.setLastName("Dou");
         s2.setPassword("password2");
+        s2.setSectionName("Section1");
         this.students.add(s2);
 
         Student s3 = new Student();
-        s3.setId(3);
+        s3.setId("3");
         s3.setEmail("student3@gmail.com");
         s3.setFirstName("Brian");
         s3.setLastName("Smith");
         s3.setPassword("password3");
+        s3.setSectionName("Section2");
         this.students.add(s3);
     }
 
@@ -104,7 +113,7 @@ class StudentControllerTest {
     void testRegisterStudentSuccess() throws Exception {
         //Given
         Student student = new Student();
-        student.setId(4);
+        student.setId("4");
         student.setEmail("student4@gmail.com");
         student.setFirstName("Greg");
         student.setLastName("Universe");
@@ -112,7 +121,7 @@ class StudentControllerTest {
 
         String json = this.objectMapper.writeValueAsString(student);
 
-        student.setId(4);
+        student.setId("4");
 
         given(this.studentService.save(Mockito.any(Student.class))).willReturn(student);
 
@@ -131,7 +140,7 @@ class StudentControllerTest {
     @Test
     void testRegisterStudentEmailAlreadyExists() throws Exception {
         // Given
-        StudentDto studentDto = new StudentDto(4, "student1@gmail.com", "John", 'D', "Doe", "password1", null);
+        StudentDto studentDto = new StudentDto("4", "student1@gmail.com", "John", 'D', "Doe", "password1", null);
         String json = this.objectMapper.writeValueAsString(studentDto);
 
         // Mock the behavior to simulate email already exists scenario

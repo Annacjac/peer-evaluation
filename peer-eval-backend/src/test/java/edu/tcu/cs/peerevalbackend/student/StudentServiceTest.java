@@ -191,7 +191,7 @@ class StudentServiceTest {
 
     @Test
     void testRegisterStudentSuccess() {
-        StudentDto studentDto = new StudentDto(4, "student4@gmail.com", "Greg", ' ', "Universe", "password4", null);
+        StudentDto studentDto = new StudentDto("4", "student4@gmail.com", "Greg", ' ', "Universe", "password4", null);
         Student student = new Student();
         student.setEmail("student4@gmail.com");
         student.setFirstName("Greg");
@@ -212,7 +212,7 @@ class StudentServiceTest {
 
     @Test
     void testRegisterStudentEmailAlreadyExists() {
-        StudentDto studentDto = new StudentDto(5, "student1@gmail.com", "John", ' ', "Doe", "password1", null);
+        StudentDto studentDto = new StudentDto("5", "student1@gmail.com", "John", ' ', "Doe", "password1", null);
 
         when(studentRepository.findByEmail("student1@gmail.com")).thenReturn(Optional.of(new Student()));
 

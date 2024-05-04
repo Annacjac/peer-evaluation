@@ -47,11 +47,11 @@ public class PeerEvaluationControllerTest {
         //evaluationToEvaluationDtoConverter = new EvaluationToEvaluationDtoConverter(studentToStudentDtoConverter);
 
         evaluator = new Student();
-        evaluator.setId(1);
+        evaluator.setId("1");
         evaluator.setFirstName("Carlos");
         evaluator.setLastName("Prudhomme");
         evaluatee = new Student();
-        evaluatee.setId(2);
+        evaluatee.setId("2");
         evaluatee.setFirstName("Eriife");
         evaluatee.setLastName("A");
 

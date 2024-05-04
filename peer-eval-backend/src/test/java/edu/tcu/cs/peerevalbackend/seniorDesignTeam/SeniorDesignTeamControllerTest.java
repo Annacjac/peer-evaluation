@@ -44,37 +44,37 @@ class SeniorDesignTeamControllerTest {
     @BeforeEach
     void setUp(){
         Student student1 = new Student();
-        student1.setId(1);
+        student1.setId("1");
         student1.setFirstName("John");
         student1.setMidInit('L');
         student1.setLastName("Smith");
 
         Student student2 = new Student();
-        student1.setId(2);
+        student1.setId("2");
         student1.setFirstName("Ava");
         student1.setMidInit('M');
         student1.setLastName("Brown");
 
         Student student3 = new Student();
-        student1.setId(3);
+        student1.setId("3");
         student1.setFirstName("Tom");
         student1.setMidInit('S');
         student1.setLastName("Johnson");
 
         Student student4 = new Student();
-        student1.setId(4);
+        student1.setId("4");
         student1.setFirstName("Josh");
         student1.setMidInit('M');
         student1.setLastName("Peterson");
 
         Student student5 = new Student();
-        student1.setId(5);
+        student1.setId("5");
         student1.setFirstName("Ellie");
         student1.setMidInit('R');
         student1.setLastName("Thompson");
 
         Student student6 = new Student();
-        student1.setId(6);
+        student1.setId("6");
         student1.setFirstName("Alex");
         student1.setMidInit('C');
         student1.setLastName("Collins");
@@ -86,7 +86,7 @@ class SeniorDesignTeamControllerTest {
         admin1.setId(1);
 
         Section section1 = new Section();
-        section1.setId(1);
+        section1.setId("1");
         section1.setAdmin(admin1);
 
         Instructor instructor1 = new Instructor();

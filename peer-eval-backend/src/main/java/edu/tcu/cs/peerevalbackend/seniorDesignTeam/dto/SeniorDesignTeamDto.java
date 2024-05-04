@@ -19,6 +19,9 @@ public record SeniorDesignTeamDto(String name,
         private String instructorId;
         private Long teamId;
 
+        public Assignment(String teamId, String instructorId) {
+        }
+
         public String getInstructorId() {
             return instructorId;
         }

@@ -96,8 +96,8 @@ import java.util.stream.Collectors;
                  .orElseThrow(() -> new ObjectNotFoundException("student", studentLastName));
      }
     public Student findByEmail(String email) {
-        Optional<Student> student = studentRepository.findByEmail(email);
-        return student.orElseThrow(() -> new RuntimeException("No student found with email: " + email));
+        return studentRepository.findByEmail(email)
+                .orElseThrow(() -> new ObjectNotFoundException("student", email));
     }
      public List<Student> findBySectionName(String sectionName){
          return this.studentRepository.findBySectionName(sectionName)
@@ -129,7 +129,7 @@ import java.util.stream.Collectors;
         return generateReportForLastWeek(peerEvaluation.getWeek());
     }
 
-    private PeerEvaluationReportDto generateReportForLastWeek(String week) {
+    public PeerEvaluationReportDto generateReportForLastWeek(String week) {
         List<PeerEvaluation> evaluations = peerEvaluationRepository.findByWeek(week);
         Double averageQualityOfWork = evaluations.stream()
                 .mapToInt(PeerEvaluation::getQualityOfWork)

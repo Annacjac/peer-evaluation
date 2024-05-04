@@ -36,6 +36,16 @@ public class PeerEvaluation implements Comparable<PeerEvaluation>{
     public PeerEvaluation() {
     }
 
+    public PeerEvaluation(Long id, Student evaluator, Student evaluatee, Integer qualityOfWork, String publicComments, String privateComments, String week) {
+        this.id = id;
+        this.evaluator = evaluator;
+        this.evaluatee = evaluatee;
+        this.qualityOfWork = qualityOfWork;
+        this.publicComments = publicComments;
+        this.privateComments = privateComments;
+        this.week = week;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;

@@ -40,7 +40,7 @@ public class StudentController {
         this.invitationService = invitationService;
     }
 
-    @GetMapping("/{studentId}")
+    @GetMapping("/{studentEmail}")
     public Result findStudentByEmail(@PathVariable String studentEmail) {
         Student foundStudent = this.studentService.findByEmail(studentEmail);
         StudentDto studentDto = this.studentToStudentDtoConverter.convert(foundStudent);

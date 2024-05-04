@@ -25,7 +25,7 @@ const router = createRouter({
         component: StudentSignUp
     },
     {
-        path: '/student-list', 
+        path: '/students',
         name: 'studentlist',
         component: StudentList
     },

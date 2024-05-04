@@ -1,4 +1,4 @@
-package edu.tcu.cs.peerevalbackend.section;
+package edu.tcu.cs.peerevalbackend.section.dto;
 
 public class SectionCreateRequestDto {
     private String sectionName;

@@ -125,51 +125,5 @@ public class PeerEvaluationServiceTest {
 
         assertTrue(exception.getMessage().contains("not found"));
     }
-    /*
-    @Test
-    public void testFindEvaluationsByEvaluateeId() {
-        List<PeerEvaluation> expectedEvaluations = Arrays.asList(evaluation);
 
-        // Setup the peerEvaluationRepository mock to return a predefined list of evaluations when queried for a specific evaluatee
-        when(peerEvaluationRepository.findByEvaluateeId(evaluatee.getId())).thenReturn(expectedEvaluations);
-
-        // Call the service method
-        List<PeerEvaluation> actualEvaluations = peerEvaluationService.findEvaluationsByEvaluateeId(evaluatee.getId());
-
-        // Verify the interaction with the peerEvaluationRepository
-        verify(peerEvaluationRepository).findByEvaluateeId(evaluatee.getId());
-
-        // Assert that the returned evaluations are what we expect
-        assertNotNull(actualEvaluations, "The returned list should not be null.");
-        assertFalse(actualEvaluations.isEmpty(), "The returned list should not be empty.");
-        assertEquals(expectedEvaluations.size(), actualEvaluations.size(), "The size of the returned list should match the expected list.");
-        assertEquals(expectedEvaluations.get(0).getId(), actualEvaluations.get(0).getId(), "The IDs of the evaluations should match.");
-    }
-
-    @Test
-    void testFindAllByWeekSuccess(){
-        // Given
-        given(peerEvaluationRepository.findAllByWeek("02-12-2024")).willReturn(this.evaluations);
-
-        // When
-        List<PeerEvaluation> actualPeerEvaluations = peerEvaluationService.findAllByWeek("02-12-2024");
-
-        // Then
-        assertThat(actualPeerEvaluations.size()).isEqualTo(this.evaluations.size());
-        verify(peerEvaluationRepository, times(1)).findAllByWeek("02-12-2024");
-    }
-    @Test
-    void testFindAllByStudent(){
-        // Given
-        given(peerEvaluationRepository.findAllByEvaluateeId(1L)).willReturn(this.evaluations.subList(0,2));
-
-        // When
-        List<PeerEvaluation> actualPeerEvaluations = peerEvaluationService.findAllByEvaluateeId(1L);
-
-        // Then
-        assertThat(actualPeerEvaluations.size()).isEqualTo(this.evaluations.subList(0,2).size());
-        verify(peerEvaluationRepository, times(1)).findAllByEvaluateeId(1L);
-    }
-
-     */
 }

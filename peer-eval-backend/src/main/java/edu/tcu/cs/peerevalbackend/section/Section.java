@@ -19,7 +19,8 @@ public class Section implements Serializable {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
     private List<SeniorDesignTeam> team = new ArrayList<>();
-
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "section")
+    private List<Student> student = new ArrayList<>();
     @ManyToOne
     private Instructor instructor;
 
@@ -29,8 +30,7 @@ public class Section implements Serializable {
     private String firstDate;
 
     private String lastDate;
-    @OneToMany
-    private List<Student> students;
+
     @ManyToOne
     private Admin admin;
 
@@ -105,8 +105,10 @@ public class Section implements Serializable {
     public void setLastDate(String lastDate) {
         this.lastDate = lastDate;
     }
-    public void getStudents(List<Student> students){this.students = students;}
 
+    public List<Student> getStudents() {
+        return student;
+    }
   
       public Instructor getInstructor() {
         return instructor;
@@ -115,6 +117,13 @@ public class Section implements Serializable {
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
+
+
+    public void setStudents(List<Student> student) {
+        this.student = student;
+    }
+
+
 }
 
 

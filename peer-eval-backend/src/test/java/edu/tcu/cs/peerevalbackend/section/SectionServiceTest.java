@@ -1,76 +1,68 @@
 package edu.tcu.cs.peerevalbackend.section;
 
-import edu.tcu.cs.peerevalbackend.rubric.Rubric;
-import edu.tcu.cs.peerevalbackend.rubric.RubricRepository;
-import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeEach;
+import edu.tcu.cs.peerevalbackend.section.Section;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
+@SpringBootTest
 public class SectionServiceTest {
-    @Mock
-    private SectionRepository sectionRepository;
-
-    @Mock
-    private RubricRepository rubricRepository;
 
     @InjectMocks
     private SectionService sectionService;
 
-    @BeforeEach
-    public void setUp() {
+    @Mock
+    private SectionRepository sectionRepository;
+
+    @Test
+    public void testSearchSections() {
         MockitoAnnotations.initMocks(this);
+
+        // Setup
+        String sectionName = "Software Engineering";
+        String academicYear = "2022-2023";
+        List<Section> expectedSections = new ArrayList<>();
+        expectedSections.add(new Section()); // Add a mock Section with relevant details
+        when(sectionRepository.findAll((Sort) any(Specification.class))).thenReturn(expectedSections);
+
+        // Execution
+        List<Section> foundSections = sectionService.searchSections(sectionName, academicYear);
+
+        // Verification
+        assertFalse(foundSections.isEmpty());
+        assertEquals(expectedSections.size(), foundSections.size());
+        verify(sectionRepository).findAll((Sort) any(Specification.class));
     }
 
-    public void testCreateSectionServiceSuccess() {
-        String name = "Test Section";
-        String year = "2023-2024";
-        Integer rubricId = 1;
-        Rubric rubric = new Rubric();
-        rubric.setId(rubricId);
-
-        when(rubricRepository.findById(rubricId)).thenReturn(Optional.of(rubric));
-        when(sectionRepository.existsBySectionName(name)).thenReturn(false);
-        when(sectionRepository.save(any(Section.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        Section section = sectionService.createSection(name, year, rubricId);
-
-        assertNotNull(section);
-        assertEquals(name, section.getSectionName());
-        assertEquals(year, section.getAcademicYear());
-        assertEquals(rubric, section.getRubric());
-    }
     @Test
-    public void testCreateSectionServiceDuplicateName() {
-        String name = "Existing Section";
-        String year = "2023-2024";
-        Integer rubricId = 1;
+    public void testAddSection() {
+        MockitoAnnotations.initMocks(this);
 
-        when(sectionRepository.existsBySectionName(name)).thenReturn(true);
+        // Setup
+        Section newSection = new Section();
+        newSection.setSectionName("Advanced Databases");
+        newSection.setAcademicYear("2023-2024");
+        when(sectionRepository.save(any(Section.class))).thenReturn(newSection);
 
-        sectionService.createSection(name, year, rubricId);
+        // Execution
+        Section savedSection = sectionService.save(newSection);
+
+        // Verification
+        assertNotNull(savedSection);
+        assertEquals("Advanced Databases", savedSection.getSectionName());
+        assertEquals("2023-2024", savedSection.getAcademicYear());
+        verify(sectionRepository).save(any(Section.class));
     }
-    @Test
-    public void testCreateSectionServiceRubricNotFound() {
-        String name = "Test Section";
-        String year = "2023-2024";
-        Integer rubricId = 99;  // Assuming this ID does not exist
 
-        when(rubricRepository.findById(rubricId)).thenReturn(Optional.empty());
-
-        ObjectNotFoundException thrown = assertThrows(ObjectNotFoundException.class, () -> {
-            sectionService.createSection(name, year, rubricId);
-        });
-
-        assertTrue(thrown.getMessage().contains("Rubric not found with ID: " + rubricId));
-    }
 }
+

@@ -2,6 +2,7 @@ package edu.tcu.cs.peerevalbackend.student;
 
 import java.io.Serializable;
 
+import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -23,7 +24,8 @@ public class Student implements Serializable{
     @ManyToOne
     private SeniorDesignTeam team;
 
-
+    @ManyToOne
+    private Section section;
     public Student(){
 
     }

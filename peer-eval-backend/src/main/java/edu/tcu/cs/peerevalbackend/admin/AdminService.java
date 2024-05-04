@@ -103,8 +103,8 @@ public class AdminService {
                 "Peer Evaluation Tool Team";
     }
 
-    public Page<Section> findSections(SearchCriteriaDto criteria, Pageable pageable) throws Exception {
-        return sectionRepository.findByCriteria(criteria.getSectionName(), criteria.getAcademicYear(), pageable);
+    public Page<Section> findSections(Pageable pageable) throws Exception {
+        return this.sectionRepository.findAll(pageable);
     }
 
 

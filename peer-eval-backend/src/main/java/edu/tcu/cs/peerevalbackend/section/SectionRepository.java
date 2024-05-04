@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
-public interface SectionRepository extends JpaRepository<Section, Integer> {
-    Page<Section> findByCriteria(@Param("sectionName") String sectionName, @Param("academicYear") String academicYear, Pageable pageable);
-
-
-    boolean existsBySectionName(String sectionName);
+public interface SectionRepository extends JpaRepository<Section, String> {
+    Optional<Section> findBySectionName (String sectionName);
 }

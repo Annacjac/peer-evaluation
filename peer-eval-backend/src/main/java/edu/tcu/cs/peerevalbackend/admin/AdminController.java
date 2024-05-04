@@ -3,6 +3,9 @@ package edu.tcu.cs.peerevalbackend.admin;
 import edu.tcu.cs.peerevalbackend.admin.dto.AdminDto;
 import edu.tcu.cs.peerevalbackend.admin.dto.SearchCriteriaDto;
 import edu.tcu.cs.peerevalbackend.section.Section;
+import edu.tcu.cs.peerevalbackend.section.dto.SectionDto;
+import edu.tcu.cs.peerevalbackend.system.Result;
+import edu.tcu.cs.peerevalbackend.system.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,19 +35,7 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Error sending invitations: " + e.getMessage());
         }
     }
-    @GetMapping("/find-sections")
-    public ResponseEntity<?> findSections(SearchCriteriaDto criteria, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        try {
-            Pageable pageable = PageRequest.of(page, size);
-            Page<Section> sectionsPage = adminService.findSections(criteria, pageable);
-            if (sectionsPage.isEmpty()) {
-                return ResponseEntity.ok("No matching sections found.");
-            }
-            return ResponseEntity.ok(sectionsPage);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error in searching sections: " + e.getMessage());
-        }
-    }
+
     // Endpoint to assign students to a team
     @PostMapping("/assignStudentsToTeam")
     public ResponseEntity<?> assignStudentsToTeam(@RequestParam String teamId, @RequestBody List<String> studentIds) {

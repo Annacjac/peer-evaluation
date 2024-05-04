@@ -1,54 +1,65 @@
 package edu.tcu.cs.peerevalbackend.section;
 
-import edu.tcu.cs.peerevalbackend.rubric.Rubric;
 import edu.tcu.cs.peerevalbackend.rubric.RubricRepository;
-import edu.tcu.cs.peerevalbackend.section.dto.SectionDetailDto;
+import edu.tcu.cs.peerevalbackend.section.utils.IdWorker;
 import edu.tcu.cs.peerevalbackend.system.exception.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional
 public class SectionService {
 
-    @Autowired
-    private SectionRepository sectionRepository;
 
-    @Autowired
-    private RubricRepository rubricRepository;
+    private final SectionRepository sectionRepository;
 
-    public SectionDetailDto getSectionDetails(Integer sectionId) {
-        Section section = sectionRepository.findById(sectionId)
+
+    private final RubricRepository rubricRepository;
+
+    private final IdWorker idWorker;
+
+    public SectionService(SectionRepository sectionRepository, RubricRepository rubricRepository, IdWorker idWorker) {
+        this.sectionRepository = sectionRepository;
+        this.rubricRepository = rubricRepository;
+        this.idWorker = idWorker;
+    }
+
+    public Section findById(String sectionId) {
+        return this.sectionRepository.findById(sectionId)
                 .orElseThrow(() -> new ObjectNotFoundException("Section", sectionId));
-
-        return convertToDetailDto(section);
     }
 
-    private SectionDetailDto convertToDetailDto(Section section) {
-        SectionDetailDto dto = new SectionDetailDto();
-        dto.setSectionName(section.getSectionName());
-        dto.setAcademicYear(section.getAcademicYear());
-        dto.setTeams(section.getTeams());
 
-        return dto;
+    public Section save (Section newSection) {
+        newSection.setId(idWorker.nextId() + "");
+        return this.sectionRepository.save(newSection);
     }
 
-    public Section createSection(String sectionName, String academicYear, Integer rubricId) {
-        if (sectionRepository.existsBySectionName(sectionName)) {
-            throw new IllegalStateException("A section with this name already exists.");
+    public List<Section> searchSections(String sectionName, String academicYear) {
+
+        Specification<Section> spec = Specification.where(null);
+
+
+        if(sectionName != null && !sectionName.isEmpty()) {
+            spec = spec.and(SectionSpecs.hasSectionName(sectionName));
         }
 
-        Rubric rubric = rubricRepository.findById(rubricId)
-                .orElseThrow(() -> new ObjectNotFoundException("Rubric", rubricId));
+        if(academicYear !=null && !academicYear.isEmpty()) {
+            spec = spec.and(SectionSpecs.hasAcademicYear(academicYear));
+        }
 
-        Section newSection = new Section();
-        newSection.setSectionName(sectionName);
-        newSection.setAcademicYear(academicYear);
-        newSection.setRubric(rubric);
+        return sectionRepository.findAll((Sort) spec);
 
-        return sectionRepository.save(newSection);
+
+    }
+    public Page<Section> findAll(Pageable pageable) {
+        return this.sectionRepository.findAll(pageable);
     }
 
-
-
-    // TODO: add student, teams and instructor to details
 }

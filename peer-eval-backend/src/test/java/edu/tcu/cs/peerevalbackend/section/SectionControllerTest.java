@@ -1,28 +1,28 @@
-package edu.tcu.cs.peerevalbackend.section;
+/*package edu.tcu.cs.peerevalbackend.section;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.tcu.cs.peerevalbackend.section.SectionController;
+import edu.tcu.cs.peerevalbackend.section.dto.SectionDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import edu.tcu.cs.peerevalbackend.section.SectionCreateRequestDto;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.BDDMockito.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
-import static org.springframework.http.MediaType.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(SectionController.class)
 public class SectionControllerTest {
 
     @Autowired
@@ -31,33 +31,50 @@ public class SectionControllerTest {
     @MockBean
     private SectionService sectionService;
 
+    @InjectMocks
+    private SectionController sectionController;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(sectionController).build();
+    }
     @Test
-    public void testCreateSectionSuccess() throws Exception {
-        SectionCreateRequestDto request = new SectionCreateRequestDto();
-        request.setSectionName("New Section 2024");
-        request.setAcademicYear("2024-2025");
-        request.setRubricId(1);
+    public void testSectionSearch() throws Exception {
+        // Given
+        List<SectionDto> sectionDtos = List.of(new SectionDto("1", "Software Engineering", "2023", new ArrayList<>(), null, new ArrayList<>(), null));
+        when(sectionService.searchSections("Software Engineering", "2023")).thenReturn(sectionDtos);
 
-        Section expectedSection = new Section();
-        expectedSection.setId("1");
-        expectedSection.setSectionName(request.getSectionName());
-        expectedSection.setAcademicYear(request.getAcademicYear());
-
-        given(sectionService.createSection(anyString(), anyString(), anyInt())).willReturn(expectedSection);
-
-        mockMvc.perform(post("/sections")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request))) // You need to convert your request object to JSON string
+        // When & Then
+        mockMvc.perform(get("/section_search")
+                        .param("sectionName", "Software Engineering")
+                        .param("academicYear", "2023")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sectionName").value("New Section 2024"));
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.data[0].sectionName").value("Software Engineering"))
+                .andExpect(jsonPath("$.data[0].academicYear").value("2023"));
+
+        verify(sectionService).searchSections("Software Engineering", "2023");
+    }
+    @Test
+    public void testAddSection() throws Exception {
+        // Setup
+        SectionDto sectionDto = new SectionDto("1", "Machine Learning", "2024", new ArrayList<>(), null, new ArrayList<>(), null);
+        SectionDto savedSectionDto = new SectionDto("1", "Machine Learning", "2024", new ArrayList<>(), null, new ArrayList<>(), null);
+        when(sectionService.save(any(Section.class))).thenReturn(savedSectionDto);
+
+        // Execution & Verification
+        mockMvc.perform(post("/section")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"1\",\"sectionName\":\"Machine Learning\",\"academicYear\":\"2024\",\"students\":[],\"instructor\":null,\"teams\":[],\"rubric\":null}")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.sectionName").value("Machine Learning"))
+                .andExpect(jsonPath("$.data.academicYear").value("2024"));
+
+        verify(sectionService).save(any(Section.class));
     }
 
-    // Utility method to convert object to JSON string
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
+*/

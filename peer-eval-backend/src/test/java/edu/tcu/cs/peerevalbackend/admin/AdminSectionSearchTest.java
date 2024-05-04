@@ -36,10 +36,10 @@ public class AdminSectionSearchTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         // Mocking
-        when(sectionRepository.findByCriteria(criteria.getSectionName(), criteria.getAcademicYear(), pageable)).thenReturn(expectedPage);
+        when(sectionRepository.findAll(pageable)).thenReturn(expectedPage);
 
         // Execution
-        Page<Section> resultPage = adminService.findSections(criteria, pageable);
+        Page<Section> resultPage = adminService.findSections(pageable);
 
         // Assertion
         assertEquals(expectedPage.getTotalElements(), resultPage.getTotalElements(), "The number of sections should match");

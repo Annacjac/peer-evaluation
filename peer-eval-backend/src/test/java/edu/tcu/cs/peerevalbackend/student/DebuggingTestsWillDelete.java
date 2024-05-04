@@ -25,7 +25,7 @@ public class DebuggingTestsWillDelete {
         students = new ArrayList<>();
 
         Student s1 = new Student();
-        s1.setId(1);
+        s1.setId("1");
         s1.setEmail("student1@gmail.com");
         s1.setFirstName("John");
         s1.setLastName("Doe");
@@ -34,7 +34,7 @@ public class DebuggingTestsWillDelete {
         students.add(s1);
 
         Student s2 = new Student();
-        s2.setId(2);
+        s2.setId("2");
         s2.setEmail("student2@gmail.com");
         s2.setFirstName("Jane");
         s2.setLastName("Dou");
@@ -42,7 +42,7 @@ public class DebuggingTestsWillDelete {
         students.add(s2);
 
         Student s3 = new Student();
-        s3.setId(3);
+        s3.setId("3");
         s3.setEmail("student3@gmail.com");
         s3.setFirstName("Brian");
         s3.setLastName("Smith");

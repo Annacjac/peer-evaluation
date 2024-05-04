@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import jdk.jshell.Snippet;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,9 +73,12 @@ public class SeniorDesignTeamController {
         this.seniorDesignTeamService.removeStudent(studentEmail);
         return new Result(true, StatusCode.SUCCESS, "Removal Success");
     }
-    @PutMapping("/{teamName}/students/{studentEmail}")
-    public Result assignStudent(@PathVariable String teamName, @PathVariable String studentEmail){
-        this.seniorDesignTeamService.assignStudent(teamName, studentEmail);
+    @PutMapping("/students/{teamName}")
+    public Result assignStudent(@PathVariable String teamName, @RequestBody String emailList){
+        String[] studentEmails = emailList.trim().split(";|\\s+");
+        List<String> studentEmailList = Arrays.asList(studentEmails);
+        for (String email : studentEmailList){
+        this.seniorDesignTeamService.assignStudent(teamName, email);}
         return new Result (true, StatusCode.SUCCESS, "Student Assignment Success");
     }
     // Use Case 10: Edit a Senior Design Team

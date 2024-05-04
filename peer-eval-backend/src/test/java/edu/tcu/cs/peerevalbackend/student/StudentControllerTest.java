@@ -1,6 +1,9 @@
 package edu.tcu.cs.peerevalbackend.student;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
 import edu.tcu.cs.peerevalbackend.admin.Admin;
 import edu.tcu.cs.peerevalbackend.section.Section;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
@@ -35,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -173,7 +177,7 @@ class StudentControllerTest {
         given(this.studentService.findByEmail("test@example.com")).willThrow(new ObjectNotFoundException("student", "test@example.com"));
 
         //When and then
-        this.mockMvc.perform(get(this.baseUrl + "/students/5").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/students/test@example.com").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find student"))
@@ -207,6 +211,39 @@ class StudentControllerTest {
                 .andExpect(jsonPath("$.data.lastName").value("Doe"))
                 .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
     }
+
+
+    @Test
+    void testSubmitPeerEvaluation() throws Exception {
+        PeerEvaluationDto dto = new PeerEvaluationDto(1L, 5, "Good work", "For internal use", "2024-W02", new StudentDto("1", "evaluator@email.com", "John", 'D', "Doe", "password", null), new StudentDto("2", "evaluatee@email.com", "Jane", 'M', "Doe", "password2", null));
+        String jsonContent = "{...}";  // JSON representation of dto
+
+        when(studentService.submitPeerEvaluation(any(PeerEvaluationDto.class))).thenReturn(new PeerEvaluationReportDto("Student Name", 4.5, "Good work", 85, "2024-W02"));
+
+        mockMvc.perform(post("/students/peer-evaluations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonContent))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.studentName").value("Student Name"))
+                .andExpect(jsonPath("$.overallGrade").value(85));
+    }
+
+    @Test
+    void testGetPeerEvaluationReport() throws Exception {
+        String email = "student1@gmail.com";
+        String week = "2024-W02";
+        PeerEvaluationReportDto reportDto = new PeerEvaluationReportDto("John Doe", 5.0, "Excellent work", 85, week);
+
+        when(studentService.getPeerEvaluationReport(email, week)).thenReturn(reportDto);
+
+        mockMvc.perform(get("/peer-evaluations/report")
+                        .param("week", week)
+                        .with(user(email).password("password").roles("STUDENT")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.studentName").value("John Doe"))
+                .andExpect(jsonPath("$.overallGrade").value(85));
+    }
+
     @Test
     void testFindStudentBySectionSuccess() throws Exception{
         //Given
@@ -234,5 +271,6 @@ class StudentControllerTest {
                 .andExpect(jsonPath("$.data.firstName").value("John"))
                 .andExpect(jsonPath("$.data.lastName").value("Doe"))
                 .andExpect(jsonPath("$.data.email").value("student1@gmail.com"));
+
     }
 }

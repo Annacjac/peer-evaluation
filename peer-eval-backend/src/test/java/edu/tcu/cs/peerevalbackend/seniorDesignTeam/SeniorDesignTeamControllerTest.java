@@ -125,9 +125,6 @@ class SeniorDesignTeamControllerTest {
     }
 
     @Test
-    void removeStudent() {
-    }
-    @Test
     void testDeleteTeamSuccess() throws Exception{
         //Given
         doNothing().when(this.seniorDesignTeamService).deleteTeam("Team-1");

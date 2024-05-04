@@ -1,5 +1,8 @@
 package edu.tcu.cs.peerevalbackend.student;
 
+import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluation;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
 import edu.tcu.cs.peerevalbackend.seniorDesignTeam.dto.SeniorDesignTeamDto;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +40,7 @@ public class StudentController {
         this.invitationService = invitationService;
     }
 
-    @GetMapping("/{studentId}")
+    @GetMapping("/{studentEmail}")
     public Result findStudentByEmail(@PathVariable String studentEmail) {
         Student foundStudent = this.studentService.findByEmail(studentEmail);
         StudentDto studentDto = this.studentToStudentDtoConverter.convert(foundStudent);
@@ -107,5 +111,20 @@ public class StudentController {
         invitationService.inviteStudents(emailList);
         return new Result(true, StatusCode.SUCCESS, "Invitation send success", emailList);
     }
+
+    @PostMapping("/peer-evaluations")
+    public ResponseEntity<PeerEvaluationReportDto> submitPeerEvaluation(@RequestBody PeerEvaluationDto peerEvaluationDto) {
+        PeerEvaluationReportDto reportDto = studentService.submitPeerEvaluation(peerEvaluationDto);
+        return ResponseEntity.ok(reportDto);
+    }
+
+    @GetMapping("/peer-evaluations/report")
+    public ResponseEntity<PeerEvaluationReportDto> getPeerEvaluationReport(@RequestParam String week, Principal principal) {
+        String email = principal.getName(); // Assuming email is used as the username
+        PeerEvaluationReportDto reportDto = studentService.getPeerEvaluationReport(email, week);
+        return ResponseEntity.ok(reportDto);
+    }
+
+
 
 }

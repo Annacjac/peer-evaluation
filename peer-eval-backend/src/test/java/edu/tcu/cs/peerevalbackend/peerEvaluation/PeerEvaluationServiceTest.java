@@ -1,7 +1,9 @@
 package edu.tcu.cs.peerevalbackend.peerEvaluation;
 
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
 import edu.tcu.cs.peerevalbackend.repository.PeerEvaluationRepository;
 import edu.tcu.cs.peerevalbackend.student.Student;
+import edu.tcu.cs.peerevalbackend.student.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +29,9 @@ public class PeerEvaluationServiceTest {
 
     @InjectMocks
     private PeerEvaluationService peerEvaluationService;
+
+    @Mock
+    private StudentService studentService;
 
     private PeerEvaluation evaluation;
     private Student evaluator;

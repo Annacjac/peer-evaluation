@@ -52,6 +52,7 @@ public class SeniorDesignTeamController {
     return new Result(true, StatusCode.SUCCESS, "Find one success", seniorDesignTeam);
     }
 
+    // Use Case 9: The Admin creates a senior design team
     @PostMapping
     public Result addTeam(@Valid @RequestBody SeniorDesignTeamDto seniorDesignTeamDto) {
         SeniorDesignTeam newTeam = this.seniorDesignTeamDtoToSeniorDesignTeamConverter.convert(seniorDesignTeamDto);
@@ -75,5 +76,13 @@ public class SeniorDesignTeamController {
     public Result assignStudent(@PathVariable String teamName, @PathVariable String studentEmail){
         this.seniorDesignTeamService.assignStudent(teamName, studentEmail);
         return new Result (true, StatusCode.SUCCESS, "Student Assignment Success");
+    }
+    // Use Case 10: Edit a Senior Design Team
+    @PutMapping("/{teamName}")
+    public Result updateTeam(@PathVariable String teamName, @Valid @RequestBody SeniorDesignTeamDto seniorDesignTeamDto) {
+        SeniorDesignTeam updatedTeam = seniorDesignTeamDtoToSeniorDesignTeamConverter.convert(seniorDesignTeamDto);
+        assert updatedTeam != null;
+        SeniorDesignTeam savedTeam = seniorDesignTeamService.update(teamName, updatedTeam);
+        return new Result(true, StatusCode.SUCCESS, "Team updated successfully", savedTeam);
     }
 }

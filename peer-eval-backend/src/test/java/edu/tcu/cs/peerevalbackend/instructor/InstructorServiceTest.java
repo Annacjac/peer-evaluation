@@ -1,5 +1,6 @@
 package edu.tcu.cs.peerevalbackend.instructor;
 
+import edu.tcu.cs.peerevalbackend.instructor.dto.InstructorDto;
 import edu.tcu.cs.peerevalbackend.instructor.service.InstructorService;
 import edu.tcu.cs.peerevalbackend.instructor.service.InstructorServiceImpl;
 
@@ -18,9 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class InstructorServiceTest {
@@ -133,6 +135,27 @@ class InstructorServiceTest {
         assertThat(savedInstructor.getLastName()).isEqualTo("Bingyang");
         verify(instructorRepository, times(1)).save(newInstructor);
 
+    }
+
+
+    @Test
+    void testCreateInstructor() {
+        InstructorDto newInstructorDto = new InstructorDto(null, "Alice", "Wonderland", "alice@example.com");
+        Instructor newInstructor = new Instructor();
+        newInstructor.setId(1);
+        newInstructor.setFirstName("Alice");
+        newInstructor.setLastName("Wonderland");
+        newInstructor.setEmail("alice@example.com");
+        newInstructor.setActive(true);
+
+        when(instructorRepository.save(any(Instructor.class))).thenReturn(newInstructor);
+
+        InstructorDto savedInstructorDto = instructorService.createInstructor(newInstructorDto);
+
+        assertNotNull(savedInstructorDto);
+        assertEquals("Alice", savedInstructorDto.firstName());
+        assertEquals("Wonderland", savedInstructorDto.lastName());
+        assertEquals("alice@example.com", savedInstructorDto.email());
     }
 
      */

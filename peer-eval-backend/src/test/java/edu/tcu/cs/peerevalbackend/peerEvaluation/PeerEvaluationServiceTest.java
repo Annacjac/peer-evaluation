@@ -1,7 +1,9 @@
 package edu.tcu.cs.peerevalbackend.peerEvaluation;
 
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
 import edu.tcu.cs.peerevalbackend.repository.PeerEvaluationRepository;
 import edu.tcu.cs.peerevalbackend.student.Student;
+import edu.tcu.cs.peerevalbackend.student.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +29,9 @@ public class PeerEvaluationServiceTest {
 
     @InjectMocks
     private PeerEvaluationService peerEvaluationService;
+
+    @Mock
+    private StudentService studentService;
 
     private PeerEvaluation evaluation;
     private Student evaluator;
@@ -158,6 +163,7 @@ public class PeerEvaluationServiceTest {
         assertThat(actualPeerEvaluations.size()).isEqualTo(this.evaluations.size());
         verify(peerEvaluationRepository, times(1)).findAllByWeek("02-12-2024");
     }
+    
     @Test
     void testFindAllByStudent(){
         // Given
@@ -169,6 +175,24 @@ public class PeerEvaluationServiceTest {
         // Then
         assertThat(actualPeerEvaluations.size()).isEqualTo(this.evaluations.subList(0,2).size());
         verify(peerEvaluationRepository, times(1)).findAllByEvaluateeId(1L);
+    }
+
+    @Test
+    void testGenerateReportForLastWeek() {
+        // Given
+        List<PeerEvaluation> evaluations = Arrays.asList(
+                new PeerEvaluation(1L, new Student(), new Student(), 5, "Great job", "Details", "2024-W02"),
+                new PeerEvaluation(2L, new Student(), new Student(), 4, "Well done", "Details", "2024-W02")
+        );
+        when(peerEvaluationRepository.findByWeek("2024-W02")).thenReturn(evaluations);
+
+        // When
+        PeerEvaluationReportDto reportDto = studentService.generateReportForLastWeek("2024-W02");
+
+        // Then
+        assertNotNull(reportDto, "Report DTO should not be null");
+        assertEquals("Great job Well done", reportDto.getPublicComments());
+        assertEquals(4.5, reportDto.getQualityOfWorkAverage(), 0.01);
     }
 
      */

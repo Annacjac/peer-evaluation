@@ -93,4 +93,10 @@ public class InstructorController {
         }
     }
     // Additional endpoints as needed
+
+    @PostMapping("/register")
+    public ResponseEntity<InstructorDto> registerInstructor(@RequestBody InstructorDto instructorDto) {
+        Instructor instructor = instructorService.registerInstructor(instructorDto);
+        return ResponseEntity.ok(new InstructorDto(instructor.getId(), instructor.getFirstName(), instructor.getLastName(), instructor.getEmail()));
+    }
 }

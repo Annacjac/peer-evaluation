@@ -28,6 +28,22 @@ class InstructorControllerTests {
     private InstructorService instructorService;
 
     @Test
+    void testRegisterInstructor() throws Exception {
+        InstructorDto instructorDto = new InstructorDto(null, "Alice", "Wonderland", "alice@example.com");
+        InstructorDto savedInstructorDto = new InstructorDto(1, "Alice", "Wonderland", "alice@example.com");
+
+        when(instructorService.createInstructor(any(InstructorDto.class))).thenReturn(savedInstructorDto);
+
+        mockMvc.perform(post("/instructors")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(instructorDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("Alice"))
+                .andExpect(jsonPath("$.lastName").value("Wonderland"))
+                .andExpect(jsonPath("$.email").value("alice@example.com"));
+    }
+
+    @Test
     void testRemoveInstructor_Success() throws Exception {
         doNothing().when(instructorService).removeInstructorFromTeam(any(Long.class), any(Long.class));
         mockMvc.perform(delete("/api/instructors/remove-from-team/1/1"))

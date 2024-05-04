@@ -1,5 +1,10 @@
 package edu.tcu.cs.peerevalbackend.student;
 
+import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluation;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluationService;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
+import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
+import edu.tcu.cs.peerevalbackend.repository.PeerEvaluationRepository;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
@@ -16,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +48,12 @@ class StudentServiceTest {
 
     @Mock
     private StudentToStudentDtoConverter studentToDtoConverter;
+
+    @Mock
+    private PeerEvaluationRepository peerEvaluationRepository;
+
+    @Mock
+    private PeerEvaluationService peerEvaluationService;
 
     @BeforeEach
     void setUp() {
@@ -76,39 +88,39 @@ class StudentServiceTest {
 
     @Test
     void testFindByEmailSuccess() {
-        //Given
+        // Given
         Student s = new Student();
         s.setEmail("example@test.com");
         s.setFirstName("Greg");
         s.setLastName("Universe");
 
-        given(this.studentRepository.findById("example@test.com")).willReturn(Optional.of(s));
+        given(this.studentRepository.findByEmail("example@test.com")).willReturn(Optional.of(s));
 
-        //When
+        // When
         Student returnedStudent = this.studentService.findByEmail("example@test.com");
 
-        //Then
+        // Then
         assertThat(returnedStudent.getEmail()).isEqualTo(s.getEmail());
         assertThat(returnedStudent.getFirstName()).isEqualTo(s.getFirstName());
         assertThat(returnedStudent.getLastName()).isEqualTo(s.getLastName());
-        verify(this.studentRepository, times(1)).findById("example@test.com");
+        verify(this.studentRepository, times(1)).findByEmail("example@test.com");
     }
 
     @Test
     void testFindByEmailNotFound() {
-        //Given
-        given(this.studentRepository.findById(Mockito.any(String.class))).willReturn(Optional.empty());
+        // Given
+        given(this.studentRepository.findByEmail("example@test.com")).willReturn(Optional.empty());
 
-        //When
+        // When
         Throwable thrown = catchThrowable(() -> {
             Student returnedStudent = this.studentService.findByEmail("example@test.com");
         });
 
-        //Then
+        // Then
         assertThat(thrown)
                 .isInstanceOf(ObjectNotFoundException.class)
-                .hasMessage("Could not find student with email example@test.com");
-        verify(this.studentRepository, times(1)).findById(Mockito.any(String.class));
+                .hasMessage("Could not find student with Id example@test.com :(");
+        verify(this.studentRepository, times(1)).findByEmail("example@test.com");
 
     }
 
@@ -207,6 +219,59 @@ class StudentServiceTest {
         assertThrows(IllegalStateException.class, () -> {
             studentService.registerStudent(studentDto);
         });
+    }
+
+    @Test
+    void testSubmitPeerEvaluation() {
+        // Prepare the DTO and the actual conversion to Entity
+        PeerEvaluationDto dto = new PeerEvaluationDto(1L, 5, "Good work", "For internal use", "2024-W02",
+                new StudentDto(1, "evaluator@email.com", "John", 'D', "Doe", "password", null),
+                new StudentDto(2, "evaluatee@email.com", "Jane", 'M', "Doe", "password2", null));
+
+        PeerEvaluation peerEvaluation = studentService.convertToEntity(dto);
+
+        // Mock the repository save response
+        when(peerEvaluationRepository.save(any(PeerEvaluation.class))).thenReturn(peerEvaluation);
+
+        // Call the service method
+        PeerEvaluationReportDto reportDto = studentService.submitPeerEvaluation(dto);
+
+        // Assertions
+        assertNotNull(reportDto);
+        assertEquals("Good work", reportDto.getPublicComments());
+        assertEquals("2024-W02", reportDto.getWeek());
+    }
+
+
+    @Test
+    void testGetPeerEvaluationReport() {
+        String email = "student1@gmail.com";
+        String week = "2024-W02";
+        Student student = new Student();
+        student.setEmail(email);
+        student.setFirstName("John");
+        student.setLastName("Doe");
+
+        List<PeerEvaluation> evaluations = new ArrayList<>();
+        PeerEvaluation pe = new PeerEvaluation();
+        pe.setId(1L);
+        pe.setEvaluator(student);
+        pe.setEvaluatee(student);
+        pe.setQualityOfWork(5);
+        pe.setPublicComments("Excellent work");
+        pe.setPrivateComments("N/A");
+        pe.setWeek(week);
+        evaluations.add(pe);
+
+        when(studentRepository.findByEmail(email)).thenReturn(Optional.of(student));
+        when(peerEvaluationRepository.findByWeekAndEvaluatee(week, student)).thenReturn(evaluations);
+
+        PeerEvaluationReportDto result = studentService.getPeerEvaluationReport(email, week);
+
+        assertNotNull(result);
+        assertEquals("John Doe", result.getStudentName());
+        assertEquals(5.0, result.getQualityOfWorkAverage());
+        assertEquals("Excellent work", result.getPublicComments());
     }
   
     @Test

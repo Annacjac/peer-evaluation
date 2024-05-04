@@ -1,18 +1,18 @@
 <template>
     <el-button style='margin-bottom: 20px'>Add Student</el-button>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column fixed prop="id" label="ID" width="50" />
-      <el-table-column prop="name" label="Name" width="120" />
+      <el-table-column fixed="left" prop="id" label="ID" width="50" />
+      <el-table-column fixed="left" prop="name" label="Name" width="120" />
       <el-table-column prop="year" label="Year" width="120" />
       <el-table-column prop="teamName" label="Team Name" width="120" />
       <el-table-column prop="sectionName" label="Section Name" width="120" />
-      <el-table-column prop="email" label="Email" width="200" />
-      <el-table-column prop="generatePeerEvaluation" label="Generate Peer Evaluation" width="200" >
+      <el-table-column prop="email" label="Email" width="1000" />
+      <el-table-column fixed="right" prop="generatePeerEvaluation" label="Generate Peer Evaluation" width="200" >
         <template #default>
           <el-button link type="primary" size="small" @click="handleClick">Generate Peer Evaluation</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="generateWarReport" label="Generate WAR Report" width="200">
+      <el-table-column fixed="right" prop="generateWarReport" label="Generate WAR Report" width="200">
         <template #default>
           <el-button link type="primary" size="small" @click="handleClick">Generate WAR Report</el-button>
         </template>

@@ -5,6 +5,8 @@ import edu.tcu.cs.peerevalbackend.peerEvaluation.PeerEvaluationService;
 import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationDto;
 import edu.tcu.cs.peerevalbackend.peerEvaluation.dto.PeerEvaluationReportDto;
 import edu.tcu.cs.peerevalbackend.repository.PeerEvaluationRepository;
+import edu.tcu.cs.peerevalbackend.section.Section;
+import edu.tcu.cs.peerevalbackend.seniorDesignTeam.SeniorDesignTeam;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentDtoToStudentConverter;
 import edu.tcu.cs.peerevalbackend.student.converter.StudentToStudentDtoConverter;
 import edu.tcu.cs.peerevalbackend.student.dto.StudentDto;
@@ -303,5 +305,146 @@ class StudentServiceTest {
         //Then
         assertThat(actualStudents.equals(expectedStudents));
         verify(this.studentRepository, times(1)).findStudentsByLastName("Doe");
+    }
+    @Test
+    void testFindByFirstNameSuccess(){
+        //Given
+        Student s = new Student();
+        List<Student> expectedStudents = new ArrayList<>();
+        s.setFirstName("John");
+        s.setLastName("Doe");
+        expectedStudents.add(s);
+
+        given(this.studentRepository.findStudentByFirstName("John")).willReturn(Optional.of(expectedStudents));
+        //When
+        List<Student> actualStudents = studentService.findByFirstName("John");
+        //Then
+        assertThat(actualStudents.equals(expectedStudents));
+        verify(this.studentRepository, times(1)).findStudentByFirstName("John");
+    }
+    @Test
+    void testFindByFirstNameNotFound(){
+        //Given
+        given(this.studentRepository.findStudentByFirstName("John")).willReturn(Optional.empty());
+
+        //When
+        Throwable thrown = catchThrowable(() -> {
+            List<Student> students = this.studentService.findByFirstName("John");
+        });
+
+        //Then
+        assertThat(thrown)
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("Could not find student with Id John :(");
+        verify(this.studentRepository, times(1)).findStudentByFirstName("John");
+    }
+    @Test
+    void testFindBySectionNameSuccess(){
+        //Given
+        Student s = new Student();
+        Section section1 = new Section();
+        section1.setSectionName("Section-1");
+        List<Student> expectedStudents = new ArrayList<>();
+        s.setFirstName("John");
+        s.setLastName("Doe");
+        s.setSectionName("Section-1");
+        expectedStudents.add(s);
+
+
+        given(this.studentRepository.findBySectionName("Section-1")).willReturn(Optional.of(expectedStudents));
+        //When
+        List<Student> actualStudents = studentService.findBySectionName("Section-1");
+        //Then
+        assertThat(actualStudents.equals(expectedStudents));
+        verify(this.studentRepository, times(1)).findBySectionName("Section-1");
+    }
+    @Test
+    void testFindBySectionNameNotFound(){
+        //Given
+        given(this.studentRepository.findBySectionName("Section-1")).willReturn(Optional.empty());
+
+        //When
+        Throwable thrown = catchThrowable(() -> {
+            List<Student> students = this.studentService.findBySectionName("Seciton-1");
+        });
+
+        //Then
+        assertThat(thrown)
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("Could not find team with Id Team-1 :(");
+        verify(this.studentRepository, times(1)).findBySectionName("Team-1");
+    }
+    @Test
+    void testFindByTeamNameSuccess(){
+        //Given
+        Student s = new Student();
+        SeniorDesignTeam s1 = new SeniorDesignTeam();
+        s1.setName("Team-1");
+        List<Student> expectedStudents = new ArrayList<>();
+        s.setFirstName("John");
+        s.setLastName("Doe");
+        s.setTeam(s1);
+        expectedStudents.add(s);
+
+
+        given(this.studentRepository.findByTeamName("Team-1")).willReturn(Optional.of(expectedStudents));
+        //When
+        List<Student> actualStudents = studentService.findByTeamName("Team-1");
+        //Then
+        assertThat(actualStudents.equals(expectedStudents));
+        verify(this.studentRepository, times(1)).findByTeamName("Team-1");
+    }
+    @Test
+    void testFindByTeamNameNotFound(){
+        //Given
+        given(this.studentRepository.findByTeamName("Team-1")).willReturn(Optional.empty());
+
+        //When
+        Throwable thrown = catchThrowable(() -> {
+            List<Student> students = this.studentService.findByTeamName("Team-1");
+        });
+
+        //Then
+        assertThat(thrown)
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("Could not find team with Id Team-1 :(");
+        verify(this.studentRepository, times(1)).findByTeamName("Team-1");
+    }
+    @Test
+    void testFindByAcademicYearSuccess(){
+        //Given
+        Student s = new Student();
+        SeniorDesignTeam s1 = new SeniorDesignTeam();
+        s1.setName("Team-1");
+        List<Student> expectedStudents = new ArrayList<>();
+        s.setFirstName("John");
+        s.setLastName("Doe");
+        s.setTeam(s1);
+        s.setAcademicYear("Senior");
+        expectedStudents.add(s);
+
+
+        given(this.studentRepository.findByAcademicYear("Senior")).willReturn(Optional.of(expectedStudents));
+        //When
+        List<Student> actualStudents = studentService.findByAcademicYear("Senior");
+        //Then
+        assertThat(actualStudents.equals(expectedStudents));
+        verify(this.studentRepository, times(1)).findByAcademicYear("Senior");
+    }
+    @Test
+    void testFindByAcademicYearNotFound(){
+        //Given
+        given(this.studentRepository.findByAcademicYear("Senior")).willReturn(Optional.empty());
+
+        //When
+        Throwable thrown = catchThrowable(() -> {
+            List<Student> students = this.studentService.findByAcademicYear("Senior");
+        });
+
+        //Then
+        assertThat(thrown)
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("Could not find academic year with Id Senior :(");
+        verify(this.studentRepository, times(1)).findByAcademicYear("Senior");
     }
 }

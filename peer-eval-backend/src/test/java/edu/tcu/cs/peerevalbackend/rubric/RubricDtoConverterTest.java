@@ -1,6 +1,5 @@
 package edu.tcu.cs.peerevalbackend.rubric;
 
-package edu.tcu.cs.peerevalbackend.rubric.converter;
 
 import edu.tcu.cs.peerevalbackend.rubric.Criterion;
 import edu.tcu.cs.peerevalbackend.rubric.Rubric;
